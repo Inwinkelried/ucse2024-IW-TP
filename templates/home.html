@@ -1,13 +1,14 @@
-<!-- templates/home.html -->
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<h1>Welcome to the Padel Booking System</h1>
 {% if user.is_authenticated %}
-Hi {{ user.username }}!
+  <p>Hello {{ user.username }}! Ready to book your next padel game?</p>
+
 {% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
+  <p>It looks like you’re not logged in. To book a padel court, please log in or register.</p>
+
 {% endif %}
 {% endblock %}
