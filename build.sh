@@ -1,12 +1,9 @@
-#!/usr/bin/env bash
-# Exit on error
+# exit on error
 set -o errexit
 
-# Modify this line as needed for your package manager (pip, poetry, etc.)
-pip install -r requirements.txt
+pip install -r ./requirements.txt
 
-# Convert static asset files
+cd $(dirname $(find . | grep manage.py$))
 python manage.py collectstatic --no-input
-
-# Apply any outstanding database migrations
 python manage.py migrate
+python manage.py createsuperuser --username admin --email "willinerrenato13@gmail.com" --noinput || true
