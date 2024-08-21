@@ -3,12 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Welcome to the Padel Booking System</h1>
 {% if user.is_authenticated %}
-  <p>Hello {{ user.username }}! Ready to book your next padel game?</p>
-
+Hi {{ user.username }}!
+<form action="{% url 'logout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
 {% else %}
-  <p>It looks like you’re not logged in. To book a padel court, please log in or register.</p>
-
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
 {% endif %}
 {% endblock %}
