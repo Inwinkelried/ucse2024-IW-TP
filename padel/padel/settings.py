@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'home',
     'accounts',
 ]
-AUTH_USER_MODEL = 'accounts.Usuario'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -142,3 +142,4 @@ if 'RENDER' in os.environ:
 
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" 
+AUTH_USER_MODEL = 'accounts.Usuario'

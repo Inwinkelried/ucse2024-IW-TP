@@ -16,15 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from home import views
+from home import views as homeview
+from accounts import views
 from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    # path('register/', views.register, name='register'),
-    path('protected/', views.protected_page, name='protected_page'),
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),
-  
+    path('login/', views.LoginPersonalizado.as_view(), name='login'), #URL DE LOGIN
+    path('protected/', homeview.protected_page, name='protected_page'),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"), #URL DE HOME
+    path('registrar_complejo',views.ComplejoRegisterView, name="registrar_complejo"), ### URL DE LA VISTA DE REGISTRO DEL COMPLEJO
+    path('vista_complejos',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ) ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS    
+    
 ]
