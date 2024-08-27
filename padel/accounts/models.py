@@ -10,34 +10,28 @@ class Usuario(AbstractUser): #Esta es la clase base desde la que vamos a manejar
         COMPLEJO = "COMPLEJO", 'Complejo'
     rol_base = Rol.JUGADOR #Definimos el rol base
     rol= models.CharField(max_length=20,choices= Rol.choices, null=True) #Campo
-
     def save(self, *args, **kwargs): #Lo que hace esto es que al crear un nuevo usuario tenga el rol JUGADOR establecido por default.
         if not self.pk:
             self.rol = self.rol_base
             return super().save(*args, **kwargs)
-
-
-
 class JugadorManager(BaseUserManager): #Usamos esto para obttener la lista de usuarios de tipo Jugador
-    def get_queryset(self, *args, kwargs):
+    def get_queryset(self, *args, **kwargs):
         results = super().get_queryset(*args, **kwargs)
-        return results.filter(role= Usuario.Rol.JUGADOR)
-
-class Jugador(Usuario): #Vamos a definir una clase de usuario, para que tengas campos necesarios para el usuario
+        return results.filter(role= Usuario.Rol.JUGADOR)  
+class Jugador(Usuario): #Vamos a definir una clase de usuario, esta sirve para comportamientos especificos. Por ej, obttener todos los usuarios de tipo JUGADOR
     rol_base= Usuario.Rol.JUGADOR
     jugador = JugadorManager
-    class Metat:
+    class Meta:
         proxy = True
+class JugadorProfile(models.Model): #Esta tabla va a almacenar los dattos especificos de los jugadores (Es solo una tabla intermedia que almacena los datos de los jugadores + complejos)
+    user = models.OneToOneField(Usuario, on_delete=models.CASCADE) #Campo especifico
+    categoria = models.IntegerField(null =True, blank=True, name='categoria') #Campo especifico
+    telefono = models.IntegerField(null =True, blank=True,name='telefono') #Campo especifico
 
-class JugadorProfile(models.Model): #Esta tabla va a almacenar los perfiles de los jugadores (Perfiles con datos detallados de los jugadores)
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    categoria = models.IntegerField(null =True, blank=True)
-    telefono = models.IntegerField(max_length= 10, null =True, blank=True)
 
-@receiver(post_save, sender=Jugador)
-def  crear_perfil_jugador(sender, instance, created, **kwargs): # Esto va a tomar la captacion de un perfil de usuario y lo va a derivar a una nueva tabla.
-    if created and instance.rol == "JUGADOR":
-        JugadorProfile.objects.create(user=instance)
+
+
+
 
 
 # Create your models here.
