@@ -4,7 +4,10 @@
 
 {% block content %}
 {% if user.is_authenticated%}
-<p>Hi {{ user.username }} you are a {{ user.rol }} si te logueaste correctamente deberias ver esto!</p>
+<p>Hi {{ user.username }} you are a {{ user.rol.nombre }} si te logueaste correctamente deberias ver esto!</p>
+
+<p>Tienes un complejo y deseas registrarlo?</p>
+<p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>
 <p><a href="{% url 'password_change' %}">Password Change</a></p>
 <form action="{% url 'logout' %}" method="post">
   {% csrf_token %}
@@ -15,6 +18,5 @@
 <p><a href="{% url 'password_reset' %}">Password Reset</a></p>
 <p><a href="{% url 'login' %}">Log In</a></p>
 <p><a href="{% url 'signup' %}">Registrarse</a></p> <!-- Added button for signup -->
-<p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>
 {% endif %}
 {% endblock %}

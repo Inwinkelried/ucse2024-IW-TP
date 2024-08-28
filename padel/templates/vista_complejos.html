@@ -3,14 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }} Esta es la vista de los complejos de padel! !</p>
+{% if user.is_authenticated and  user.rol == "Complejo"%}
+<p>Hi {{ user.username}} Esta es la vista de los complejos de padel! !</p>
 <p><a href="{% url 'password_change' %}">Password Change</a></p>
 <form action="{% url 'logout' %}" method="post">
     {% csrf_token %}
     <button type="submit">Log Out</button>
 </form>
-{% else %}
+{% elif %}
+
 <p>You are not logged in or do not have access to this page.</p>
 <p><a href="{% url 'password_reset' %}">Password Reset</a></p>
 <p><a href="{% url 'login' %}">Log In</a></p>

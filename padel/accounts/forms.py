@@ -1,44 +1,42 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import JugadorProfile, Usuario, ComplejoProfile
+from .models import JugadorProfile, Usuario, Roles, ComplejoDePadel
 
 
-class ComplejoRegisterForm(UserCreationForm): 
+class ComplejoRegisterForm(forms.ModelForm): 
     nombre_complejo = forms.CharField(max_length=100)
     telefono = forms.CharField(max_length=15)
+    provincia = forms.CharField(max_length=100)
+    ciudad = forms.CharField(max_length=100)
     direccion = forms.CharField(max_length=100)
+
     class Meta:
-        model = Usuario
-        fields = ('username', 'email', 'password1', 'password2', 'nombre_complejo', 'telefono', 'direccion')
+        model = ComplejoDePadel
+        fields = ('nombre_complejo','telefono','provincia', 'ciudad','direccion')
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.rol = Usuario.Rol.COMPLEJO  # Asigna el rol de COMPLEJO
+        complejo = super().save(commit=False)
+        # Asigna 'habilitado' como False
+        complejo.habilitado = False
         if commit:
-            user.save()
-            # Aquí creamos el perfil asociado con los datos del formulario
-            ComplejoProfile.objects.create(
-                user=user,
-                nombre_complejo=self.cleaned_data['nombre_complejo'],
-                telefono=self.cleaned_data['telefono'],
-                direccion=self.cleaned_data['direccion']
-            )
-        return user
-#Form para registrarse como un jugador
+            complejo.save()
+        return complejo
+        
 class JugadorRegisterForm(UserCreationForm):
     telefono = forms.CharField(max_length=15)
     categoria = forms.CharField(max_length=50)
     class Meta:
         model = Usuario
         fields = ( 'username','email','password1','password2', 'telefono', 'categoria')
+
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.rol = Usuario.Rol.JUGADOR  # Asigna el rol de JUGADOR
+        rol_jugador = Roles.objects.get(nombre=Roles.JUGADOR)
+        user.rol = rol_jugador  # Asigna la instancia de Rol
         if commit:
             user.save()
             # Aquí creamos el perfil asociado con los datos del formulario
             JugadorProfile.objects.create(
                 user=user,
-                telefono=self.cleaned_data['telefono'],
                 categoria=self.cleaned_data['categoria']
             )
         return user
