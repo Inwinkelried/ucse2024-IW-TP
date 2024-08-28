@@ -3,16 +3,17 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated and  user.rol == "Complejo"%}
-<p>Hi {{ user.username}} Esta es la vista de los complejos de padel! !</p>
+{% if user.is_authenticated and  user.rol.nombre == "COMPLEJO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es un complejo y esta activo -->
+<p>Hi {{ user.username}} Esta es la vista de los complejos de padel! Proximamentet vas a poder ver los complejos que registraste :D!</p>
 <p><a href="{% url 'password_change' %}">Password Change</a></p>
 <form action="{% url 'logout' %}" method="post">
     {% csrf_token %}
     <button type="submit">Log Out</button>
 </form>
-{% elif %}
-
-<p>You are not logged in or do not have access to this page.</p>
+{% elif user.is_authenticated and  user.rol.nombre == "COMPLEJO" and user.estado == "pendiente_aprobacion"  %} <!--El usuario ya cargo un complejo pero todavia no se lo aprobaron-->
+<p> Cuando te aprueben (Si es que cumplis los requisitos) vas a poder ver tus clubes aca</p>
+{% else %}
+<p>No tenes acceso a esta vista por gordito.</p>
 <p><a href="{% url 'password_reset' %}">Password Reset</a></p>
 <p><a href="{% url 'login' %}">Log In</a></p>
 <p><a href="{% url 'signup' %}">Registrarse</a></p> 

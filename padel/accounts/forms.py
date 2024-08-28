@@ -9,7 +9,6 @@ class ComplejoRegisterForm(forms.ModelForm):
     provincia = forms.CharField(max_length=100)
     ciudad = forms.CharField(max_length=100)
     direccion = forms.CharField(max_length=100)
-
     class Meta:
         model = ComplejoDePadel
         fields = ('nombre_complejo','telefono','provincia', 'ciudad','direccion')
@@ -37,6 +36,7 @@ class JugadorRegisterForm(UserCreationForm):
             # Aquí creamos el perfil asociado con los datos del formulario
             JugadorProfile.objects.create(
                 user=user,
+                telefono=self.cleaned_data['telefono'],
                 categoria=self.cleaned_data['categoria']
             )
         return user
