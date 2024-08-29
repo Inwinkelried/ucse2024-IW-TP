@@ -20,6 +20,10 @@ from home import views as homeview
 from accounts import views
 from django.views.generic import TemplateView
 
+#Imports para manejo de estaticos.
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
@@ -29,6 +33,8 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"), #URL DE HOME
     path('registrar_complejo/',views.ComplejoRegisterView, name="registrar_complejo"), ### URL DE LA VISTA DE REGISTRO DEL COMPLEJO
     path('vista_complejos/',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ), ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS   
-    path('mis_complejos/', views.Visualizar_mis_complejos_view, name="mis_complejos"), 
-    
+    path('mis_complejos/', views.Visualizar_mis_complejos_view, name="mis_complejos"),
+    path('complejo/<int:id_complejo>/editar',views.Editar_complejo_view , name="editar_complejo")
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

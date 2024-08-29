@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
@@ -18,5 +18,8 @@
 <p><a href="{% url 'password_reset' %}">Password Reset</a></p>
 <p><a href="{% url 'login' %}">Log In</a></p>
 <p><a href="{% url 'signup' %}">Registrarse</a></p> <!-- Added button for signup -->
+{% load static %}
+<img src="{% static 'prueba.jpg' %}" alt="Prueba">
+
 {% endif %}
 {% endblock %}

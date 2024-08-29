@@ -9,6 +9,8 @@ class Roles(models.Model):
         (COMPLEJO, 'Complejo')
     ]
     nombre = models.CharField(max_length=20, choices=ROL_CHOICES)
+    def __str__(self):
+        return self.nombre
 class Usuario(AbstractUser): 
     ESTADOS= [
         ('activo', 'Activo'),
@@ -28,6 +30,7 @@ class ComplejoDePadel(models.Model):
         ('ambas', 'Ambas'),
     ]
     PALETAS_PELOTAS= [
+        ('no', 'No'),
         ('prestan', 'Prestasn'),
         ('alquilan', 'Alquilan'),
         ('alquilan_y_prestan', 'Alquilan_y_prestan')
@@ -40,14 +43,16 @@ class ComplejoDePadel(models.Model):
     telefono = models.CharField(max_length=20, null=True, blank=True, name='telefono')
 
     habilitado = models.BooleanField(name='habilitado', default=False)
-    tipo_instalacion =  models.CharField( max_length=10, choices=TIPOS_INSTALACION, null=True)
-    tiene_duchas = models.BooleanField(name='tiene_duchas', default = False)
-    tiene_bar = models.BooleanField(name='tiene_bar', default = False),
-    presta_paleta= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_paletas', null = True)
-    prestan_pelotas = models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_pelotas', null = True)
+    tipo_instalacion =  models.CharField( max_length=10, choices=TIPOS_INSTALACION, null=True, blank=True)
+    tiene_duchas = models.BooleanField(name='tiene_duchas', default = False, null=True, blank=True)
+    tiene_bar = models.BooleanField(name='tiene_bar', default = False, null=True, blank=True),
+    presta_paleta= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_paletas', default='no' )
+    prestan_pelotas = models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_pelotas', default='no')
+    def __str__(self):
+        return self.nombre_complejo
 
 
 class JugadorProfile(models.Model): 
-    user = models.OneToOneField(Usuario, on_delete=models.CASCADE) #Campo especifico
+    user = models.OneToOneField(Usuario, on_delete=models.CASCADE, unique=True) #Campo especifico
     categoria = models.IntegerField(null =True, blank=True, name='categoria') #Campo especifico
 

@@ -19,6 +19,25 @@ class ComplejoRegisterForm(forms.ModelForm):
             complejo.save()
         return complejo
         
+class ComplejoEditForm(forms.ModelForm):
+    nombre_complejo = forms.CharField(max_length=100)
+    telefono = forms.CharField(max_length=15)
+    provincia = forms.CharField(max_length=100)
+    ciudad = forms.CharField(max_length=100)
+    direccion = forms.CharField(max_length=100)
+    tipo_instalacion =  forms.ChoiceField( choices=ComplejoDePadel.TIPOS_INSTALACION, required=False)
+    tiene_duchas = forms.BooleanField(required=False)
+    tiene_bar = forms.BooleanField(required=False)
+    presta_paleta = forms.ChoiceField(choices=ComplejoDePadel.PALETAS_PELOTAS,  required=False)
+    prestan_pelotas = forms.ChoiceField(choices=ComplejoDePadel.PALETAS_PELOTAS, required=False)
+
+    class Meta:
+        model = ComplejoDePadel
+        fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'presta_paleta', 'prestan_pelotas')
+
+
+
+
 class JugadorRegisterForm(UserCreationForm):
     telefono = forms.CharField(max_length=15)
     categoria = forms.CharField(max_length=50)

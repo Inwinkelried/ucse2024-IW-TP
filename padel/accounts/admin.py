@@ -10,10 +10,8 @@ class UsuarioAdmin(BaseUserAdmin):
         'username', 'email', 'telefono', 'estado', 'rol', 'first_name', 
         'last_name', 'is_staff', 'is_superuser', 'last_login', 'date_joined'
     )
-
     # Campos para filtrar la lista de usuarios
     list_filter = ('estado', 'rol', 'is_staff', 'is_superuser')
-
     # Campos que aparecen en el detalle del usuario en el admin
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -21,7 +19,6 @@ class UsuarioAdmin(BaseUserAdmin):
         ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Fechas importantes', {'fields': ('last_login', 'date_joined')}),
     )
-
     # Campos que aparecen al añadir un nuevo usuario
     add_fieldsets = (
         (None, {
@@ -29,7 +26,6 @@ class UsuarioAdmin(BaseUserAdmin):
             'fields': ('username', 'email', 'telefono', 'password1', 'password2', 'rol', 'estado')}
         ),
     )
-
     # Campos a usar en la búsqueda del panel de administración
     search_fields = ('username', 'email', 'telefono', 'first_name', 'last_name')
 

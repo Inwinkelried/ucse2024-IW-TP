@@ -1,8 +1,8 @@
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Usuario, Roles, ComplejoDePadel
 from django.contrib.auth import login, authenticate, logout
-from .forms import JugadorRegisterForm , ComplejoRegisterForm
+from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm
 from django.urls import reverse_lazy
 
 def Visualizar_mis_complejos_view(request):
@@ -14,6 +14,17 @@ def Visualizar_mis_complejos_view(request):
     context['complejos'] = complejos_del_usuario
     return render(request, 'visualizar_mis_complejos.html', context)    
 
+
+def Editar_complejo_view(request, id_complejo):
+    complejo_a_editar = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    if request.method == 'POST':
+        form = ComplejoEditForm(request.POST, instance=complejo_a_editar)
+        if form.is_valid():
+            form.save()
+            return redirect('mis_complejos')
+    else:
+        form = ComplejoEditForm(instance = complejo_a_editar)
+    return render(request,'editar_un_complejo.html', {'form':form})
 
 
 
