@@ -1,9 +1,18 @@
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
-from .models import Usuario, Roles
+from .models import Usuario, Roles, ComplejoDePadel
 from django.contrib.auth import login, authenticate, logout
 from .forms import JugadorRegisterForm , ComplejoRegisterForm
 from django.urls import reverse_lazy
+
+def Visualizar_mis_complejos_view(request):
+    user = request.user
+    context = {}
+    complejos_del_usuario = []
+    complejo = ComplejoDePadel.objects.filter(propietario=user)
+    complejos_del_usuario.append(complejo)
+    context['complejos'] = complejos_del_usuario
+    return render(request, 'visualizar_mis_complejos.html', context)    
 
 
 
@@ -18,10 +27,10 @@ def ComplejoRegisterView(request):
             complejo = form.save(commit=False)
             complejo.propietario = request.user
             complejo.save()
-            # Actualiza el estado del usuario
-            user.estado = 'pendiente_aprobacion'
-            user.rol = Roles.objects.get(nombre=Roles.COMPLEJO)
-            user.save()  
+            if user.rol != Roles.objects.get(nombre=Roles.COMPLEJO):  # Si el usuario no es un complejo
+                user.estado = 'pendiente_aprobacion'  # Actualiza el estado del usuario, ya que la primera vez que quiera ser un complejo se tien que dar de alta.
+                user.rol = Roles.objects.get(nombre=Roles.COMPLEJO)  # Actualiza el rol del usuario
+                user.save()  # Guarda los cambios  
             return redirect('vista_complejos')  # Lo redirecciona a la otra vista
         else:
             return render(request, 'registration/registro_complejos.html', {'form': form})

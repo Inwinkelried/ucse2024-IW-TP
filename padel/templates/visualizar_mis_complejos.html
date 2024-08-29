@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Complejos de Padel</title>
+</head>
+<body>
+    <h1>Mis Complejos de Padel</h1>
+    {% if complejos %}
+        <div class="complejo-container">
+            {% for complejo in complejos %}
+                {% for item in complejo %}
+                    <div class="complejo-item">
+                        <div class="complejo-title">{{ item.nombre_complejo }}</div>
+                        <div class="complejo-info">
+                            <span><strong>Dirección:</strong> {{ item.direccion }}</span>
+                            <span><strong>Teléfono:</strong> {{ item.telefono }}</span>
+                            <span><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</span>
+                            <span><strong>Descripción:</strong> {{ item.descripcion }}</span>
+                            <span><strong>Estado:</strong> 
+                                <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
+                                    {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No tienes complejos registrados.</p>
+    {% endif %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    .complejo-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 800px;
+        padding: 20px;
+    }
+    .complejo-item {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px 0;
+    }
+    .complejo-item:last-child {
+        border-bottom: none;
+    }
+    .complejo-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #007BFF;
+    }
+    .complejo-info {
+        margin-top: 8px;
+    }
+    .complejo-info span {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .complejo-status {
+        font-weight: bold;
+        color: #28a745;
+    }
+    .complejo-status.disabled {
+        color: #dc3545;
+    }
+</style>
+{% endblock %}

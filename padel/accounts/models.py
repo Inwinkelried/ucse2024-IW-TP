@@ -1,22 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-
-
 class Roles(models.Model):
     JUGADOR = 'JUGADOR'
     COMPLEJO = 'COMPLEJO'
-    
 
     ROL_CHOICES = [
         (JUGADOR,'Jugador'),
-        (COMPLEJO, 'Complejo'),
-        
+        (COMPLEJO, 'Complejo')
     ]
     nombre = models.CharField(max_length=20, choices=ROL_CHOICES)
-    def __str__(self): 
-        return self.nombre
-
-#Esta es la clase base desde la que vamos a manejar los diferentes tipos de usuario
 class Usuario(AbstractUser): 
     ESTADOS= [
         ('activo', 'Activo'),
@@ -26,7 +18,6 @@ class Usuario(AbstractUser):
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE,name='rol', null=True)
     estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='activo')
     telefono = models.IntegerField(unique=True, name='telefono', null=True)
-    
     
 
     
@@ -54,8 +45,7 @@ class ComplejoDePadel(models.Model):
     tiene_bar = models.BooleanField(name='tiene_bar', default = False),
     presta_paleta= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_paletas', null = True)
     prestan_pelotas = models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_pelotas', null = True)
-    def __str__(self): 
-        return self.nombre_complejo
+
 
 class JugadorProfile(models.Model): 
     user = models.OneToOneField(Usuario, on_delete=models.CASCADE) #Campo especifico

@@ -14,8 +14,7 @@ class ComplejoRegisterForm(forms.ModelForm):
         fields = ('nombre_complejo','telefono','provincia', 'ciudad','direccion')
     def save(self, commit=True):
         complejo = super().save(commit=False)
-        # Asigna 'habilitado' como False
-        complejo.habilitado = False
+        complejo.habilitado = False #Un complejo se crea como no habilitado, es decir no se muestra.
         if commit:
             complejo.save()
         return complejo
@@ -30,13 +29,11 @@ class JugadorRegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         rol_jugador = Roles.objects.get(nombre=Roles.JUGADOR)
-        user.rol = rol_jugador  # Asigna la instancia de Rol
+        user.rol = rol_jugador  # Un Usuario comienza creado como Jugador.
         if commit:
             user.save()
-            # Aquí creamos el perfil asociado con los datos del formulario
             JugadorProfile.objects.create(
                 user=user,
-                telefono=self.cleaned_data['telefono'],
                 categoria=self.cleaned_data['categoria']
             )
         return user

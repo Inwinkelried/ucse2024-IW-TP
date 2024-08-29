@@ -27,7 +27,8 @@ urlpatterns = [
     path('login/', views.LoginPersonalizado.as_view(), name='login'), #URL DE LOGIN
     path('protected/', homeview.protected_page, name='protected_page'),
     path("", TemplateView.as_view(template_name="home.html"), name="home"), #URL DE HOME
-    path('registrar_complejo',views.ComplejoRegisterView, name="registrar_complejo"), ### URL DE LA VISTA DE REGISTRO DEL COMPLEJO
-    path('vista_complejos',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ) ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS    
+    path('registrar_complejo/',views.ComplejoRegisterView, name="registrar_complejo"), ### URL DE LA VISTA DE REGISTRO DEL COMPLEJO
+    path('vista_complejos/',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ), ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS   
+    path('mis_complejos/', views.Visualizar_mis_complejos_view, name="mis_complejos"), 
     
 ]
