@@ -19,7 +19,6 @@ from django.urls import path, include
 from home import views as homeview
 from accounts import views
 from django.views.generic import TemplateView
-
 #Imports para manejo de estaticos.
 from django.conf.urls.static import static
 from django.conf import settings

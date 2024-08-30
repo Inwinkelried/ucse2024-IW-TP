@@ -33,7 +33,7 @@ class ComplejoEditForm(forms.ModelForm):
 
     class Meta:
         model = ComplejoDePadel
-        fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'presta_paleta', 'prestan_pelotas')
+        fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'presta_paleta', 'prestan_pelotas', 'foto_complejo')
 
 
 

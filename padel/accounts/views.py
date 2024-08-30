@@ -18,7 +18,7 @@ def Visualizar_mis_complejos_view(request):
 def Editar_complejo_view(request, id_complejo):
     complejo_a_editar = get_object_or_404(ComplejoDePadel, id=id_complejo)
     if request.method == 'POST':
-        form = ComplejoEditForm(request.POST, instance=complejo_a_editar)
+        form = ComplejoEditForm(request.POST,request.FILES, instance=complejo_a_editar)
         if form.is_valid():
             form.save()
             return redirect('mis_complejos')

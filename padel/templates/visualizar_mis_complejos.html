@@ -14,23 +14,29 @@
     {% if complejos %}
         <div class="complejo-container">
             {% for complejo in complejos %}
-            
                 {% for item in complejo %}
-                    <div class="complejo-item">
-                        <div class="complejo-title">{{ item.nombre_complejo }}</div>
-                        <div class="complejo-info">
-                            <p><a href="{% url 'editar_complejo' item.id %}">Editar</a></p>
-                            <span><strong>Dirección:</strong> {{ item.direccion }}</span>
-                            <span><strong>Teléfono:</strong> {{ item.telefono }}</span>
-                            <span><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</span>
-                            <span><strong>Descripción:</strong> {{ item.descripcion }}</span>
-                            <span><strong>Estado:</strong> 
-                                <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
-                                    {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
+                    {% if item.habilitado %}
+                        <div class="complejo-item">
+                            <div class="complejo-title">{{ item.nombre_complejo }}</div>
+                            <div class="complejo-info">
+                                <p><a href="{% url 'editar_complejo' item.id %}">Editar</a></p>
+                                <span><strong>Dirección:</strong> {{ item.direccion }}</span>
+                                <span><strong>Teléfono:</strong> {{ item.telefono }}</span>
+                                <span><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</span>
+                                <span><strong>Descripción:</strong> {{ item.descripcion }}</span>
+                                <span><strong>Estado:</strong> 
+                                    <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
+                                        {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
+                                    </span>
                                 </span>
-                            </span>
+                                <br>
+                                    {% if item.foto_complejo %}
+                                        <img src="{{ item.foto_complejo.url }}">
+                                    {% endif %}
+                            </br>
+                            </div>        
                         </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             {% endfor %}
         </div>

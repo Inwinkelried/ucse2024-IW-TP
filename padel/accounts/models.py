@@ -41,6 +41,7 @@ class ComplejoDePadel(models.Model):
     ciudad = models.CharField(max_length=100, null=True, blank=True, name='ciudad')
     direccion = models.CharField(max_length=200, null=True, blank=True, name='direccion')
     telefono = models.CharField(max_length=20, null=True, blank=True, name='telefono')
+    foto_complejo = models.ImageField(upload_to='fotos/', null=True, blank=True, name='foto_complejo') #Este es de prueba
 
     habilitado = models.BooleanField(name='habilitado', default=False)
     tipo_instalacion =  models.CharField( max_length=10, choices=TIPOS_INSTALACION, null=True, blank=True)
