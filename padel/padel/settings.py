@@ -138,7 +138,13 @@ if 'RENDER' in os.environ:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Email Backend for development
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" 
+EMAIL_BACKEND = "django.core.mail.backends.smpt.EmailBackend" 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'facundoschillino01@gmail.com'
+EMAIL_HOST_PASSWORD = 'hvrm mdqa jkjx agxv'
+DEFAULT_FROM_EMAIL = 'facundoschillino01@gmail.com'
 
 # Custom user model
 AUTH_USER_MODEL = 'accounts.Usuario'

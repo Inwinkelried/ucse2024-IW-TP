@@ -4,6 +4,30 @@ from .models import Usuario, Roles, ComplejoDePadel
 from django.contrib.auth import login, authenticate, logout
 from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm
 from django.urls import reverse_lazy
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_text
+from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from .utils import send_activation_email  
+
+def activate (request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = Usuario.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Usuario.DoesNotExist):
+        user = None
+    if user is not None and default_token_generator.check_token(user, token):
+        user.estado = 'activo'
+        user.save()
+        return redirect('home')
+    else:
+        return render(request, 'registration/activation_invalid.html')
+
+
+
+
+
 
 def Visualizar_mis_complejos_view(request):
     user = request.user
@@ -56,24 +80,36 @@ def ComplejoRegisterView(request):
 
 
 
-#Esta es la view que maneja el formulario de registro de los jugadores. Si la solicitud es un POST, envia el formulario y genera el nuevo usuario tomando el form de registro de complejo, si la solicittud es un GET devuelve el formulario.
+
+from .utils import send_activation_email  # Asegúrate de que la función esté importada correctamente
+
 def JugadorRegisterView(request):
     context = {}
     if request.method == 'POST':
         form = JugadorRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            user = form.save(commit=False)
+            user.is_active = False  
+            user.save()
+            send_activation_email(user, request)
+            # Redirigir a una página de confirmación o éxito
+            return redirect('registration_complete')  # Asegúrate de que esta URL exista
+            
         else:
             context['register_form'] = form
     else:
         form = JugadorRegisterForm()
         context['register_form'] = form
+
     return render(request, 'registration/signup.html', {'form': form})
+
+def registration_complete(request):
+    return render(request, 'registration/registration_complete.html')
+
+
+
+
+
 
 
 

@@ -14,11 +14,11 @@ class Roles(models.Model):
 class Usuario(AbstractUser): 
     ESTADOS= [
         ('activo', 'Activo'),
-        ('no_validad', 'No validado'),
+        ('no_validado', 'No validado'),
         ('pendiente_aprobacion', 'Pendiente aprobacion')
     ]
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE,name='rol', null=True)
-    estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='activo')
+    estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='pendiente_aprobacion')
     telefono = models.IntegerField(unique=True, name='telefono', null=True)
     
 
