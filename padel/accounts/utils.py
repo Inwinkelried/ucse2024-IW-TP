@@ -7,15 +7,29 @@ from django.urls import reverse
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.contrib.auth.models import User
 
+from django.core.mail import EmailMessage
+
 def send_activation_email(user, request):
     current_site = get_current_site(request)
     mail_subject = 'Confirma tu email de padel.com'
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = token_generator.make_token(user)
+    
+    # Imprimir uid y token para depuración
+    print(f"UID: {uid}, Token: {token}")
+    
     activate_url = reverse('activate', kwargs={'uidb64': uid, 'token': token})
     activate_url = f"http://{current_site.domain}{activate_url}"
+    
+    print(f"Activation URL: {activate_url}")
+    
     message = render_to_string('registration/activation_email.html', {
         'user': user,
         'activate_url': activate_url,
     })
-    send_mail(mail_subject, message, 'facundoschillino01@gmail.com', [user.email])
+    
+    email = EmailMessage(mail_subject, message, 'facundoschillino01@gmail.com', [user.email])
+    email.content_subtype = "html"
+    email.send()
+
+

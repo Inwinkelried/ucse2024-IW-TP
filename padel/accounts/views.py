@@ -6,23 +6,34 @@ from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm
 from django.urls import reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email  
 
-def activate (request, uidb64, token):
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+
+def activate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        # Decodifica uidb64 y convierte a string
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        # Obtén el usuario basado en el ID
         user = Usuario.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, Usuario.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, Usuario.DoesNotExist):
         user = None
+    
     if user is not None and default_token_generator.check_token(user, token):
-        user.estado = 'activo'
+        user.is_active = True
         user.save()
-        return redirect('home')
+        return redirect('home')  # Cambia a tu vista de inicio
     else:
         return render(request, 'registration/activation_invalid.html')
+
+
 
 
 
@@ -102,7 +113,7 @@ def JugadorRegisterView(request):
         context['register_form'] = form
 
     return render(request, 'registration/signup.html', {'form': form})
-
+  
 def registration_complete(request):
     return render(request, 'registration/registration_complete.html')
 

@@ -35,6 +35,7 @@ urlpatterns = [
     path('mis_complejos/', views.Visualizar_mis_complejos_view, name="mis_complejos"),
     path('complejo/<int:id_complejo>/editar',views.Editar_complejo_view , name="editar_complejo"),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('registration_complete', TemplateView.as_view(template_name="registration/registration_complete.html"), name="registration_complete"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
