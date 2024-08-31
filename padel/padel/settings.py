@@ -154,7 +154,7 @@ AUTH_USER_MODEL = 'accounts.Usuario'
 # Configs para usar S3
 
 AWS_ACCESS_KEY_ID = 'AKIAVFIWIV3JV26Y2D7Z'
-AWS_SECRET_ACCESS_KEY = 'AKIAVFIWIV3JV26Y2D7Z'
+AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'facundoschillinobucket'
 AWS_S3_REGION_NAME = 'us-east-2'  # por ejemplo, 'us-west-2'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
