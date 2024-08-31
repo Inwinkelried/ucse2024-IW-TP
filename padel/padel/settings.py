@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'accounts',
-    'storages',  # Añadido para la integración con S3
 ]
 
 MIDDLEWARE = [
@@ -116,8 +115,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'padel/static')]
 
-# Media files configuration
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Default primary key field type
@@ -151,14 +149,8 @@ DEFAULT_FROM_EMAIL = 'facundoschillino01@gmail.com'
 # Custom user model
 AUTH_USER_MODEL = 'accounts.Usuario'
 
-# Configs para usar S3
-AWS_ACCESS_KEY_ID = 'AKIAVFIWIV3JV26Y2D7Z'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'facundoschillinobucket'
-AWS_S3_REGION_NAME = 'us-east-2'  # por ejemplo, 'us-west-2'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Configs para usar S3
+
+
