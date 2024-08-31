@@ -35,9 +35,6 @@ class ComplejoEditForm(forms.ModelForm):
         model = ComplejoDePadel
         fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'presta_paleta', 'prestan_pelotas', 'foto_complejo')
 
-
-
-
 class JugadorRegisterForm(UserCreationForm):
     telefono = forms.CharField(max_length=15)
     categoria = forms.CharField(max_length=50)

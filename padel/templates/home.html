@@ -3,25 +3,24 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated%}
-<p>Hi {{ user.username }} you are a {{ user.rol.nombre }} si te logueaste correctamente deberias ver esto!</p>
-{% if user.is_authenticated and  user.rol.nombre == "COMPLEJO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es un complejo y esta activo -->
-<p><a href="{% url 'mis_complejos' %}">Ver mis complejos</a></p>
-{% endif %}
-<p>Tienes un complejo y deseas registrarlo?</p>
-<p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>
-<p><a href="{% url 'password_change' %}">Password Change</a></p>
-<form action="{% url 'logout' %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Log Out</button>
-</form>
-{% else %}
-<p>You are not logged in</p>
-<p><a href="{% url 'password_reset' %}">Password Reset</a></p>
-<p><a href="{% url 'login' %}">Log In</a></p>
-<p><a href="{% url 'signup' %}">Registrarse</a></p> <!-- Added button for signup -->
-{% load static %}
-<img src="{% static 'prueba.jpg' %}" alt="Prueba">
-
-{% endif %}
+  {% if user.is_authenticated%}
+    <p>Hola {{ user.username }}! Bienvenido a _______ </p>
+    {% if user.is_authenticated and  user.rol.nombre == "PROPIETARIO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es un complejo y esta activo -->
+      <p><a href="{% url 'mis_complejos' %}">Ver mis complejos</a></p>
+    {% endif %}
+    <p>Tienes un complejo y deseas registrarlo?</p>
+    <p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>
+    <p><a href="{% url 'password_change' %}">Password Change</a></p>
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Log Out</button>
+    </form>
+  {% else %}
+    <p>You are not logged in</p>
+    <p><a href="{% url 'password_reset' %}">Password Reset</a></p>
+    <p><a href="{% url 'login' %}">Log In</a></p>
+    <p><a href="{% url 'signup' %}">Registrarse</a></p> <!-- Added button for signup -->
+    {% load static %}
+    <img src="{% static 'prueba.jpg' %}" alt="Prueba">
+  {% endif %}
 {% endblock %}

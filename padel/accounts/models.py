@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 class Roles(models.Model):
     JUGADOR = 'JUGADOR'
-    COMPLEJO = 'COMPLEJO'
+    PROPIETARIO = 'PROPIETARIO'
 
     ROL_CHOICES = [
         (JUGADOR,'Jugador'),
-        (COMPLEJO, 'Complejo')
+        (PROPIETARIO, 'PROPIETARIO')
     ]
     nombre = models.CharField(max_length=20, choices=ROL_CHOICES)
     def __str__(self):

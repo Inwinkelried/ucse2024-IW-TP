@@ -11,34 +11,19 @@ from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email  
 
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_str
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 
 def activate(request, uidb64, token):
     try:
-        # Decodifica uidb64 y convierte a string
         uid = force_str(urlsafe_base64_decode(uidb64))
-        # Obtén el usuario basado en el ID
         user = Usuario.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, Usuario.DoesNotExist):
         user = None
-    
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return redirect('home')  # Cambia a tu vista de inicio
+        return redirect('home')  
     else:
         return render(request, 'registration/activation_invalid.html')
-
-
-
-
-
-
-
 
 def Visualizar_mis_complejos_view(request):
     user = request.user
@@ -48,7 +33,6 @@ def Visualizar_mis_complejos_view(request):
     complejos_del_usuario.append(complejo)
     context['complejos'] = complejos_del_usuario
     return render(request, 'visualizar_mis_complejos.html', context)    
-
 
 def Editar_complejo_view(request, id_complejo):
     complejo_a_editar = get_object_or_404(ComplejoDePadel, id=id_complejo)
@@ -73,16 +57,18 @@ def ComplejoRegisterView(request):
             complejo = form.save(commit=False)
             complejo.propietario = request.user
             complejo.save()
-            if user.rol != Roles.objects.get(nombre=Roles.COMPLEJO):  # Si el usuario no es un complejo
-                user.estado = 'pendiente_aprobacion'  # Actualiza el estado del usuario, ya que la primera vez que quiera ser un complejo se tien que dar de alta.
-                user.rol = Roles.objects.get(nombre=Roles.COMPLEJO)  # Actualiza el rol del usuario
-                user.save()  # Guarda los cambios  
-            return redirect('vista_complejos')  # Lo redirecciona a la otra vista
+            if user.rol != Roles.objects.get(nombre=Roles.PROPIETARIO):
+                user.estado = 'pendiente_aprobacion'
+                user.rol = Roles.objects.get(nombre=Roles.PROPIETARIO)  
+                user.save()  
+                return redirect('vista_complejos')  
+            else:
+                return redirect('visualizar_mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
             return render(request, 'registration/registro_complejos.html', {'form': form})
-    else: #Si recibe un GET
-        if user.rol == Roles.objects.get(nombre=Roles.COMPLEJO): #Si esta registrado como un complejo
-            return redirect('vista_complejos') # Lo redirecciona a la otra vista
+    else: 
+        if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
+            return redirect('vista_complejos') 
         else:
             form = ComplejoRegisterForm()
             return render(request, 'registration/registro_complejos.html', {'form': form})
