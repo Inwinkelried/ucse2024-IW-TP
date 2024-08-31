@@ -7,3 +7,8 @@ from django.shortcuts import render
 @login_required
 def protected_page(request):
     return render(request, 'protected.html')
+
+
+
+
+

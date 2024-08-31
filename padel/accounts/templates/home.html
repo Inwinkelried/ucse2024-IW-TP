@@ -4,9 +4,9 @@
 
 {% block content %}
   {% if user.is_authenticated%}
-    <p>Hola {{ user.username }}! Bienvenido a _______ </p>
+    <p>Hola {{ user.username }}! Bienvenido a PadelNet </p>
     {% if user.is_authenticated and  user.rol.nombre == "PROPIETARIO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es un complejo y esta activo -->
-      <p><a href="{% url 'mis_complejos' %}">Ver mis complejos</a></p>
+      <p><a href="{% url 'visualizar_mis_complejos' %}">Ver mis complejos</a></p>
     {% endif %}
     <p>Tienes un complejo y deseas registrarlo?</p>
     <p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>

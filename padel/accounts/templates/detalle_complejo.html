@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ complejo.nombre_complejo }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ complejo.nombre_complejo }}</h2>
+        {% if complejo.foto_complejo %}
+            <img src="{{ complejo.foto_complejo.url }}" alt="{{ complejo.nombre_complejo }}" class="img-fluid mb-3">
+        {% endif %}
+        <p><strong>Dirección:</strong> {{ complejo.direccion }}</p>
+        <p><strong>Provincia:</strong> {{ complejo.provincia }}</p>
+        <p><strong>Ciudad:</strong> {{ complejo.ciudad }}</p>
+        <p><strong>Tipo de Instalación:</strong> {{ complejo.tipo_instalacion }}</p>
+        <p><strong>Presta paletas:</strong> {{ complejo.presta_paleta }}</p>
+        <p><strong>Presta pelotas:</strong> {{ complejo.prestan_pelotas }}</p>
+        <p><strong>Duchas disponibles:</strong> {{ complejo.tiene_duchas|yesno:"Sí,No" }}</p>
+        <p><strong>Bar disponible:</strong> {{ complejo.tiene_bar|yesno:"Sí,No" }}</p>
+    </div>
+{% endblock %}

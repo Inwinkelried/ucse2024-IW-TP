@@ -31,8 +31,9 @@ urlpatterns = [
     path('protected/', homeview.protected_page, name='protected_page'),
     path("", TemplateView.as_view(template_name="home.html"), name="home"), #URL DE HOME
     path('registrar_complejo/',views.ComplejoRegisterView, name="registrar_complejo"), ### URL DE LA VISTA DE REGISTRO DEL COMPLEJO
-    path('vista_complejos/',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ), ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS   
-    path('mis_complejos/', views.Visualizar_mis_complejos_view, name="mis_complejos"),
+    path('vista_complejos/', views.ListaComplejosView, name='vista_complejos'), ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS   
+    path('complejo/<int:complejo_id>/', views.DetalleComplejoView, name='detalle_complejo'),
+    path('mis_complejos/', views.Visualizar_mis_complejos_view, name="visualizar_mis_complejos"),
     path('complejo/<int:id_complejo>/editar',views.Editar_complejo_view , name="editar_complejo"),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('registration_complete', TemplateView.as_view(template_name="registration/registration_complete.html"), name="registration_complete"),

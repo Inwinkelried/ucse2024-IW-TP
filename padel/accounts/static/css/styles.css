@@ -1,0 +1,11 @@
+.fondoHome {
+    background-image: url('C:\Users\RenatoW\4to\Ing Web\ucse2024-IW-TP\padel\media\fotos\images.jpg');
+    background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
+    background-position: center; /* Centra la imagen */
+    height: 100vh; /* Opcional: establece la altura del contenedor */
+    color: white; /* Opcional: cambia el color del texto para hacerlo visible */
+    text-align: center; /* Opcional: centra el texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

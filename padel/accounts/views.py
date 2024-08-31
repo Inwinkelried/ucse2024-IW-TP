@@ -108,6 +108,16 @@ def registration_complete(request):
 
 
 
+def ListaComplejosView(request):
+    complejos = ComplejoDePadel.objects.filter(habilitado=True)  # Solo mostramos los complejos habilitados
+    return render(request, 'vista_complejos.html', {'complejos': complejos})
+
+
+
+def DetalleComplejoView(request, complejo_id):
+    complejo = get_object_or_404(ComplejoDePadel, id=complejo_id)
+    return render(request, 'detalle_complejo.html', {'complejo': complejo})
+
 
 
 class LoginPersonalizado(LoginView):
