@@ -3,24 +3,39 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated%}
-    <p>Hola {{ user.username }}! Bienvenido a PadelNet </p>
-    {% if user.is_authenticated and  user.rol.nombre == "PROPIETARIO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es un complejo y esta activo -->
-      <p><a href="{% url 'visualizar_mis_complejos' %}">Ver mis complejos</a></p>
+  <div class="container mt-4">
+    {% if user.is_authenticated %}
+      <div class="alert alert-info" role="alert">
+        Hola {{ user.username }}! Bienvenido a PadelNet
+      </div>
+
+      <div class="d-flex mb-4">
+        {% if user.rol.nombre == "PROPIETARIO" and user.estado == "activo" %}
+          <a href="{% url 'visualizar_mis_complejos' %}" class="btn btn-primary me-2">Ver mis complejos</a>
+        {% endif %}
+        <a href="{% url 'registrar_complejo' %}" class="btn btn-success me-2">Registrar mi Complejo</a>
+        <a href="{% url 'password_change' %}" class="btn btn-warning">Cambiar Contraseña</a>
+      </div>
+
+      <form action="{% url 'logout' %}" method="post" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+      </form>
+    {% else %}
+      <div class="alert alert-warning" role="alert">
+        No estás logueado.
+      </div>
+
+      <div class="d-flex mb-4">
+        <a href="{% url 'password_reset' %}" class="btn btn-primary me-2">Restablecer Contraseña</a>
+        <a href="{% url 'login' %}" class="btn btn-secondary me-2">Iniciar sesión</a>
+        <a href="{% url 'signup' %}" class="btn btn-info">Registrarse</a>
+      </div>
+
+      <div class="mt-4">
+        <img src="{% static 'prueba.jpg' %}" alt="Prueba" class="img-fluid">
+      </div>
     {% endif %}
-    <p>Tienes un complejo y deseas registrarlo?</p>
-    <p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>
-    <p><a href="{% url 'password_change' %}">Password Change</a></p>
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-  {% else %}
-    <p>You are not logged in</p>
-    <p><a href="{% url 'password_reset' %}">Password Reset</a></p>
-    <p><a href="{% url 'login' %}">Log In</a></p>
-    <p><a href="{% url 'signup' %}">Registrarse</a></p> <!-- Added button for signup -->
-    {% load static %}
-    <img src="{% static 'prueba.jpg' %}" alt="Prueba">
-  {% endif %}
+  </div>
 {% endblock %}
+
