@@ -46,8 +46,6 @@ def Editar_complejo_view(request, id_complejo):
     return render(request,'editar_un_complejo.html', {'form':form})
 
 
-
-
 #Esta es la view que maneja el formulario de registro de los complejos. Si la solicitud es un POST, envia el formulario y genera el nuevo usuario tomando el form de registro de complejo, si la solicitud es un GET devuelve el formulario.
 def ComplejoRegisterView(request):
     user = request.user
@@ -74,11 +72,7 @@ def ComplejoRegisterView(request):
             return render(request, 'registration/registro_complejos.html', {'form': form})
 
 
-
-
-
-
-from .utils import send_activation_email  # Asegúrate de que la función esté importada correctamente
+from .utils import send_activation_email  
 
 def JugadorRegisterView(request):
     context = {}
@@ -104,12 +98,6 @@ def registration_complete(request):
     return render(request, 'registration/registration_complete.html')
 
 
-
-
-
-
-
-
 class LoginPersonalizado(LoginView):
     template_name = 'registration/login.html'
     redirect_authenticated_user = False  # Redirige incluso si ya está autenticado
@@ -121,7 +109,14 @@ class LoginPersonalizado(LoginView):
             return reverse_lazy('home')
 
 
+def ComplejosListView(request):
+    complejos = ComplejoDePadel.objects.all()
+    return render(request, 'complejos.html', {'complejos': complejos})
 
+# Vista para mostrar los detalles de un complejo
+def DetalleComplejoView(request, id):
+    complejo = get_object_or_404(ComplejoDePadel, id=id)
+    return render(request, 'detalle_complejo.html', {'complejo': complejo})
 
 
 

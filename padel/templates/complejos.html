@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Complejos{% endblock %}
+
+{% block content %}
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Complejos</title>
+    </head>
+
+    <body>
+        <h1>Descubre todos los complejos disponibles!</h1>
+        <div class="complejo-container">
+            {% for complejo in complejos %}
+                {% if complejo.habilitado %}
+                    <div class="complejo-item">
+                        <!-- Enlace al detalle del complejo -->
+                        <a href="{% url 'detalle_complejo' complejo.id %}">
+                            <div class="complejo-title">{{ complejo.nombre_complejo }}</div>
+                        </a>
+                        <div class="complejo-info">
+                            <span><strong>Dirección:</strong> {{ complejo.direccion }}</span>
+                            <span><strong>Teléfono:</strong> {{ complejo.telefono }}</span>
+                            <span><strong>Número de pistas:</strong> {{ complejo.numero_de_pistas }}</span>
+                            <span><strong>Descripción:</strong> {{ complejo.descripcion }}</span>
+                            <br>
+                            {% if complejo.foto_complejo %}
+                                <img src="{{ complejo.foto_complejo.url }}">
+                            {% endif %}
+                            </br>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </body>
+    </html>
+{% endblock %}
+
