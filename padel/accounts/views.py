@@ -111,7 +111,22 @@ class LoginPersonalizado(LoginView):
 
 def ComplejosListView(request):
     complejos = ComplejoDePadel.objects.all()
+
+    # Obtener los parámetros de filtro de la solicitud
+    tipo_instalacion = request.GET.get('tipo_instalacion')
+    tiene_duchas = request.GET.get('tiene_duchas')
+
+    # Aplicar los filtros si los parámetros están presentes
+    if tipo_instalacion:
+        complejos = complejos.filter(tipo_instalacion=tipo_instalacion)
+
+    if tiene_duchas == 'true':  # si se pasa como 'true' o 'false'
+        complejos = complejos.filter(tiene_duchas=True)
+    elif tiene_duchas == 'false':
+        complejos = complejos.filter(tiene_duchas=False)
+
     return render(request, 'complejos.html', {'complejos': complejos})
+
 
 # Vista para mostrar los detalles de un complejo
 def DetalleComplejoView(request, id):
