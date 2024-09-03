@@ -7,6 +7,14 @@
 
     <!-- Formulario para filtrar complejos -->
     <form method="get">
+        
+        <label for="prestan_paletas">Prestan paletas:</label>
+        <select name="prestan_paletas" id="prestan_paletas">
+            <option value="">-- Seleccione --</option>
+            <option value="prestan" {% if request.GET.tipo_instalacion == 'prestan' %}selected{% endif %}>Prestan</option>
+            <option value="alquilan" {% if request.GET.tipo_instalacion == 'alquilan' %}selected{% endif %}>Alquilan</option>
+            <option value="alquilan_y_prestan" {% if request.GET.tipo_instalacion == 'alquilan_y_prestan' %}selected{% endif %}>Ambas</option>
+        </select>
         <label for="tipo_instalacion">Tipo de Instalación:</label>
         <select name="tipo_instalacion" id="tipo_instalacion">
             <option value="">-- Seleccione --</option>
@@ -14,7 +22,6 @@
             <option value="outdoor" {% if request.GET.tipo_instalacion == 'outdoor' %}selected{% endif %}>Outdoor</option>
             <option value="ambas" {% if request.GET.tipo_instalacion == 'ambas' %}selected{% endif %}>Ambas</option>
         </select>
-
         <label for="tiene_duchas">Tiene Duchas:</label>
         <select name="tiene_duchas" id="tiene_duchas">
             <option value="">-- Seleccione --</option>
