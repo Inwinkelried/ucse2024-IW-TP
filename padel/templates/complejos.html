@@ -3,39 +3,51 @@
 {% block title %}Complejos{% endblock %}
 
 {% block content %}
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Complejos</title>
-    </head>
+    <h1>Descubre todos los complejos disponibles!</h1>
 
-    <body>
-        <h1>Descubre todos los complejos disponibles!</h1>
-        <div class="complejo-container">
-            {% for complejo in complejos %}
-                {% if complejo.habilitado %}
-                    <div class="complejo-item">
-                        <!-- Enlace al detalle del complejo -->
-                        <a href="{% url 'detalle_complejo' complejo.id %}">
-                            <div class="complejo-title">{{ complejo.nombre_complejo }}</div>
-                        </a>
-                        <div class="complejo-info">
-                            <span><strong>Dirección:</strong> {{ complejo.direccion }}</span>
-                            <span><strong>Teléfono:</strong> {{ complejo.telefono }}</span>
-                            <span><strong>Número de pistas:</strong> {{ complejo.numero_de_pistas }}</span>
-                            <span><strong>Descripción:</strong> {{ complejo.descripcion }}</span>
-                            <br>
-                            {% if complejo.foto_complejo %}
-                                <img src="{{ complejo.foto_complejo.url }}">
-                            {% endif %}
-                            </br>
-                        </div>
+    <!-- Formulario para filtrar complejos -->
+    <form method="get">
+        <label for="tipo_instalacion">Tipo de Instalación:</label>
+        <select name="tipo_instalacion" id="tipo_instalacion">
+            <option value="">-- Seleccione --</option>
+            <option value="indoor" {% if request.GET.tipo_instalacion == 'indoor' %}selected{% endif %}>Indoor</option>
+            <option value="outdoor" {% if request.GET.tipo_instalacion == 'outdoor' %}selected{% endif %}>Outdoor</option>
+            <option value="ambas" {% if request.GET.tipo_instalacion == 'ambas' %}selected{% endif %}>Ambas</option>
+        </select>
+
+        <label for="tiene_duchas">Tiene Duchas:</label>
+        <select name="tiene_duchas" id="tiene_duchas">
+            <option value="">-- Seleccione --</option>
+            <option value="true" {% if request.GET.tiene_duchas == 'true' %}selected{% endif %}>Sí</option>
+            <option value="false" {% if request.GET.tiene_duchas == 'false' %}selected{% endif %}>No</option>
+        </select>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <div class="complejo-container">
+        {% for complejo in complejos %}
+            {% if complejo.habilitado %}
+                <div class="complejo-item">
+                    <!-- Enlace al detalle del complejo -->
+                    <a href="{% url 'detalle_complejo' complejo.id %}">
+                        <div class="complejo-title">{{ complejo.nombre_complejo }}</div>
+                    </a>
+                    <div class="complejo-info">
+                        <span><strong>Dirección:</strong> {{ complejo.direccion }}</span>
+                        <span><strong>Teléfono:</strong> {{ complejo.telefono }}</span>
+                        <span><strong>Número de pistas:</strong> {{ complejo.numero_de_pistas }}</span>
+                        <span><strong>Descripción:</strong> {{ complejo.descripcion }}</span>
+                        <br>
+                        {% if complejo.foto_complejo %}
+                            <img src="{{ complejo.foto_complejo.url }}">
+                        {% endif %}
+                        </br>
                     </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </body>
-    </html>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
+
 
