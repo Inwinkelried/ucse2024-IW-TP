@@ -115,6 +115,7 @@ def ComplejosListView(request):
     # Obtener los parámetros de filtro de la solicitud
     tipo_instalacion = request.GET.get('tipo_instalacion')
     tiene_duchas = request.GET.get('tiene_duchas')
+    alquiler_paletas = request.GET.get('prestan_paletas')
 
     # Aplicar los filtros si los parámetros están presentes
     if tipo_instalacion:
@@ -124,6 +125,9 @@ def ComplejosListView(request):
         complejos = complejos.filter(tiene_duchas=True)
     elif tiene_duchas == 'false':
         complejos = complejos.filter(tiene_duchas=False)
+
+    if alquiler_paletas:
+        complejos = complejos.filter(prestan_paletas=alquiler_paletas)
 
     return render(request, 'complejos.html', {'complejos': complejos})
 

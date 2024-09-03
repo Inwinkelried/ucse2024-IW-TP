@@ -31,9 +31,9 @@ class ComplejoDePadel(models.Model):
     ]
     PALETAS_PELOTAS= [
         ('no', 'No'),
-        ('prestan', 'Prestasn'),
+        ('prestan', 'Prestan'),
         ('alquilan', 'Alquilan'),
-        ('alquilan_y_prestan', 'Alquilan_y_prestan')
+        ('alquilan_y_prestan', 'Alquilan y prestan')
     ]
     propietario = models.ForeignKey(Usuario, on_delete=models.CASCADE, name='propietario',null=True)
     nombre_complejo = models.CharField(max_length=100, null=True, blank=True, name='nombre_complejo')
