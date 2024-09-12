@@ -11,9 +11,9 @@
         <label for="prestan_paletas">Prestan paletas:</label>
         <select name="prestan_paletas" id="prestan_paletas">
             <option value="">-- Seleccione --</option>
-            <option value="prestan" {% if request.GET.tipo_instalacion == 'prestan' %}selected{% endif %}>Prestan</option>
-            <option value="alquilan" {% if request.GET.tipo_instalacion == 'alquilan' %}selected{% endif %}>Alquilan</option>
-            <option value="alquilan_y_prestan" {% if request.GET.tipo_instalacion == 'alquilan_y_prestan' %}selected{% endif %}>Ambas</option>
+            <option value="prestan" {% if request.GET.prestan_paletas == 'prestan' %}selected{% endif %}>Prestan</option>
+            <option value="alquilan" {% if request.GET.prestan_paletas == 'alquilan' %}selected{% endif %}>Alquilan</option>
+            <option value="alquilan_y_prestan" {% if request.GET.prestan_paletas == 'alquilan_y_prestan' %}selected{% endif %}>Ambas</option>
         </select>
         <label for="tipo_instalacion">Tipo de Instalación:</label>
         <select name="tipo_instalacion" id="tipo_instalacion">
@@ -36,15 +36,17 @@
         {% for complejo in complejos %}
             {% if complejo.habilitado %}
                 <div class="complejo-item">
-                    <!-- Enlace al detalle del complejo -->
                     <a href="{% url 'detalle_complejo' complejo.id %}">
                         <div class="complejo-title">{{ complejo.nombre_complejo }}</div>
                     </a>
                     <div class="complejo-info">
                         <span><strong>Dirección:</strong> {{ complejo.direccion }}</span>
                         <span><strong>Teléfono:</strong> {{ complejo.telefono }}</span>
-                        <span><strong>Número de pistas:</strong> {{ complejo.numero_de_pistas }}</span>
-                        <span><strong>Descripción:</strong> {{ complejo.descripcion }}</span>
+                        <span><strong>Tipo de instalacion:</strong> {{ complejo.tipo_instalacion }}</span>
+                        <span><strong>Prestan paletas?:</strong> {{ complejo.prestan_paletas }}</span>
+                        <span><strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas }}</span>
+                        <span><strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas }}</span>
+                        
                         <br>
                         {% if complejo.foto_complejo %}
                             <img src="{{ complejo.foto_complejo.url }}">

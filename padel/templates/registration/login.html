@@ -4,9 +4,11 @@
   <h2>Iniciar Sesión</h2>
   <form method="post">
     {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.GET.next }}">
     {{ form.as_p }}
     <button type="submit">Iniciar Sesión</button>
   </form>
+  <p>¿No tienes una cuenta? <a href="{% url 'signup' %}">Regístrate</a></p>
   {% if form.non_field_errors %}
     <div class="error">
       {{ form.non_field_errors }}
