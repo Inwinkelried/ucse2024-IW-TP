@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 class Roles(models.Model):
     JUGADOR = 'JUGADOR'
     PROPIETARIO = 'PROPIETARIO'
-
     ROL_CHOICES = [
         (JUGADOR,'Jugador'),
         (PROPIETARIO, 'PROPIETARIO')
@@ -21,7 +20,6 @@ class Usuario(AbstractUser):
     estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='pendiente_aprobacion')
     telefono = models.IntegerField(unique=True, name='telefono', null=True)
     
-
     
 class ComplejoDePadel(models.Model):
     TIPOS_INSTALACION = [
@@ -57,3 +55,10 @@ class JugadorProfile(models.Model):
     user = models.OneToOneField(Usuario, on_delete=models.CASCADE, unique=True) #Campo especifico
     categoria = models.IntegerField(null =True, blank=True, name='categoria') #Campo especifico
 
+
+#-----------------------------------------------------------------------------------------------
+class Turno(models.Model): #Tabla a la que se cargan los datos de un turno
+    pass
+
+class TurnoUsuario(models.Model): #Tabla intermedia para asignar un turno a un usuario
+    pass

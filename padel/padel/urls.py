@@ -36,8 +36,8 @@ urlpatterns = [
     path('complejo/<int:id_complejo>/editar',views.Editar_complejo_view , name="editar_complejo"),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('registration_complete', TemplateView.as_view(template_name="registration/registration_complete.html"), name="registration_complete"),
-    path('complejos/', views.ComplejosListView, name="complejos"),
-    path('complejos/<int:id>/', views.DetalleComplejoView, name='detalle_complejo'),
+    path('ver_complejos/', views.ComplejosListView, name="ver_complejos"),
+    path('ver_complejos/<int:id>/', views.DetalleComplejoView, name='detalle_complejo'),
     path('reservar_turno/', views.ReservarTurnoView ,name='reservar_turno'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

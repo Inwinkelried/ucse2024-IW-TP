@@ -4,7 +4,7 @@
 {% block content %}
   {% if user.is_authenticated%}
     <p>Hola {{ user.username }}! Bienvenido a Padel.com!<Padel class="com!"></Padel> </p>
-    <p><a href="{% url 'complejos' %}">Ver todos los complejos</a></p>
+    <p><a href="{% url 'ver_complejos' %}">Ver todos los complejos</a></p>
     {% if user.is_authenticated and  user.rol.nombre == "PROPIETARIO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es propietario y esta activo -->
       <p><a href="{% url 'mis_complejos' %}">Ver mis complejos</a></p>
     {% endif %}
@@ -20,7 +20,7 @@
     <p><a href="{% url 'password_reset' %}">Cambiar Contraseña</a></p>
     <p><a href="{% url 'login' %}">Ingresar</a></p>
     <p><a href="{% url 'signup' %}">Registrarse</a></p> 
-    <p><a href="{% url 'complejos'%}"> Descubrir complejos </a> </p>
+    <p><a href="{% url 'ver_complejos'%}"> Descubrir complejos </a> </p>
     {% load static %}
     
   {% endif %}

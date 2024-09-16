@@ -12,6 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email  
 from django.contrib.auth.decorators import login_required
 
+
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -106,10 +107,10 @@ class LoginPersonalizado(LoginView):
             return reverse_lazy('vista_complejos')
         else:
             return reverse_lazy('home')
-        
+
+
 def ComplejosListView(request):
     complejos = ComplejoDePadel.objects.all()
-
     tipo_instalacion = request.GET.get('tipo_instalacion')
     tiene_duchas = request.GET.get('tiene_duchas')
     alquiler_paletas = request.GET.get('prestan_paletas')
@@ -124,8 +125,7 @@ def ComplejosListView(request):
 
     if alquiler_paletas:
         complejos = complejos.filter(prestan_paletas=alquiler_paletas)
-
-    return render(request, 'complejos.html', {'complejos': complejos})
+    return render(request, 'ver_complejos.html', {'complejos': complejos})
 
 def DetalleComplejoView(request, id):
     complejo = get_object_or_404(ComplejoDePadel, id=id)

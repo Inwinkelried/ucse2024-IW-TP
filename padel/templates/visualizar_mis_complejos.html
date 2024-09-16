@@ -24,7 +24,7 @@
                                 <span><strong>Teléfono:</strong> {{ item.telefono }}</span>
                                 <span><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</span>
                                 <span><strong>Descripción:</strong> {{ item.descripcion }}</span>
-                                <span><strong>Estado:</strong> 
+                                <span><strong>Estado:</strong> {{ item.descripcion }} </span> 
                                     <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
                                         {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
                                     </span>
