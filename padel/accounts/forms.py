@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import JugadorProfile, Usuario, Roles, ComplejoDePadel
+from .models import JugadorProfile, Usuario, Roles, ComplejoDePadel, Turno, HorariosComplejos
 
 
 class ComplejoRegisterForm(forms.ModelForm): 
@@ -53,3 +53,17 @@ class JugadorRegisterForm(UserCreationForm):
                 categoria=self.cleaned_data['categoria']
             )
         return user
+    
+class RegistrarTurnoForm(forms.ModelForm):
+    DURACIONES = [
+    ('01:00:00', '1 hora'),
+    ('01:30:00', '1 hora 30 minutos'),
+    ('02:00:00', '2 horas'),
+]
+    hora_inicio = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), help_text = 'Puedes cargar los horarios individuales, o cargar un rango horario en el que habra horarios intermedios. Por ejemplo, si colocamos de 13:30 a 18 los turnos seran: 13:30, 15:00 y 16:30 sin incluir las 18 hs.')
+    hora_fin = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
+    duracion = forms.ChoiceField(widget =forms.Select, choices=DURACIONES, )
+    class Meta:
+        model = HorariosComplejos
+        fields = ['duracion', 'hora_inicio', 'hora_fin']
+

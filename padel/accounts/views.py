@@ -2,7 +2,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Usuario, Roles, ComplejoDePadel
 from django.contrib.auth import login, authenticate, logout
-from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm
+from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm, RegistrarTurnoForm
 from django.urls import reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email  
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 def activate(request, uidb64, token):
@@ -46,7 +47,26 @@ def Editar_complejo_view(request, id_complejo):
         form = ComplejoEditForm(instance = complejo_a_editar)
     return render(request,'editar_un_complejo.html', {'form':form})
 
+def Registrar_Turno_View(request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel, id= id_complejo)
+    form = RegistrarTurnoForm()
+    if request.method == 'POST':
+        form = RegistrarTurnoForm(request.POST)
+        if form.is_valid():
+            turno_nuevo = form.save(commit = False)
+            turno_nuevo.complejo = complejo
+            turno_nuevo.save()
+            messages.success(request, 'Turno cargado exitosamente!')
+            return render(request, 'cargar_turno.html', {'form': form})
+        else:
+            return render(request, 'cargar_turno.html', {'form': form})
+    else:
+        return render (request, 'cargar_turno.html', {'form': form})
 
+def Mostrar_Turnos (request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel, id= id_complejo)
+    horarios = complejo.horarios.all
+    
 def ComplejoRegisterView(request):
     user = request.user
     if request.method == 'POST':

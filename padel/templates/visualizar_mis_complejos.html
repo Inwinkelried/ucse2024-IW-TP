@@ -20,6 +20,7 @@
                             <div class="complejo-title">{{ item.nombre_complejo }}</div>
                             <div class="complejo-info">
                                 <p><a href="{% url 'editar_complejo' item.id %}">Editar</a></p>
+                                <p><a href="{% url 'cargar_turno' item.id %}"> Cargar turnos</a></p>
                                 <span><strong>Dirección:</strong> {{ item.direccion }}</span>
                                 <span><strong>Teléfono:</strong> {{ item.telefono }}</span>
                                 <span><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</span>

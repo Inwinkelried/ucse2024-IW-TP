@@ -57,8 +57,23 @@ class JugadorProfile(models.Model):
 
 
 #-----------------------------------------------------------------------------------------------
+class HorariosComplejos (models.Model):
+    complejo = models.ForeignKey(ComplejoDePadel,  on_delete=models.CASCADE,  name= 'complejo', null = False)
+    hora_inicio_turnos = models.TimeField(name = 'hora_inicio')
+    hora_fin_turnos = models.TimeField(name = 'hora_fin')
+    duracion = models.TimeField(name = 'duracion')
+    
 class Turno(models.Model): #Tabla a la que se cargan los datos de un turno
-    pass
+    complejo = models.ForeignKey(ComplejoDePadel, on_delete=models.CASCADE, name = 'complejo', null = False)
+    horario = models.DateTimeField(name = 'horario', null = False)
+    disponible = models.BooleanField(default= True)
+    duracion = models.DurationField(name = 'duracion', null = False)
 
 class TurnoUsuario(models.Model): #Tabla intermedia para asignar un turno a un usuario
     pass
+
+class ComplejosFotos(models.Model): #Tabla intermedia que va a llevar las fotos de los complejos
+    pass
+
+
+

@@ -27,11 +27,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('login/', views.LoginPersonalizado.as_view(), name='login'), #URL DE LOGIN
+    path('login/', views.LoginPersonalizado.as_view(), name='login'), 
     path('protected/', homeview.protected_page, name='protected_page'),
-    path("", TemplateView.as_view(template_name="home.html"), name="home"), #URL DE HOME
-    path('registrar_complejo/',views.ComplejoRegisterView, name="registrar_complejo"), ### URL DE LA VISTA DE REGISTRO DEL COMPLEJO
-    path('vista_complejos/',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ), ###URL QUE DERIVA A LA VISTA DE LOS COMPLEJOSS UNA VEZ LOGUEADOS   
+    path("", TemplateView.as_view(template_name="home.html"), name="home"), 
+    path('registrar_complejo/',views.ComplejoRegisterView, name="registrar_complejo"), 
+    path('vista_complejos/',TemplateView.as_view(template_name="vista_complejos.html"), name="vista_complejos" ),
     path('mis_complejos/', views.Visualizar_mis_complejos_view, name="mis_complejos"),
     path('complejo/<int:id_complejo>/editar',views.Editar_complejo_view , name="editar_complejo"),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
@@ -39,5 +39,7 @@ urlpatterns = [
     path('ver_complejos/', views.ComplejosListView, name="ver_complejos"),
     path('ver_complejos/<int:id>/', views.DetalleComplejoView, name='detalle_complejo'),
     path('reservar_turno/', views.ReservarTurnoView ,name='reservar_turno'),
+    path('cargar_turno/<int:id_complejo>/', views.Registrar_Turno_View, name='cargar_turno'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

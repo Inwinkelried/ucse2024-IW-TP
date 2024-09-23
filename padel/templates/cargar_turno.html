@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Elige un horario para tu turno</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group"> 
+      <label for="hora_inicio">Hora inicio:</label>
+{{ form.hora_inicio }}
+<span class="help-icon" data-toggle="tooltip" data-placement="right" title="{{ form.hora_inicio.help_text }}">
+    &#9432;  
+</span>
+    <div class="form-group"> 
+      <label for="hora_fin">Hora Fin:</label>
+      {{ form.hora_fin }}
+    </div>
+    <div class="form-group"> 
+      <label for="duracion">Duracion Turnos:</label>
+      {{ form.duracion }}
+    </div>
+    <button type="submit">cargar</button>
+  </form>
+  {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+  {% if form.non_field_errors %}
+    <div class="error">
+      {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+{% endblock %}
+
+
+
+
