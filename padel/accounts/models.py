@@ -68,7 +68,9 @@ class Turno(models.Model): #Tabla a la que se cargan los datos de un turno
     horario = models.DateTimeField(name = 'horario', null = False)
     disponible = models.BooleanField(default= True)
     duracion = models.DurationField(name = 'duracion', null = False)
-
+    def __str__(self):
+        fecha = self.horario.strftime("%Y-%m-%d %H:%M")
+        return self.complejo.nombre_complejo +' ' + fecha
 class TurnoUsuario(models.Model): #Tabla intermedia para asignar un turno a un usuario
     pass
 

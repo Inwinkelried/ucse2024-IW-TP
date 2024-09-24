@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import timedelta, datetime
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -80,11 +81,24 @@ def generar_turnos(horario):
 
 
 
-def Mostrar_Turnos_View (request, id_complejo):
-    complejo = get_object_or_404(ComplejoDePadel, id= id_complejo)
-    horarios = []
-    horarios = Turno.objects.filter(complejo=complejo)
-    return render(request, 'reservar_turno.html', {'horarios': horarios})
+def Mostrar_Turnos_View(request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    
+    # Obtener todos los turnos del complejo
+    turnos = Turno.objects.filter(complejo=complejo).order_by('horario')
+
+    # Crear un diccionario para agrupar turnos por día
+    turnos_por_dia = defaultdict(list)
+    for turno in turnos:
+        fecha = turno.horario.date()  # Agrupar por fecha
+        turnos_por_dia[fecha].append(turno)
+
+    # Pasar los turnos agrupados por día al contexto
+    context = {
+        'turnos_por_dia': dict(turnos_por_dia),  # Convertir defaultdict a dict
+    }
+    
+    return render(request, 'reservar_turno.html', context)
     
 def ComplejoRegisterView(request):
     user = request.user
@@ -100,7 +114,7 @@ def ComplejoRegisterView(request):
                 user.save()  
                 return redirect('vista_complejos')  
             else:
-                return redirect('visualizar_mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+                return redirect('mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
