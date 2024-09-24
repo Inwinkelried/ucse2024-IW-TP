@@ -1,6 +1,7 @@
+from datetime import timedelta, datetime
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Roles, ComplejoDePadel
+from .models import Usuario, Roles, ComplejoDePadel, Turno
 from django.contrib.auth import login, authenticate, logout
 from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm, RegistrarTurnoForm
 from django.urls import reverse_lazy
@@ -56,6 +57,7 @@ def Registrar_Turno_View(request, id_complejo):
             turno_nuevo = form.save(commit = False)
             turno_nuevo.complejo = complejo
             turno_nuevo.save()
+            generar_turnos(turno_nuevo)
             messages.success(request, 'Turno cargado exitosamente!')
             return render(request, 'cargar_turno.html', {'form': form})
         else:
@@ -63,9 +65,26 @@ def Registrar_Turno_View(request, id_complejo):
     else:
         return render (request, 'cargar_turno.html', {'form': form})
 
-def Mostrar_Turnos (request, id_complejo):
+def generar_turnos(horario):
+    hora_inicio = horario.hora_inicio
+    hora_fin = horario.hora_fin
+    duracion = horario.duracion
+    hoy = datetime.now().date()
+    for i in range(14):
+        fecha_actual = hoy + timedelta(days=i)
+        fechaCargar = datetime.combine(fecha_actual, hora_inicio)
+        while fechaCargar.time() < hora_fin:
+            turno = Turno(complejo=horario.complejo, horario=fechaCargar, duracion=duracion)
+            turno.save()
+            fechaCargar += duracion
+
+
+
+def Mostrar_Turnos_View (request, id_complejo):
     complejo = get_object_or_404(ComplejoDePadel, id= id_complejo)
-    horarios = complejo.horarios.all
+    horarios = []
+    horarios = Turno.objects.filter(complejo=complejo)
+    return render(request, 'reservar_turno.html', {'horarios': horarios})
     
 def ComplejoRegisterView(request):
     user = request.user

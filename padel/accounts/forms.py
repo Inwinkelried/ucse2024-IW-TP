@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import JugadorProfile, Usuario, Roles, ComplejoDePadel, Turno, HorariosComplejos
-
+from datetime import timedelta
 
 class ComplejoRegisterForm(forms.ModelForm): 
     nombre_complejo = forms.CharField(max_length=100)
@@ -60,10 +60,18 @@ class RegistrarTurnoForm(forms.ModelForm):
     ('01:30:00', '1 hora 30 minutos'),
     ('02:00:00', '2 horas'),
 ]
-    hora_inicio = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), help_text = 'Puedes cargar los horarios individuales, o cargar un rango horario en el que habra horarios intermedios. Por ejemplo, si colocamos de 13:30 a 18 los turnos seran: 13:30, 15:00 y 16:30 sin incluir las 18 hs.')
+    hora_inicio = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}), help_text = 'Se debe cargar el rango horario en el que habra turnos disponibles.')
     hora_fin = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
     duracion = forms.ChoiceField(widget =forms.Select, choices=DURACIONES, )
     class Meta:
         model = HorariosComplejos
         fields = ['duracion', 'hora_inicio', 'hora_fin']
-
+    #Funcion que sobreescribe el metodo clean_duracion para que la duracion sea un objeto timedelta, ya que lo recibe como un string.
+    def clean_duracion(self):
+        duracion_str = self.cleaned_data['duracion']  
+        try:
+            horas, minutos, segundos = map(int, duracion_str.split(':'))
+            duracion_timedelta = timedelta(hours=horas, minutes=minutos, seconds=segundos)
+            return duracion_timedelta
+        except ValueError:
+            raise forms.ValidationError("Formato inválido para la duración. Use HH:MM:SS.")

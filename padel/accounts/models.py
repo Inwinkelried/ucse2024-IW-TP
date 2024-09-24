@@ -61,7 +61,7 @@ class HorariosComplejos (models.Model):
     complejo = models.ForeignKey(ComplejoDePadel,  on_delete=models.CASCADE,  name= 'complejo', null = False)
     hora_inicio_turnos = models.TimeField(name = 'hora_inicio')
     hora_fin_turnos = models.TimeField(name = 'hora_fin')
-    duracion = models.TimeField(name = 'duracion')
+    duracion = models.DurationField(name = 'duracion')
     
 class Turno(models.Model): #Tabla a la que se cargan los datos de un turno
     complejo = models.ForeignKey(ComplejoDePadel, on_delete=models.CASCADE, name = 'complejo', null = False)

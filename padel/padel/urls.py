@@ -38,7 +38,7 @@ urlpatterns = [
     path('registration_complete', TemplateView.as_view(template_name="registration/registration_complete.html"), name="registration_complete"),
     path('ver_complejos/', views.ComplejosListView, name="ver_complejos"),
     path('ver_complejos/<int:id>/', views.DetalleComplejoView, name='detalle_complejo'),
-    path('reservar_turno/', views.ReservarTurnoView ,name='reservar_turno'),
+    path('reservar_turno/<int:id_complejo>/', views.Mostrar_Turnos_View ,name='reservar_turno'),
     path('cargar_turno/<int:id_complejo>/', views.Registrar_Turno_View, name='cargar_turno'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
