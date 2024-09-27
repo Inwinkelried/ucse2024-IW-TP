@@ -64,9 +64,16 @@ class HorariosComplejos (models.Model):
     duracion = models.DurationField(name = 'duracion')
     
 class Turno(models.Model): #Tabla a la que se cargan los datos de un turno
+    Estados_Turnos = [
+        ('reservado', 'Reservado'),
+        ('cancelado', 'Cancelado'),
+        ('pendiente', 'Pendiente'),
+        ('disponible', 'Disponible')
+    ]
     complejo = models.ForeignKey(ComplejoDePadel, on_delete=models.CASCADE, name = 'complejo', null = False)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, name = 'usuario', blank= True, null= True, default=None)
     horario = models.DateTimeField(name = 'horario', null = False)
-    disponible = models.BooleanField(default= True)
+    estado = models.CharField( max_length=10, choices=Estados_Turnos, null=True, blank=True, default='disponible', name = 'estado')
     duracion = models.DurationField(name = 'duracion', null = False)
     def __str__(self):
         fecha = self.horario.strftime("%Y-%m-%d %H:%M")

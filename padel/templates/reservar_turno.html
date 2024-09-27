@@ -1,24 +1,8 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% block title %}Detalle del Complejo{% endblock %}
+
+{% block title %}Register{% endblock %}
 
 {% block content %}
-    
-<h1> Reserva tu turno! </h1>
 
-<div class="turnos_complejo">
-    {% for dia, turnos in turnos_por_dia.items %}
-        <h2>{{ dia|date:"l d F" }}</h2> <!-- Mostrar la fecha -->
-        <ul>
-            {% for turno in turnos %}
-                {% if turno.disponible %}
-                    <li>
-                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }}
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    {% endfor %}
-</div>
-    
+<p> Aca vas a poder confirmar la reserva de tu turno</p>
 {% endblock %}

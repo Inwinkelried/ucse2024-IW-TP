@@ -38,8 +38,8 @@ urlpatterns = [
     path('registration_complete', TemplateView.as_view(template_name="registration/registration_complete.html"), name="registration_complete"),
     path('ver_complejos/', views.ComplejosListView, name="ver_complejos"),
     path('ver_complejos/<int:id>/', views.DetalleComplejoView, name='detalle_complejo'),
-    path('reservar_turno/<int:id_complejo>/', views.Mostrar_Turnos_View ,name='reservar_turno'),
+    path('mostrar_turnos/<int:id_complejo>/', views.Mostrar_Turnos_View ,name='mostrar_turnos'),
     path('cargar_turno/<int:id_complejo>/', views.Registrar_Turno_View, name='cargar_turno'),
-
+    path('reservar_turno/<int:id_complejo>/<int:id_turno>/', views.Reservar_Turno_View, name='reservar_turno'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

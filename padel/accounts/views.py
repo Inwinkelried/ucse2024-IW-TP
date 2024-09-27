@@ -95,11 +95,16 @@ def Mostrar_Turnos_View(request, id_complejo):
 
     # Pasar los turnos agrupados por día al contexto
     context = {
+        'complejo': complejo,
         'turnos_por_dia': dict(turnos_por_dia),  # Convertir defaultdict a dict
     }
     
-    return render(request, 'reservar_turno.html', context)
-    
+    return render(request, 'ver_turnos.html', context)
+
+def Reservar_Turno_View(request, id_complejo, id_turno):
+    context = {}
+    return render(request, 'reservar_turno.html',context) 
+
 def ComplejoRegisterView(request):
     user = request.user
     if request.method == 'POST':
