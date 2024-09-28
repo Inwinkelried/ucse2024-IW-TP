@@ -13,7 +13,7 @@
             {% for turno in turnos %}
                 {% if turno.estado == 'disponible' %}
                     <li>
-                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} <a href="{% url 'reservar_turno' complejo_id=complejo.id turno_id=turno.id %}">Reservar</a>
+                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} <a href="{% url 'reservar_turno' id_complejo=complejo.id id_turno=turno.id %}">Reservar</a>
                     </li>
                 {% endif %}
             {% endfor %}
