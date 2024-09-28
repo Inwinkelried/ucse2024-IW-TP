@@ -32,4 +32,20 @@ def send_activation_email(user, request):
     email.content_subtype = "html"
     email.send()
 
+def enviar_email_confirmacion_turno(user, request, id_complejo):
+    current_site = get_current_site(request)
+    mail_subject = 'Tienes una nueva reserva!'
+    
+    notification_url = reverse('ver_reservas_realizadas', kwargs={
+        'id_complejo': id_complejo})  
+    notification_url = f"http://{current_site.domain}{notification_url}"
+    
+    message = render_to_string('email/enviar_email_confirmacion_turno.html', {
+        'user': user,
+        'notification_url': notification_url,
+        'mensaje': 'Un usuario desea usar uno de tus turnos! Por favor, ingresa para confirmar o rechazar el turno.'
+    })
+    email = EmailMessage(mail_subject, message, 'facundoschillino01@gmail.com', [user.email])
+    email.content_subtype = "html"
+    email.send()
 

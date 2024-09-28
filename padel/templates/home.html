@@ -15,6 +15,11 @@
       {% csrf_token %}
       <button type="submit">Log Out</button>
     </form>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
   {% else %}
     <p>Bienvenido!</p>
     <p><a href="{% url 'password_reset' %}">Cambiar Contraseña</a></p>

@@ -41,5 +41,7 @@ urlpatterns = [
     path('mostrar_turnos/<int:id_complejo>/', views.Mostrar_Turnos_View ,name='mostrar_turnos'),
     path('cargar_turno/<int:id_complejo>/', views.Registrar_Turno_View, name='cargar_turno'),
     path('reservar_turno/<int:id_complejo>/<int:id_turno>/', views.Reservar_Turno_View, name='reservar_turno'),
+    path('confirmar_reserva/<int:id_turno>/<int:id_complejo>/', views.Confirmar_Reserva_View, name='confirmar_reserva'),
+    path('ver_reservas_realizadas/<int:id_complejo>/', views.Ver_Reservas_Realizadas_View, name='ver_reservas_realizadas'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from .utils import send_activation_email  
+from .utils import send_activation_email, enviar_email_confirmacion_turno
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -100,10 +100,25 @@ def Mostrar_Turnos_View(request, id_complejo):
     }
     
     return render(request, 'ver_turnos.html', context)
-
 def Reservar_Turno_View(request, id_complejo, id_turno):
-    context = {}
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    turno = get_object_or_404(Turno, id=id_turno)
+    context = {
+        'complejo': complejo,
+        'turno': turno,
+    }
     return render(request, 'reservar_turno.html',context) 
+def Confirmar_Reserva_View(request,id_complejo, id_turno):
+    turno = get_object_or_404(Turno, id=id_turno)
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    usuario = request.user
+    turno.estado = 'pendiente'
+    turno.usuario = usuario
+    propietario = get_object_or_404(Usuario, id=complejo.propietario.id)
+    turno.save()
+    enviar_email_confirmacion_turno(propietario, request, id_complejo)
+    messages.success(request, 'Turno reservado exitosamente!')
+    return redirect('home') 
 
 def ComplejoRegisterView(request):
     user = request.user
@@ -129,6 +144,9 @@ def ComplejoRegisterView(request):
             form = ComplejoRegisterForm()
             return render(request, 'registration/registro_complejos.html', {'form': form})  
 
+@login_required(login_url='login')
+def Ver_Reservas_Realizadas_View(request, id_complejo):
+    pass
 def JugadorRegisterView(request):
     context = {}
     if request.method == 'POST':
@@ -151,7 +169,6 @@ def JugadorRegisterView(request):
   
 def registration_complete(request):
     return render(request, 'registration/registration_complete.html')
-
 
 class LoginPersonalizado(LoginView):
     template_name = 'registration/login.html'
