@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>Turnos en busqueda.</h2>
+    {% for reserva in reservas_buscando_gente %}
+        <span><strong>Nombre:</strong> {{ reserva.complejo.nombre_complejo }}</span>
+        <span><strong>Dirección:</strong> {{ reserva.complejo.direccion }}</span>
+        <span><strong>Teléfono:</strong> {{ reserva.complejo.telefono }}</span>
+        <span><strong>Fecha:</strong> {{ reserva.horario|date:"l d F" }}</span>
+        <span><strong>Hora:</strong> {{ reserva.horario|time:"g:i A" }}</span>
+        <span><strong>Cantidad de personas faltantes:</strong> {{ reserva.cantidad_jugadores_faltantes }}</span>
+        <!--<a href="{}">Editar</a>-->
+        <!--<a href="{}">Eliminar</a>-->
+        </td>
+
+    {% endfor %}
+
+    <h2>Reservas Confirmadas.</h2>
+        {% for reserva in reservas %}
+            <span><strong>Nombre:</strong> {{ reserva.complejo.nombre_complejo }}</span>
+            <span><strong>Dirección:</strong> {{ reserva.complejo.direccion }}</span>
+            <span><strong>Teléfono:</strong> {{ reserva.complejo.telefono }}</span>
+            <span><strong>Fecha:</strong> {{ reserva.horario|date:"l d F" }}</span>
+            <span><strong>Hora:</strong> {{ reserva.horario|time:"g:i A" }}</span>
+            <div class="botones">
+                <form action="/aceptar_turno/{{ reserva.id }}/" method="post">
+                    {% csrf_token %}
+                    <label for="opciones">Selecciona la cantidad de personas:</label>
+                    <select name="cantidad_personas" id="opciones">
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                    </select>
+                    <button type="submit" name="confirmacion" value="buscando_gente">Confirmar y buscar gente</button>
+                </form>
+            <!--<a href="{}">Editar</a>-->
+            <!--<a href="{}">Eliminar</a>-->
+            </td>
+        
+        {% endfor %}
+    
+    
+{% endblock %}

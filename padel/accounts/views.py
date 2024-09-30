@@ -49,76 +49,6 @@ def Editar_complejo_view(request, id_complejo):
         form = ComplejoEditForm(instance = complejo_a_editar)
     return render(request,'editar_un_complejo.html', {'form':form})
 
-def Registrar_Turno_View(request, id_complejo):
-    complejo = get_object_or_404(ComplejoDePadel, id= id_complejo)
-    form = RegistrarTurnoForm()
-    if request.method == 'POST':
-        form = RegistrarTurnoForm(request.POST)
-        if form.is_valid():
-            turno_nuevo = form.save(commit = False)
-            turno_nuevo.complejo = complejo
-            turno_nuevo.save()
-            generar_turnos(turno_nuevo)
-            messages.success(request, 'Turno cargado exitosamente!')
-            return render(request, 'cargar_turno.html', {'form': form})
-        else:
-            return render(request, 'cargar_turno.html', {'form': form})
-    else:
-        return render (request, 'cargar_turno.html', {'form': form})
-
-def generar_turnos(horario):
-    hora_inicio = horario.hora_inicio
-    hora_fin = horario.hora_fin
-    duracion = horario.duracion
-    hoy = datetime.now().date()
-    for i in range(14):
-        fecha_actual = hoy + timedelta(days=i)
-        fechaCargar = datetime.combine(fecha_actual, hora_inicio)
-        while fechaCargar.time() < hora_fin:
-            turno = Turno(complejo=horario.complejo, horario=fechaCargar, duracion=duracion)
-            turno.save()
-            fechaCargar += duracion
-
-
-
-def Mostrar_Turnos_View(request, id_complejo):
-    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
-    
-    # Obtener todos los turnos del complejo
-    turnos = Turno.objects.filter(complejo=complejo).order_by('horario')
-
-    # Crear un diccionario para agrupar turnos por día
-    turnos_por_dia = defaultdict(list)
-    for turno in turnos:
-        fecha = turno.horario.date()  # Agrupar por fecha
-        turnos_por_dia[fecha].append(turno)
-
-    # Pasar los turnos agrupados por día al contexto
-    context = {
-        'complejo': complejo,
-        'turnos_por_dia': dict(turnos_por_dia),  # Convertir defaultdict a dict
-    }
-    
-    return render(request, 'ver_turnos.html', context)
-def Reservar_Turno_View(request, id_complejo, id_turno):
-    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
-    turno = get_object_or_404(Turno, id=id_turno)
-    context = {
-        'complejo': complejo,
-        'turno': turno,
-    }
-    return render(request, 'reservar_turno.html',context) 
-def Confirmar_Reserva_View(request,id_complejo, id_turno):
-    turno = get_object_or_404(Turno, id=id_turno)
-    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
-    usuario = request.user
-    turno.estado = 'pendiente'
-    turno.usuario = usuario
-    propietario = get_object_or_404(Usuario, id=complejo.propietario.id)
-    turno.save()
-    enviar_email_confirmacion_turno(propietario, request, id_complejo)
-    messages.success(request, 'Turno reservado exitosamente!')
-    return redirect('home') 
 
 def ComplejoRegisterView(request):
     user = request.user
@@ -144,9 +74,7 @@ def ComplejoRegisterView(request):
             form = ComplejoRegisterForm()
             return render(request, 'registration/registro_complejos.html', {'form': form})  
 
-@login_required(login_url='login')
-def Ver_Reservas_Realizadas_View(request, id_complejo):
-    pass
+
 def JugadorRegisterView(request):
     context = {}
     if request.method == 'POST':
@@ -211,4 +139,113 @@ def ReservarTurnoView(request):
     return render(request, 'reservar_turno.html')
 
 
+def Registrar_Turno_View(request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel, id= id_complejo)
+    form = RegistrarTurnoForm()
+    if request.method == 'POST':
+        form = RegistrarTurnoForm(request.POST)
+        if form.is_valid():
+            turno_nuevo = form.save(commit = False)
+            turno_nuevo.complejo = complejo
+            turno_nuevo.save()
+            generar_turnos(turno_nuevo)
+            messages.success(request, 'Turno cargado exitosamente!')
+            return render(request, 'cargar_turno.html', {'form': form})
+        else:
+            return render(request, 'cargar_turno.html', {'form': form})
+    else:
+        return render (request, 'cargar_turno.html', {'form': form})
+
+def generar_turnos(horario):
+    hora_inicio = horario.hora_inicio
+    hora_fin = horario.hora_fin
+    duracion = horario.duracion
+    hoy = datetime.now().date()
+    for i in range(14):
+        fecha_actual = hoy + timedelta(days=i)
+        fechaCargar = datetime.combine(fecha_actual, hora_inicio)
+        while fechaCargar.time() < hora_fin:
+            turno = Turno(complejo=horario.complejo, horario=fechaCargar, duracion=duracion)
+            turno.save()
+            fechaCargar += duracion
+
+
+
+def Mostrar_Turnos_View(request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    turnos = Turno.objects.filter(complejo=complejo).order_by('horario')
+    turnos_por_dia = defaultdict(list)
+    for turno in turnos:
+        fecha = turno.horario.date()  
+        turnos_por_dia[fecha].append(turno)
+    context = {
+        'complejo': complejo,
+        'turnos_por_dia': dict(turnos_por_dia), 
+    }
+    return render(request, 'ver_turnos.html', context)
+
+@login_required(login_url = 'login')
+def Reservar_Turno_View(request, id_complejo, id_turno):
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    turno = get_object_or_404(Turno, id=id_turno)
+    context = {
+        'complejo': complejo,
+        'turno': turno,
+    }
+    return render(request, 'reservar_turno.html',context) 
+
+def Confirmar_Reserva_View(request,id_complejo, id_turno):
+    turno = get_object_or_404(Turno, id=id_turno)
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    usuario = request.user
+    turno.estado = 'pendiente'
+    turno.usuario = usuario
+    propietario = get_object_or_404(Usuario, id=complejo.propietario.id)
+    turno.save()
+    enviar_email_confirmacion_turno(propietario, request, id_complejo)
+    messages.success(request, 'Turno reservado exitosamente!')
+    return redirect('home') 
+
+@login_required(login_url='login')
+def Ver_Reservas_Realizadas_View(request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel,  id=id_complejo)
+    turnos = Turno.objects.filter(complejo=complejo, estado = 'pendiente')
+    context = {
+        'turnos':turnos,
+        'complejo':complejo
+    }
+    return render(request, 'ver_reservas_realizadas.html', context)
+
+def Manejar_Turno_View(request, id_turno):
+    turno = get_object_or_404(Turno, id= id_turno)
+    complejo = turno.complejo
+    confirmacion = request.POST.get('confirmacion')
+    if confirmacion == 'aceptar':
+        turno.estado = 'reservado'
+        turno.save()
+        messages.success(request, 'Turno confirmado exitosamente!')
+        return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
+    elif confirmacion == 'buscando_gente':
+        turno.estado = 'buscando_gente'
+        turno.cantidad_jugadores_faltantes = int(request.POST.get('cantidad_personas'))
+        turno.save()
+        messages.success(request, 'Tu turno se ha publicado!')
+        return redirect('/ver_mis_reservas/')
+    else: 
+        turno.estado = 'disponible' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
+        turno.usuario= None
+        turno.save()
+        messages.success(request, 'Turno rechazado.')
+        return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
+
+@login_required(login_url='login')
+def Ver_Mis_Reservas_View(request):
+    user = request.user
+    reservas = Turno.objects.filter(usuario = user, estado = 'reservado')
+    reservas_buscando_gente = Turno.objects.filter(usuario = user, estado= 'buscando_gente')
+    context = {
+        'reservas': reservas,
+        'reservas_buscando_gente': reservas_buscando_gente 
+    }
+    return render(request,'ver_mis_reservas.html',context)
 

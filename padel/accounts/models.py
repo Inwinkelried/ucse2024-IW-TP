@@ -16,11 +16,23 @@ class Usuario(AbstractUser):
         ('no_validado', 'No validado'),
         ('pendiente_aprobacion', 'Pendiente aprobacion')
     ]
+    CATEGORIAS = [
+        ('profesional', 'Profesional'),
+        ('1', 'Primera'),
+        ('2', 'Segunda'),
+        ('3', 'Tercera'),
+        ('4', 'Cuarta'),
+        ('5', 'Quinta'),
+        ('6', 'Sexta'),
+        ('7', 'Septima'),
+        ('8', 'Octava'),
+    ]
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE,name='rol', null=True)
+    categoria = models.CharField(choices=CATEGORIAS,on_delete= models.SET_NULL, name='categoria', default = '8', null = True)
     estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='pendiente_aprobacion')
     telefono = models.IntegerField(unique=True, name='telefono', null=True)
-    
-    
+
+
 class ComplejoDePadel(models.Model):
     TIPOS_INSTALACION = [
         ('indoor', 'Indoor'),
@@ -39,8 +51,7 @@ class ComplejoDePadel(models.Model):
     ciudad = models.CharField(max_length=100, null=True, blank=True, name='ciudad')
     direccion = models.CharField(max_length=200, null=True, blank=True, name='direccion')
     telefono = models.CharField(max_length=20, null=True, blank=True, name='telefono')
-    foto_complejo = models.ImageField(upload_to='fotos/', null=True, blank=True, name='foto_complejo') #Este es de prueba
-
+    foto_complejo = models.ImageField(upload_to='fotos/', null=True, blank=True, name='foto_complejo') 
     habilitado = models.BooleanField(name='habilitado', default=False)
     tipo_instalacion =  models.CharField( max_length=10, choices=TIPOS_INSTALACION, null=True, blank=True)
     tiene_duchas = models.BooleanField(name='tiene_duchas', default = False, null=True, blank=True)
@@ -52,8 +63,8 @@ class ComplejoDePadel(models.Model):
 
 
 class JugadorProfile(models.Model): 
-    user = models.OneToOneField(Usuario, on_delete=models.CASCADE, unique=True) #Campo especifico
-    categoria = models.IntegerField(null =True, blank=True, name='categoria') #Campo especifico
+    user = models.OneToOneField(Usuario, on_delete=models.CASCADE, unique=True)
+    categoria = models.IntegerField(null =True, blank=True, name='categoria') 
 
 
 #-----------------------------------------------------------------------------------------------
@@ -63,25 +74,30 @@ class HorariosComplejos (models.Model):
     hora_fin_turnos = models.TimeField(name = 'hora_fin')
     duracion = models.DurationField(name = 'duracion')
     
-class Turno(models.Model): #Tabla a la que se cargan los datos de un turno
+class Turno(models.Model): 
     Estados_Turnos = [
         ('reservado', 'Reservado'),
         ('cancelado', 'Cancelado'),
         ('pendiente', 'Pendiente'),
-        ('disponible', 'Disponible')
+        ('disponible', 'Disponible'),
+        ('finalizado', 'Finalizado'),
+        ('por_jugarse', 'Por jugarse'),
+        ('buscando_gente', 'Buscando jugadores')
     ]
-    complejo = models.ForeignKey(ComplejoDePadel, on_delete=models.CASCADE, name = 'complejo', null = False)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, name = 'usuario', blank= True, null= True, default=None)
+    complejo = models.ForeignKey(ComplejoDePadel, name = 'complejo', null = False)
+    usuario = models.ForeignKey(Usuario, name = 'usuario', blank= True, null= True, default=None)
     horario = models.DateTimeField(name = 'horario', null = False)
-    estado = models.CharField( max_length=10, choices=Estados_Turnos, null=True, blank=True, default='disponible', name = 'estado')
+    estado = models.CharField( max_length=20, choices=Estados_Turnos, null=True, blank=True, default='disponible', name = 'estado')
     duracion = models.DurationField(name = 'duracion', null = False)
+    cantidad_jugadores_faltantes = models.IntegerField(default = 0, null = True,name='cantidad_jugadores_faltantes')
     def __str__(self):
         fecha = self.horario.strftime("%Y-%m-%d %H:%M")
         return self.complejo.nombre_complejo +' ' + fecha
-class TurnoUsuario(models.Model): #Tabla intermedia para asignar un turno a un usuario
-    pass
+class TurnoUsuario(models.Model): 
+    turno = models.ForeignKey(Turno, name='turno',null=False)
+    usuario = models.ForeignKey(Usuario, name = 'usuario', null=False)
 
-class ComplejosFotos(models.Model): #Tabla intermedia que va a llevar las fotos de los complejos
+class ComplejosFotos(models.Model): 
     pass
 
 
