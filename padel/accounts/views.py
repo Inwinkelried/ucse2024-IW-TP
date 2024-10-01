@@ -65,7 +65,7 @@ def ComplejoRegisterView(request):
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
         if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
-            return redirect('vista_complejos') 
+              return redirect('mis_complejos') 
         else:
             form = ComplejoRegisterForm()
             return render(request, 'registration/registro_complejos.html', {'form': form})  
