@@ -60,7 +60,7 @@ def ComplejoRegisterView(request):
                 user.save()  
                 return redirect('vista_complejos')  
             else:
-                return redirect('visualizar_mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+                return redirect('mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
