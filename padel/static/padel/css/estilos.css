@@ -1,0 +1,131 @@
+.login-container {
+    max-width: 400px; /* Tamaño máximo del contenedor */
+    margin:  auto; /* Centrar el contenedor horizontalmente */
+    padding: 20px;
+    background-color: #f8f9fa; /* Color de fondo claro para el contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    text-align: center; /* Centrar el texto */
+    margin-top: 150px; /* Espacio superior */
+  }
+  
+  h2 {
+    color: #007bff; /* Color azul para el título */
+    margin-bottom: 20px; /* Espacio inferior */
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+  
+  .login-form input[type="text"],
+  .login-form input[type="password"] {
+    width: 100%; /* Hacer los campos del formulario tan anchos como el contenedor */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #007bff; /* Borde azul */
+    border-radius: 4px; /* Bordes redondeados */
+  }
+  
+  .btn-submit {
+    background-color: #007bff; /* Color de fondo azul */
+    color: white; /* Color del texto */
+    border: none; /* Quitar borde por defecto */
+    padding: 10px 20px; /* Relleno */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de mano */
+    font-size: 16px; /* Tamaño de fuente */
+  }
+  
+  .btn-submit:hover {
+    background-color: #0056b3; /* Color azul más oscuro al pasar el ratón */
+  }
+  
+  .signup-link {
+    margin-top: 15px; /* Espacio superior */
+  }
+  
+  .error {
+    color: red; /* Color rojo para los mensajes de error */
+    margin-top: 10px; /* Espacio superior */
+  }
+  body {
+    background-image: url('../media/fotoHome.png'); /* Ajusta la ruta según tu estructura de carpetas */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+#volver-btn{
+  background-color: #007bff; /* Color de fondo azul */
+  color: white; /* Color del texto */
+  margin-left: 20px;
+  }
+  
+  #volver-btn_misComplejos{
+    background-color: #007bff; /* Color de fondo azul */
+    color: white; /* Color del texto */
+    margin-left: 700px;
+    margin-top: 20px;
+  }
+  .complejo-item{
+    background-color: #f8f9fa; /* Color de fondo claro para el contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 20px;
+  }
+
+
+
+
+.edit-container {
+  max-width: 400px; /* Asegura un tamaño compacto */
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* Ordena elementos verticalmente */
+  flex-shrink: 0; /* Asegura que no se encoge más allá del contenido */
+  margin-top: 20px; /* Ajuste para separar un poco del borde superior */
+}
+
+h2 {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.edit-form input, .edit-form button {
+  width: 100%;
+  padding: 6px; /* Tamaño de input más compacto */
+  margin: 6px 0;
+}
+
+.btn-submit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+
