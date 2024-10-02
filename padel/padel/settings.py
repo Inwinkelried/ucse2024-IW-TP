@@ -188,6 +188,10 @@ if 'RENDER' in os.environ:
     #                   'whitenoise.middleware.WhiteNoiseMiddleware')
 
     # Static files (CSS, JavaScript, Images)
+    
+    
+    STATICFILES_DIRS = [BASE_DIR / 'static',]
+
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
     # Usar S3 para manejar archivos estáticos y media en producción
@@ -197,3 +201,20 @@ if 'RENDER' in os.environ:
     # Configuración para S3
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    # Configuración para entorno de desarrollo local
+    print("USING LOCAL DEVELOPMENT SETTINGS!")
+   
+
+    # Rutas locales para archivos estáticos y media
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+
+    # Directorios locales para archivos estáticos y media
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Configuración para usar almacenamiento de archivos locales en desarrollo
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
