@@ -158,8 +158,10 @@ STORAGES = {
     },
 }
 # URL to use when referring to static files located in STATICFILES_DIRS.
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+STATICFILES_DIRS = [BASE_DIR / 'static',]
 # URL to use when referring to uploaded media files
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
