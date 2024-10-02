@@ -28,7 +28,7 @@ class Usuario(AbstractUser):
         ('8', 'Octava'),
     ]
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE,name='rol', null=True)
-    categoria = models.CharField(choices=CATEGORIAS,on_delete= models.SET_NULL, name='categoria', default = '8', null = True)
+    categoria = models.CharField(choices=CATEGORIAS, max_length=30,name='categoria', default = '8', null = True)
     estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='pendiente_aprobacion')
     telefono = models.IntegerField(unique=True, name='telefono', null=True)
 
@@ -84,8 +84,8 @@ class Turno(models.Model):
         ('por_jugarse', 'Por jugarse'),
         ('buscando_gente', 'Buscando jugadores')
     ]
-    complejo = models.ForeignKey(ComplejoDePadel, name = 'complejo', null = False)
-    usuario = models.ForeignKey(Usuario, name = 'usuario', blank= True, null= True, default=None)
+    complejo = models.ForeignKey(ComplejoDePadel,on_delete=models.SET_NULL, name = 'complejo', null = True)
+    usuario = models.ForeignKey(Usuario,on_delete=models.SET_NULL, name = 'usuario', blank= True, null= True, default=None)
     horario = models.DateTimeField(name = 'horario', null = False)
     estado = models.CharField( max_length=20, choices=Estados_Turnos, null=True, blank=True, default='disponible', name = 'estado')
     duracion = models.DurationField(name = 'duracion', null = False)
@@ -94,8 +94,8 @@ class Turno(models.Model):
         fecha = self.horario.strftime("%Y-%m-%d %H:%M")
         return self.complejo.nombre_complejo +' ' + fecha
 class TurnoUsuario(models.Model): 
-    turno = models.ForeignKey(Turno, name='turno',null=False)
-    usuario = models.ForeignKey(Usuario, name = 'usuario', null=False)
+    turno = models.ForeignKey(Turno,on_delete=models.SET_NULL, name='turno',null=True)
+    usuario = models.ForeignKey(Usuario,on_delete=models.SET_NULL, name = 'usuario', null=True)
 
 class ComplejosFotos(models.Model): 
     pass

@@ -249,3 +249,12 @@ def Ver_Mis_Reservas_View(request):
     }
     return render(request,'ver_mis_reservas.html',context)
 
+def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todos, habria que acotarle un poco el rango 
+    hoy = datetime.today()
+    turnos_libres = Turno.objects.filter(horario__gte=hoy, estado='disponible').order_by('horario')
+    turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').order_by('horario')
+    context = {
+        'turnos_libres': turnos_libres,
+        'turnos_falta_gente': turnos_falta_gente
+    }
+    return render(request, 'mostrar_turnos_proximos.html', context)

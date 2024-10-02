@@ -6,6 +6,21 @@
     
 <h1> Reserva tu turno! </h1>
 
+<div class="mostrar_turnos"></div>
+    {% for dia, turnos in turnos_falta_gente.items %}
+        <h2>{{ dia|date:"l d F" }}</h2> <!-- Mostrar la fecha -->
+        <ul>
+            {% for turno in turnos %}
+                {% if turno.estado == 'disponible' %}
+                    <li>
+                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} <a href="{% url 'reservar_turno' id_complejo=complejo.id id_turno=turno.id %}">Reservar</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+
 <div class="mostrar_turnos">
     {% for dia, turnos in turnos_por_dia.items %}
         <h2>{{ dia|date:"l d F" }}</h2> <!-- Mostrar la fecha -->
