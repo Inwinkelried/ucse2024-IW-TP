@@ -45,6 +45,6 @@ urlpatterns = [
     path('ver_reservas_realizadas/<int:id_complejo>/', views.Ver_Reservas_Realizadas_View, name='ver_reservas_realizadas'),
     path('aceptar_turno/<int:id_turno>/',views.Manejar_Turno_View ,name='aceptar_turno'),
     path('ver_mis_reservas/', views.Ver_Mis_Reservas_View, name= 'ver_mis_reservas'),
-    path('mostrar_turnos_prximos/',views.Mostrar_Turnos_Proximos_View, name='mostrar_turnos_proximos'),
+    path('mostrar_turnos_proximos/',views.Mostrar_Turnos_Proximos_View, name='mostrar_turnos_proximos'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

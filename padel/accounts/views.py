@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import timedelta, datetime
+from django.utils import timezone
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Usuario, Roles, ComplejoDePadel, Turno
@@ -170,14 +171,17 @@ def generar_turnos(horario):
             fechaCargar += duracion
 
 
-
-def Mostrar_Turnos_View(request, id_complejo):
-    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
-    turnos = Turno.objects.filter(complejo=complejo).order_by('horario')
+def generar_turnos_por_dia(turnos):
     turnos_por_dia = defaultdict(list)
     for turno in turnos:
         fecha = turno.horario.date()  
         turnos_por_dia[fecha].append(turno)
+    return turnos_por_dia
+
+def Mostrar_Turnos_View(request, id_complejo):
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    turnos = Turno.objects.filter(complejo=complejo).order_by('horario')
+    turnos_por_dia = generar_turnos_por_dia(turnos)
     context = {
         'complejo': complejo,
         'turnos_por_dia': dict(turnos_por_dia), 
@@ -250,11 +254,13 @@ def Ver_Mis_Reservas_View(request):
     return render(request,'ver_mis_reservas.html',context)
 
 def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todos, habria que acotarle un poco el rango 
-    hoy = datetime.today()
+    hoy = timezone.now()
     turnos_libres = Turno.objects.filter(horario__gte=hoy, estado='disponible').order_by('horario')
     turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').order_by('horario')
+    turnos_libres = generar_turnos_por_dia(turnos_libres)
+    turnos_falta_gente = generar_turnos_por_dia(turnos_falta_gente)
     context = {
-        'turnos_libres': turnos_libres,
-        'turnos_falta_gente': turnos_falta_gente
+        'turnos_libres': dict(turnos_libres),
+        'turnos_falta_gente': dict(turnos_falta_gente)
     }
     return render(request, 'mostrar_turnos_proximos.html', context)
