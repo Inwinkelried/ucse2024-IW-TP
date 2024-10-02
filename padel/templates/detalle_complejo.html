@@ -18,6 +18,9 @@
             <span><strong>Número de pistas:</strong> {{ complejo.numero_de_pistas }}</span>
             <span><strong>Descripción:</strong> {{ complejo.descripcion }}</span>
             <br>
+            <span><a href="{% url 'reservar_turno' %}"> quiero jugar ya mismo!!!!!</a></span>
+            </br>
+            <br>
             {% if complejo.foto_complejo %}
                 <img src="{{ complejo.foto_complejo.url }}">
             {% endif %}

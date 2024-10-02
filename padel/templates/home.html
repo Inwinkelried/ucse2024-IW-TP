@@ -16,11 +16,12 @@
       <button type="submit">Log Out</button>
     </form>
   {% else %}
-    <p>Para reservar un turno o ver los complejos disponibles, por favor ingresa o registrate.</p>
+    <p>Bienvenido!</p>
     <p><a href="{% url 'password_reset' %}">Cambiar Contraseña</a></p>
     <p><a href="{% url 'login' %}">Ingresar</a></p>
     <p><a href="{% url 'signup' %}">Registrarse</a></p> 
+    <p><a href="{% url 'complejos'%}"> Descubrir complejos </a> </p>
     {% load static %}
-    <img src="{% static 'prueba.jpg' %}" alt="Prueba">
+    
   {% endif %}
 {% endblock %}  
