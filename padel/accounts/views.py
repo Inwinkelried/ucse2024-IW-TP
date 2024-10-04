@@ -266,5 +266,7 @@ def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todo
     }
     return render(request, 'mostrar_turnos_proximos.html', context)
 
-def Unirse_A_Un_Turno(request, id_turno, id_propietario):
-    turno = get_object_or_404(Turno)
+def Unirse_A_Un_Turno(request, id_turno):
+    turno = get_object_or_404(Turno, id=id_turno)
+    propietario = get_object_or_404(Usuario, id=turno.usuario.id)
+    
