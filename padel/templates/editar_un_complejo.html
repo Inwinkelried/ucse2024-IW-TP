@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Iniciar Sesión</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">cargar</button>
-  </form>
-  {% if form.non_field_errors %}
-    <div class="error">
-      {{ form.non_field_errors }}
-    </div>
-  {% endif %}
+
+  <div class="edit-container">
+    <h2>Editar</h2>
+    <form method="post" enctype="multipart/form-data" class="edit-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-submit">Guardar Cambios</button>
+    </form>
+    {% if form.non_field_errors %}
+      <div class="error">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+  </div>
+
 {% endblock %}
+

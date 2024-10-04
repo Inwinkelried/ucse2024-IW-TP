@@ -60,12 +60,12 @@ def ComplejoRegisterView(request):
                 user.save()  
                 return redirect('vista_complejos')  
             else:
-                return redirect('visualizar_mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+                return redirect('mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
         if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
-            return redirect('vista_complejos') 
+              return redirect('mis_complejos') 
         else:
             form = ComplejoRegisterForm()
             return render(request, 'registration/registro_complejos.html', {'form': form})  
@@ -123,7 +123,7 @@ def ComplejosListView(request):
         complejos = complejos.filter(tiene_duchas=False)
 
     if alquiler_paletas:
-        complejos = complejos.filter(prestan_paletas=alquiler_paletas)
+        complejos = complejos.filter(presta_paleta=alquiler_paletas)
 
     return render(request, 'complejos.html', {'complejos': complejos})
 
