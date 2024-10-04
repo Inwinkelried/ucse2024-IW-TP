@@ -130,7 +130,7 @@ def ComplejosListView(request):
     if alquiler_paletas:
         complejos = complejos.filter(presta_paleta=alquiler_paletas)
 
-    return render(request, 'complejos.html', {'complejos': complejos})
+    return render(request, 'ver_complejos.html', {'complejos': complejos})
 
 def DetalleComplejoView(request, id):
     complejo = get_object_or_404(ComplejoDePadel, id=id)
@@ -265,3 +265,6 @@ def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todo
         'turnos_falta_gente': dict(turnos_falta_gente)
     }
     return render(request, 'mostrar_turnos_proximos.html', context)
+
+def Unirse_A_Un_Turno(request, id_turno, id_propietario):
+    turno = get_object_or_404(Turno)

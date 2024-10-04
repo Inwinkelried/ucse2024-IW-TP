@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}Detalle del Complejo{% endblock %}
-
 {% block content %}
-    
 <h1> Falta gente! Sumate! </h1>
-
 <div class="mostrar_turnos"></div>
     {% for dia, turnos in turnos_falta_gente.items %}
         <h2>{{ dia|date:"l d F" }}</h2> <!-- Mostrar la fecha -->
@@ -18,7 +15,6 @@
         </ul>
     {% endfor %}
 </div>
-
 <h1> Turnos Libres </h1>
 <div class="mostrar_turnos">
     {% for dia, turnos in turnos_libres.items %}
