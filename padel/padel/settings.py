@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -104,18 +103,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
-
-
 
 USE_I18N = True
 
 USE_TZ = True
 
-USE_L10N = True  # Habilita la localización
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -142,17 +138,12 @@ AUTH_USER_MODEL = 'accounts.Usuario'
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'pruebapadel'
-
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
-
 AWS_S3_FILE_OVERWRITE = False
-
-#AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com'% AWS_STORAGE_BUCKET_NAME
 AWS_S3_SIGNATURE_NAME = 's3v4'
 AWS_S3_DEFAULT_ACL= None
 AWS_S3_VERITY = True
-
 STORAGES = {
     "default":{
         "BACKEND":"storages.backends.s3boto3.S3StaticStorage",
@@ -161,44 +152,31 @@ STORAGES = {
         "BACKEND": "storages.backends.s3boto3.S3StaticStorage"
     },
 }
-# URL to use when referring to static files located in STATICFILES_DIRS.
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+STATICFILES_DIRS = [BASE_DIR / 'static',]
 # URL to use when referring to uploaded media files
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'padel/static')]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'padel/static')
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Configuration for Render.com (if applicable)
 if 'RENDER' in os.environ:
     print("USING RENDER.COM SETTINGS!")
     DEBUG = False
     ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
     DATABASES = {'default': dj_database_url.config(conn_max_age=600)}
-
-    # Añadir WhiteNoise solo si necesitas servir archivos estáticos desde el contenedor
-    # Esto no es necesario si estás usando S3 para los archivos estáticos
-    # MIDDLEWARE.insert(MIDDLEWARE.index('django.middleware.security.SecurityMiddleware') + 1,
-    #                   'whitenoise.middleware.WhiteNoiseMiddleware')
-
-    # Static files (CSS, JavaScript, Images)
+    STATICFILES_DIRS = [BASE_DIR / 'static',]
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-    # Usar S3 para manejar archivos estáticos y media en producción
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-    # Configuración para S3
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    print("USING LOCAL DEVELOPMENT SETTINGS!")
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 
 
