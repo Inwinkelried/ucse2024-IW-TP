@@ -3,60 +3,71 @@
 {% block title %}Complejos{% endblock %}
 
 {% block content %}
-    <h1>Descubre todos los complejos disponibles!</h1>
-
-    <!-- Formulario para filtrar complejos -->
+  <!-- Formulario para filtrar complejos -->
     <form method="get">
-        
-        <label for="prestan_paletas">Prestan paletas:</label>
-        <select name="prestan_paletas" id="prestan_paletas">
-            <option value="">-- Seleccione --</option>
-            <option value="prestan" {% if request.GET.prestan_paletas == 'prestan' %}selected{% endif %}>Prestan</option>
-            <option value="alquilan" {% if request.GET.prestan_paletas == 'alquilan' %}selected{% endif %}>Alquilan</option>
-            <option value="alquilan_y_prestan" {% if request.GET.prestan_paletas == 'alquilan_y_prestan' %}selected{% endif %}>Ambas</option>
-        </select>
-        <label for="tipo_instalacion">Tipo de Instalación:</label>
-        <select name="tipo_instalacion" id="tipo_instalacion">
-            <option value="">-- Seleccione --</option>
-            <option value="indoor" {% if request.GET.tipo_instalacion == 'indoor' %}selected{% endif %}>Indoor</option>
-            <option value="outdoor" {% if request.GET.tipo_instalacion == 'outdoor' %}selected{% endif %}>Outdoor</option>
-            <option value="ambas" {% if request.GET.tipo_instalacion == 'ambas' %}selected{% endif %}>Ambas</option>
-        </select>
-        <label for="tiene_duchas">Tiene Duchas:</label>
-        <select name="tiene_duchas" id="tiene_duchas">
-            <option value="">-- Seleccione --</option>
-            <option value="true" {% if request.GET.tiene_duchas == 'true' %}selected{% endif %}>Sí</option>
-            <option value="false" {% if request.GET.tiene_duchas == 'false' %}selected{% endif %}>No</option>
-        </select>
-
-        <button type="submit">Filtrar</button>
-    </form>
-
-    <div class="complejo-container">
-        {% for complejo in complejos %}
-            {% if complejo.habilitado %}
-                <div class="complejo-item">
-                    <a href="{% url 'detalle_complejo' complejo.id %}">
-                        <div class="complejo-title">{{ complejo.nombre_complejo }}</div>
-                    </a>
-                    <div class="complejo-info">
-                        <span><strong>Dirección:</strong> {{ complejo.direccion }}</span>
-                        <span><strong>Teléfono:</strong> {{ complejo.telefono }}</span>
-                        <span><strong>Tipo de instalacion:</strong> {{ complejo.tipo_instalacion }}</span>
-                        <span><strong>Prestan paletas?:</strong> {{ complejo.presta_paleta }}</span>
-                        <span><strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas }}</span>
-                        <span><strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas }}</span>
-                        
-                        <br>
-                        {% if complejo.foto_complejo %}
-                            <img src="{{ complejo.foto_complejo.url }}">
-                        {% endif %}
-                        </br>
-                    </div>
+<div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="prestan_paletas">Prestan paletas:</label>
+                    <select name="prestan_paletas" id="prestan_paletas" class="form-control">
+                        <option value="">-- Seleccione --</option>
+                        <option value="prestan" {% if request.GET.prestan_paletas == 'prestan' %}selected{% endif %}>Prestan</option>
+                        <option value="alquilan" {% if request.GET.prestan_paletas == 'alquilan' %}selected{% endif %}>Alquilan</option>
+                        <option value="alquilan_y_prestan" {% if request.GET.prestan_paletas == 'alquilan_y_prestan' %}selected{% endif %}>Ambas</option>
+                    </select>
                 </div>
-            {% endif %}
-        {% endfor %}
+                <div class="col-md-3 mb-3">
+                    <label for="tipo_instalacion">Tipo de Instalación:</label>
+                    <select name="tipo_instalacion" id="tipo_instalacion" class="form-control">
+                        <option value="">-- Seleccione --</option>
+                        <option value="indoor" {% if request.GET.tipo_instalacion == 'indoor' %}selected{% endif %}>Indoor</option>
+                        <option value="outdoor" {% if request.GET.tipo_instalacion == 'outdoor' %}selected{% endif %}>Outdoor</option>
+                        
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="tiene_duchas">Tiene Duchas:</label>
+                    <select name="tiene_duchas" id="tiene_duchas" class="form-control">
+                        <option value="">-- Seleccione --</option>
+                        <option value="true" {% if request.GET.tiene_duchas == 'true' %}selected{% endif %}>Sí</option>
+                        <option value="false" {% if request.GET.tiene_duchas == 'false' %}selected{% endif %}>No</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                    <a href="{% url 'home' %}" class="btn btn-primary" id="volver-btn">Volver</a>
+                </div>
+                
+            </div>
+        </div>
+       
+    </form>
+<div class="container text-center mt-4">
+        <div class="row justify-content-start">
+            {% for complejo in complejos %}
+                {% if complejo.habilitado %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            {% if complejo.foto_complejo %}
+                                <img src="{{ complejo.foto_complejo.url }}" class="card-img-top" alt="{{ complejo.nombre_complejo }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
+                                <p class="card-text">
+                                    <strong>Dirección:</strong> {{ complejo.direccion }}<br>
+                                    <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
+                                    <strong>Tipo de instalación:</strong> {{ complejo.tipo_instalacion }}<br>
+                                    <strong>Prestan paletas?:</strong> {{ complejo.presta_paleta }}<br>
+                                    <strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas }}<br>
+                                    <strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas }}<br>
+                                </p>
+                                <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+
+ {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
-
-

@@ -1,35 +1,36 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Bienvenido a Padel.com{% endblock %}
-{% block content %}
-  {% if user.is_authenticated%}
-    <p>Hola {{ user.username }}! Bienvenido a Padel.com!<Padel class="com!"></Padel> </p>
-    <p><a href="{% url 'ver_complejos' %}">Ver todos los complejos</a></p>
-    {% if user.is_authenticated and  user.rol.nombre == "PROPIETARIO" and user.estado == "activo" %}  <!-- Si el usuario esta logueado, es propietario y esta activo -->
-      <p><a href="{% url 'mis_complejos' %}">Ver mis complejos</a></p>
-    {% endif %}
-    <p><a href="{% url 'mostrar_turnos_proximos' %}">Ver turnos</a></p>
-    <p><a href="{% url 'ver_mis_reservas' %}">Ver mis reservas</a></p>
-    <p>Tienes un complejo y deseas registrarlo?</p>
-    <p><a href="{% url 'registrar_complejo' %}">Registrar mi Complejo</a></p>
-    <p><a href="{% url 'password_change' %}">Password Change</a></p>
-    <form action="{% url 'logout' %}" method="post">
 
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-    {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-  {% else %}
-    <p>Bienvenido!</p>
-    <p><a href="{% url 'password_reset' %}">Cambiar Contraseña</a></p>
-    <p><a href="{% url 'login' %}">Ingresar</a></p>
-    <p><a href="{% url 'signup' %}">Registrarse</a></p> 
-    <p><a href="{% url 'ver_complejos'%}"> Descubrir complejos </a> </p>
-    {% load static %}
-    
-  {% endif %}
-{% endblock %}  
+{% block title %}Bienvenido a Padel.com{% endblock %}
+
+{% block content %}
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white" href="{% url 'home' %}">Padel.com</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link text-white" href="{% url 'home' %}">Inicio</a>
+            <a class="nav-link text-white" href="{% url 'complejos' %}">Complejos</a>
+            {% if user.is_authenticated %}
+              <a class="nav-link text-white" href="{% url 'mis_complejos' %}">Mis Complejos</a>
+              <a class="nav-link text-white" href="{% url 'registrar_complejo' %}">Registrar un Complejo</a>
+              <a class="nav-link text-white" href="{% url 'password_change' %}">Cambiar Contraseña</a>
+              <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link nav-link text-white">Cerrar Sesión</button>
+              </form>
+            {% else %}
+              <a class="nav-link text-white" href="{% url 'login' %}">Iniciar Sesión</a>
+              <a class="nav-link text-white" href="{% url 'signup' %}">Registrarse</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+  </body>
+{% endblock %}

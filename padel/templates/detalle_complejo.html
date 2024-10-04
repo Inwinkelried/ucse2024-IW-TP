@@ -1,31 +1,29 @@
 {% extends "base.html" %}
-
-{% block title %}Detalle del Complejo{% endblock %}
+{% load static %}
+{% block title %}Detalle del Complejo - {{ complejo.nombre_complejo }}{% endblock %}
 
 {% block content %}
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ complejo.nombre_complejo }}</title>
-    </head>
-
-    <body>
-        <h1>{{ complejo.nombre_complejo }}</h1>
-        <div class="complejo-info">
-            <span><strong>Dirección:</strong> {{ complejo.direccion }}</span>
-            <span><strong>Teléfono:</strong> {{ complejo.telefono }}</span>
-            <span><strong>Número de pistas:</strong> {{ complejo.numero_de_pistas }}</span>
-            <span><strong>Descripción:</strong> {{ complejo.descripcion }}</span>
-            <br>
-            <span><a href="{% url 'mostrar_turnos' complejo.id %}"> quiero jugar ya mismo!!!!!</a></span>
-            </br>
-            <br>
-            {% if complejo.foto_complejo %}
-                <img src="{{ complejo.foto_complejo.url }}">
-            {% endif %}
-            </br>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card" style="width: 30rem;">
+        <!-- {% if complejo.foto_complejo %}
+            <img src="{{ complejo.foto_complejo.url }}" class="card-img-top" alt="Imagen del Complejo">
+        {% endif %} -->
+        <img src="{% static 'padel/media/complejo.png' %}" class="card-img-top" alt="...">
+        <div class="card-body text-center">
+            <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
         </div>
-    </body>
-    </html>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ complejo.direccion }}</li>
+            <li class="list-group-item">{{ complejo.telefono }}</li>
+            <li class="list-group-item">{{ complejo.numero_de_pistas }}</li> 
+            <li class="list-group-item">{{ complejo.descripcion }}</li>  
+        </ul>
+        <div class="card-body text-center">
+            <span><a href="{% url 'mostrar_turnos' complejo.id %}"> quiero jugar ya mismo!!!!!</a></span>
+        </div>
+    </div>
+</div>
+
+
+
 {% endblock %}

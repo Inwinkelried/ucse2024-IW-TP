@@ -70,7 +70,7 @@ def ComplejoRegisterView(request):
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
         if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
-            return redirect('vista_complejos') 
+              return redirect('mis_complejos') 
         else:
             form = ComplejoRegisterForm()
             return render(request, 'registration/registro_complejos.html', {'form': form})  
@@ -128,8 +128,9 @@ def ComplejosListView(request):
         complejos = complejos.filter(tiene_duchas=False)
 
     if alquiler_paletas:
-        complejos = complejos.filter(prestan_paletas=alquiler_paletas)
-    return render(request, 'ver_complejos.html', {'complejos': complejos})
+        complejos = complejos.filter(presta_paleta=alquiler_paletas)
+
+    return render(request, 'complejos.html', {'complejos': complejos})
 
 def DetalleComplejoView(request, id):
     complejo = get_object_or_404(ComplejoDePadel, id=id)
