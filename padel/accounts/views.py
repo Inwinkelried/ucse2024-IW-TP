@@ -10,7 +10,7 @@ from django.utils.encoding import force_str
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email  
-
+from django.contrib.auth.decorators import login_required
 
 def activate(request, uidb64, token):
     try:
@@ -46,7 +46,6 @@ def Editar_complejo_view(request, id_complejo):
     return render(request,'editar_un_complejo.html', {'form':form})
 
 
-#Esta es la view que maneja el formulario de registro de los complejos. Si la solicitud es un POST, envia el formulario y genera el nuevo usuario tomando el form de registro de complejo, si la solicitud es un GET devuelve el formulario.
 def ComplejoRegisterView(request):
     user = request.user
     if request.method == 'POST':
@@ -61,18 +60,15 @@ def ComplejoRegisterView(request):
                 user.save()  
                 return redirect('vista_complejos')  
             else:
-                return redirect('visualizar_mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+                return redirect('mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
         if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
-            return redirect('vista_complejos') 
+              return redirect('mis_complejos') 
         else:
             form = ComplejoRegisterForm()
-            return render(request, 'registration/registro_complejos.html', {'form': form})
-
-
-from .utils import send_activation_email  
+            return render(request, 'registration/registro_complejos.html', {'form': form})  
 
 def JugadorRegisterView(request):
     context = {}
@@ -100,44 +96,44 @@ def registration_complete(request):
 
 class LoginPersonalizado(LoginView):
     template_name = 'registration/login.html'
-    redirect_authenticated_user = False  # Redirige incluso si ya está autenticado
+    redirect_authenticated_user = False
     def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url  
         user = self.request.user
         if user.rol == 'Complejo':
             return reverse_lazy('vista_complejos')
         else:
             return reverse_lazy('home')
-
-
+        
 def ComplejosListView(request):
     complejos = ComplejoDePadel.objects.all()
 
-    # Obtener los parámetros de filtro de la solicitud
     tipo_instalacion = request.GET.get('tipo_instalacion')
     tiene_duchas = request.GET.get('tiene_duchas')
     alquiler_paletas = request.GET.get('prestan_paletas')
 
-    # Aplicar los filtros si los parámetros están presentes
     if tipo_instalacion:
         complejos = complejos.filter(tipo_instalacion=tipo_instalacion)
 
-    if tiene_duchas == 'true':  # si se pasa como 'true' o 'false'
+    if tiene_duchas == 'true':  
         complejos = complejos.filter(tiene_duchas=True)
     elif tiene_duchas == 'false':
         complejos = complejos.filter(tiene_duchas=False)
 
     if alquiler_paletas:
-        complejos = complejos.filter(prestan_paletas=alquiler_paletas)
+        complejos = complejos.filter(presta_paleta=alquiler_paletas)
 
     return render(request, 'complejos.html', {'complejos': complejos})
 
-
-# Vista para mostrar los detalles de un complejo
 def DetalleComplejoView(request, id):
     complejo = get_object_or_404(ComplejoDePadel, id=id)
     return render(request, 'detalle_complejo.html', {'complejo': complejo})
 
-
+@login_required(login_url='login')
+def ReservarTurnoView(request):
+    return render(request, 'reservar_turno.html')
 
 
 
