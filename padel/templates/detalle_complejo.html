@@ -3,28 +3,26 @@
 {% block title %}Detalle del Complejo - {{ complejo.nombre_complejo }}{% endblock %}
 
 {% block content %}
-
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card" style="width: 30rem;">
-        <!-- {% if complejo.foto_complejo %}
+        {% if complejo.foto_complejo %}
             <img src="{{ complejo.foto_complejo.url }}" class="card-img-top" alt="Imagen del Complejo">
-        {% endif %} -->
-        <img src="{% static 'padel/media/complejo.png' %}" class="card-img-top" alt="...">
+        {% endif %}
         <div class="card-body text-center">
             <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ complejo.direccion }}</li>
-            <li class="list-group-item">{{ complejo.telefono }}</li>
-            <li class="list-group-item">{{ complejo.numero_de_pistas }}</li> 
-            <li class="list-group-item">{{ complejo.descripcion }}</li>  
+          <li class="list-group-item"> <strong>Dirección:</strong> {{ complejo.direccion }}</li>
+            <li class="list-group-item"> <strong>Numero de Pistas:</strong> {{ complejo.numero_de_pistas }}</li> 
+            <li class="list-group-item"> <strong>Descripcion:</strong> {{ complejo.descripcion }}</li>  
+            <li class="list-group-item">  <strong>Tipo de Instalacion:</strong> {{ complejo.tipo_instalacion }}</li>
+            <li class="list-group-item"> <strong>Presta Paleta:</strong> {{ complejo.presta_paleta }} </li>
+            <li class="list-group-item"> <strong>Presta Pelota:</strong> {{ complejo.prestan_pelotas }}</li>
+            <li class="list-group-item">  <strong>Tiene Ducha:</strong> {{ complejo.tiene_duchas }}</li>            
         </ul>
         <div class="card-body text-center">
             <a href="{% url 'reservar_turno' %}" class="btn btn-primary">¡Quiero jugar ya mismo!</a>
         </div>
     </div>
 </div>
-
-
-
 {% endblock %}
