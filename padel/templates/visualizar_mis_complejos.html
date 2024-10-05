@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Mis Complejos de Padel{% endblock %}
 
 {% block content %}
 <html lang="en">
@@ -31,78 +31,44 @@
                                     </span>
                                 </span>
                                 <br>
+    <div class="container text-center mt-4">
+        {% if complejos %}
+            <div class="row">
+                {% for complejo in complejos %}
+                    {% for item in complejo %}
+                        {% if item.habilitado %}
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ item.nombre_complejo }}</h5>
+                                        
+                                        <p><strong>Dirección:</strong> {{ item.direccion }}</p>
+                                        <p><strong>Teléfono:</strong> {{ item.telefono }}</p>
+                                        <p><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</p>
+                                        <p><strong>Descripción:</strong> {{ item.descripcion }}</p>
+                                        <p><strong>Estado:</strong> 
+                                            <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
+                                                {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
+                                            </span>
+                                        </p>
+                                        
+                                        <a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a>
+                                    </div>
                                     {% if item.foto_complejo %}
-                                        <img src="{{ item.foto_complejo.url }}">
+                                        <img src="{{ item.foto_complejo.url }}" class="card-img-bottom" alt="Foto del Complejo">
                                     {% endif %}
-                            </br>
-                            </div>        
-                        </div>
-                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>No tienes complejos registrados.</p>
-    {% endif %}
+            </div>
+        {% else %}
+            <p>No tienes complejos registrados.</p>
+        {% endif %}
+    </div>
 
-    <a href="{% url 'home' %}" class="btn btn-primary" id="volver-btn_misComplejos">Volver</a>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f7f7;
-        margin: 0;
-        padding: 20px;
-    }
-    h1 {
-        color: #333;
-        text-align: center;
-    }
-    .complejo-container {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin: 20px auto;
-        max-width: 800px;
-        padding: 20px;
-    }
-    .complejo-item {
-        border-bottom: 1px solid #e0e0e0;
-        padding: 15px 0;
-    }
-    .complejo-item:last-child {
-        border-bottom: none;
-    }
-    .complejo-title {
-        font-size: 20px;
-        font-weight: bold;
-        color: #007BFF;
-    }
-    .complejo-info {
-        margin-top: 8px;
-    }
-    .complejo-info span {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .complejo-status {
-        font-weight: bold;
-        color: #28a745;
-    }
-    .complejo-status.disabled {
-        color: #dc3545;
-    }
-</style>
+    
+        
+    
 {% endblock %}

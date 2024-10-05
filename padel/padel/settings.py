@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i_w2i@b28%gfpw-a*lb2sv7t$2b03zhu3qb18ba%rjb$xi+jvl'
 
 # Identifica si estás en desarrollo o producción usando una variable de entorno
-ENVIRONMENT = os.getenv('DJANGO_ENV')
+ENVIRONMENT = os.getenv('DJANGO_ENV', 'development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT == 'development'
