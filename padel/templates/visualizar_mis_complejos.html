@@ -1,38 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Mis Complejos de Padel{% endblock %}
 
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Complejos de Padel</title>
-</head>
-<body>
     <h1>Mis Complejos de Padel</h1>
+    
     {% if complejos %}
-        <div class="complejo-container">
-            {% for complejo in complejos %}
-                {% for item in complejo %}
-                    {% if item.habilitado %}
-                        <div class="complejo-item">
-                            <div class="complejo-title">{{ item.nombre_complejo }}</div>
-                            <div class="complejo-info">
-                                <p><a href="{% url 'editar_complejo' item.id %}">Editar</a></p>
-                                <p><a href="{% url 'cargar_turno' item.id %}"> Cargar turnos</a></p>
-                                <span><strong>Dirección:</strong> {{ item.direccion }}</span>
-                                <span><strong>Teléfono:</strong> {{ item.telefono }}</span>
-                                <span><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</span>
-                                <span><strong>Descripción:</strong> {{ item.descripcion }}</span>
-                                <span><strong>Estado:</strong> {{ item.descripcion }} </span> 
-                                    <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
-                                        {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
-                                    </span>
-                                </span>
-                                <br>
-    <div class="container text-center mt-4">
-        {% if complejos %}
+
+        <div class="container text-center mt-4">
             <div class="row">
                 {% for complejo in complejos %}
                     {% for item in complejo %}
@@ -51,6 +27,7 @@
                                                 {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
                                             </span>
                                         </p>
+                                        <p><a href="{% url 'cargar_turno' item.id %}">Cargar turnos</a></p>
                                         
                                         <a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a>
                                     </div>
@@ -63,12 +40,10 @@
                     {% endfor %}
                 {% endfor %}
             </div>
-        {% else %}
-            <p>No tienes complejos registrados.</p>
-        {% endif %}
-    </div>
-
-    
+        </div>
         
-    
+    {% else %}
+        <p>No tienes complejos registrados.</p>
+    {% endif %}
+
 {% endblock %}

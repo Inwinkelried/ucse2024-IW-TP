@@ -15,7 +15,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link text-white" href="{% url 'home' %}">Inicio</a>
-          <a class="nav-link text-white" href="{% url 'complejos' %}">Complejos</a>
+          <a class="nav-link text-white" href="{% url 'ver_complejos' %}">Complejos</a>
           {% if user.is_authenticated %}
             <a class="nav-link text-white" href="{% url 'mis_complejos' %}">Mis Complejos</a>
             <a class="nav-link text-white" href="{% url 'registrar_complejo' %}">Registrar un Complejo</a>
