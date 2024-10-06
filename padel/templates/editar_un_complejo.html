@@ -4,7 +4,7 @@
 
   <div class="edit-container">
     <h2>Editar</h2>
-    <form method="post" enctype="multipart/form-data" class="login-form">
+    <form method="post" enctype="multipart/form-data" class="edit-form">
       {% csrf_token %}
       {{ form.as_p }}
       <button type="submit" class="btn-submit">Guardar Cambios</button>

@@ -49,14 +49,17 @@
                     <div class="col-md-4 mb-4">
                         <div class="card">
                             {% if complejo.foto_complejo %}
-                                <img src="{{ complejo.foto_complejo.url }}" class="card-img-top" alt="{{ complejo.nombre_complejo }}" >
+                                <img src="{{ complejo.foto_complejo.url }}" class="card-img-top" alt="{{ complejo.nombre_complejo }}">
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
                                 <p class="card-text">
                                     <strong>Dirección:</strong> {{ complejo.direccion }}<br>
                                     <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
-                                   
+                                    <strong>Tipo de instalación:</strong> {{ complejo.tipo_instalacion }}<br>
+                                    <strong>Prestan paletas?:</strong> {{ complejo.presta_paleta }}<br>
+                                    <strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas }}<br>
+                                    <strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas }}<br>
                                 </p>
                                 <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
                             </div>

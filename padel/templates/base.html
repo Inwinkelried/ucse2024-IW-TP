@@ -1,43 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   {% load static %}
   <meta charset="utf-8">
   <title>{% block title %}Padel.com{% endblock %}</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'padel/css/estilos.css' %}">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-      <a class="navbar-brand text-white" href="{% url 'home' %}">Padel.com</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link text-white" href="{% url 'home' %}">Inicio</a>
-          <a class="nav-link text-white" href="{% url 'complejos' %}">Complejos</a>
-          {% if user.is_authenticated %}
-            <a class="nav-link text-white" href="{% url 'mis_complejos' %}">Mis Complejos</a>
-            <a class="nav-link text-white" href="{% url 'registrar_complejo' %}">Registrar un Complejo</a>
-            <a class="nav-link text-white" href="{% url 'password_change' %}">Cambiar Contraseña</a>
-            <form method="POST" action="{% url 'logout' %}">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-link nav-link text-white">Cerrar Sesión</button>
-            </form>
-          {% else %}
-            <a class="nav-link text-white" href="{% url 'login' %}">Iniciar Sesión</a>
-            <a class="nav-link text-white" href="{% url 'signup' %}">Registrarse</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </nav>
 </head>
 
 <body>
   <main>
     {% block content %}
-    
     {% endblock %}
   </main>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
