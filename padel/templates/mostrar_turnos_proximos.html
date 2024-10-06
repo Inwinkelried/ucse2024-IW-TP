@@ -9,7 +9,7 @@
         <ul>
             {% for turno in turnos %}         
                     <li>
-                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} Reservar</a>
+                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} <a href= "{% url 'unirse_a_turno' id_turno=turno.id %}">Unirse</a>
                     </li>
             {% endfor %}
         </ul>

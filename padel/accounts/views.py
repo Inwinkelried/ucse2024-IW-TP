@@ -3,7 +3,7 @@ from datetime import timedelta, datetime
 from django.utils import timezone
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Roles, ComplejoDePadel, Turno
+from .models import Usuario, Roles, ComplejoDePadel, Turno, TurnoUsuario
 from django.contrib.auth import login, authenticate, logout
 from .forms import JugadorRegisterForm , ComplejoRegisterForm, ComplejoEditForm, RegistrarTurnoForm
 from django.urls import reverse_lazy
@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from .utils import send_activation_email, enviar_email_confirmacion_turno
+from .utils import send_activation_email, enviar_email_confirmacion_turno, enviar_email_solcitar_unirse_turno
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -236,6 +236,24 @@ def Manejar_Turno_View(request, id_turno):
         turno.save()
         messages.success(request, 'Tu turno se ha publicado!')
         return redirect('/ver_mis_reservas/')
+    elif confirmacion =='jugador_aceptado':
+        turno_usuario = get_object_or_404(TurnoUsuario, id= id_turno)
+        turno = get_object_or_404(Turno, id=turno_usuario.turno.id)
+        cantidad_jugadores_faltantes = turno.cantidad_jugadores_faltantes -1
+        turno_usuario.estado = 'aceptado'
+        turno_usuario.save()
+        turno.cantidad_jugadores_faltantes = cantidad_jugadores_faltantes
+        if cantidad_jugadores_faltantes == 0:
+            turno.estado = 'reservado'
+        turno.save()
+        messages.success(request, 'Haz aceptado a un jugador!')
+        return redirect('/ver_mis_reservas/')
+    elif confirmacion == 'jugador_rechazado':
+        turno_usuario = get_object_or_404(TurnoUsuario, id= id_turno)
+        turno_usuario.estado = 'rechazado'
+        turno_usuario.save()
+        messages.success(request, 'Haz rechazado a un jugador!')
+        return redirect('/ver_mis_reservas/')
     else: 
         turno.estado = 'disponible' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
         turno.usuario= None
@@ -248,25 +266,42 @@ def Ver_Mis_Reservas_View(request):
     user = request.user
     reservas = Turno.objects.filter(usuario = user, estado = 'reservado')
     reservas_buscando_gente = Turno.objects.filter(usuario = user, estado= 'buscando_gente')
+    turnos_esperando_confirmacion = TurnoUsuario.objects.filter(usuario = user)
+    solicitudes_unirse = []
+    for turno_ in reservas_buscando_gente:
+        reserva_buscando = TurnoUsuario.objects.filter(turno = turno_, estado='pendiente')
+        solicitudes_unirse.append(reserva_buscando)
+    reservas_buscando_gente = zip(reservas_buscando_gente, solicitudes_unirse)
     context = {
         'reservas': reservas,
-        'reservas_buscando_gente': reservas_buscando_gente 
+        'reservas_buscando_gente': reservas_buscando_gente,
+        'turnos_esperando_confirmacion': turnos_esperando_confirmacion, 
     }
     return render(request,'ver_mis_reservas.html',context)
 
 def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todos, habria que acotarle un poco el rango 
     hoy = timezone.now()
-    turnos_libres = Turno.objects.filter(horario__gte=hoy, estado='disponible').order_by('horario')
-    turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').order_by('horario')
-    turnos_libres = generar_turnos_por_dia(turnos_libres)
+    user = request.user
+    turnos_libres = Turno.objects.filter(horario__gte=hoy, estado='disponible').order_by('horario') #Aca encuentra los turnos que esten libres en los complejos
+    turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').order_by('horario') #Aca encuentra los turnos en los que esten buscando gente
+    
+    turnos_libres = generar_turnos_por_dia(turnos_libres) 
     turnos_falta_gente = generar_turnos_por_dia(turnos_falta_gente)
     context = {
         'turnos_libres': dict(turnos_libres),
-        'turnos_falta_gente': dict(turnos_falta_gente)
+        'turnos_falta_gente': dict(turnos_falta_gente),   
     }
     return render(request, 'mostrar_turnos_proximos.html', context)
 
-def Unirse_A_Un_Turno(request, id_turno):
-    turno = get_object_or_404(Turno, id=id_turno)
-    propietario = get_object_or_404(Usuario, id=turno.usuario.id)
+def Unirse_A_Un_Turno(request, id_turno): #AA esto hay que mejorarlo haciendo que cuando un usuario que fue rechazado quiera reservar un turno no pueda.
+    turno_reservado = get_object_or_404(Turno, id=id_turno)
+    propietario = get_object_or_404(Usuario, id=turno_reservado.usuario.id) #A este propietario tengo que mandarle el mail
+    invitado = request.user
+    turno_usuario = TurnoUsuario(turno= turno_reservado, usuario = invitado, estado = 'pendiente')
+    turno_usuario.save()
+    enviar_email_solcitar_unirse_turno(request, propietario)
+    messages.success(request, 'Todo ha salido bien! Debemos esperar para recibir la confirmación del propietario del turno')
+    return redirect('ver_mis_reservas')
+    
+    
     
