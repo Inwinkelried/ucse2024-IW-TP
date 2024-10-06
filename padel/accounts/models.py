@@ -94,8 +94,14 @@ class Turno(models.Model):
         fecha = self.horario.strftime("%Y-%m-%d %H:%M")
         return self.complejo.nombre_complejo +' ' + fecha
 class TurnoUsuario(models.Model): 
+    Estados_Solicitud_Unirse = [
+        ('pendiente',  'Pendiente'), #El usuario solicito unirse a un turno y esta esperando la confirmación.
+        ('aceptado', 'Aceptado'), #El usuario fue aceptado en el turno
+        ('rechazado', 'Rechazado')
+    ]
     turno = models.ForeignKey(Turno,on_delete=models.SET_NULL, name='turno',null=True)
     usuario = models.ForeignKey(Usuario,on_delete=models.SET_NULL, name = 'usuario', null=True)
+    estado = models.CharField(max_length = 20, choices=Estados_Solicitud_Unirse, null = True, blank= True, name = 'estado')
 
 class ComplejosFotos(models.Model): 
     pass
