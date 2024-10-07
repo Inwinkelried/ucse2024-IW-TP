@@ -2,19 +2,50 @@
 
 {% block content %}
 
-    <h2>Turnos en busqueda.</h2>
-    {% for reserva in reservas_buscando_gente %}
-        <span><strong>Nombre:</strong> {{ reserva.complejo.nombre_complejo }}</span>
-        <span><strong>Dirección:</strong> {{ reserva.complejo.direccion }}</span>
-        <span><strong>Teléfono:</strong> {{ reserva.complejo.telefono }}</span>
-        <span><strong>Fecha:</strong> {{ reserva.horario|date:"l d F" }}</span>
-        <span><strong>Hora:</strong> {{ reserva.horario|time:"g:i A" }}</span>
-        <span><strong>Cantidad de personas faltantes:</strong> {{ reserva.cantidad_jugadores_faltantes }}</span>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="alert alert-info">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>Turnos a los que te uniste.</h2>
+    {% for reserva in turnos_esperando_confirmacion %}
+        <span><strong>Estado:</strong> {{ reserva.estado }}</span>
+        <span><strong>Nombre:</strong> {{ reserva.usuario.username }}</span>
         <!--<a href="{}">Editar</a>-->
         <!--<a href="{}">Eliminar</a>-->
         </td>
 
     {% endfor %}
+    <h2>Turnos en búsqueda</h2>
+    {% for turno, solicitudes in reservas_buscando_gente %}
+        <p><strong>Nombre:</strong> {{ turno.complejo.nombre_complejo }}</p>
+        <p><strong>Dirección:</strong> {{ turno.complejo.direccion }}</p>
+        <p><strong>Teléfono:</strong> {{ turno.complejo.telefono }}</p>
+        <p><strong>Fecha:</strong> {{ turno.horario|date:"l d F" }}</p>
+        <p><strong>Hora:</strong> {{ turno.horario|time:"g:i A" }}</p>
+        <p><strong>Cantidad de personas faltantes:</strong> {{ turno.cantidad_jugadores_faltantes }}</p>
+
+        <h3>Personas que quieren unirse a tu turno:</h3>
+        {% if solicitudes %}
+            {% for solicitud in solicitudes %}
+                <p><strong>Nombre:</strong> {{ solicitud.usuario.username }}</p>
+                <p><strong>Estado:</strong> {{ solicitud.estado }}</p>
+                <div class="botones">
+                    <form action="/aceptar_turno/{{ solicitud.id }}/" method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="confirmacion" value="jugador_aceptado">Aceptar</button>
+                        <button type="submit" name="confirmacion" value="jugador_rechazado">Rechazar</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay solicitudes para este turno.</p>
+        {% endif %}
+    {% endfor %}
+
+
 
     <h2>Reservas Confirmadas.</h2>
         {% for reserva in reservas %}
