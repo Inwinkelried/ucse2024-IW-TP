@@ -1,75 +1,127 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="container my-5">
+    <!-- Mensajes de información -->
     {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li class="alert alert-info">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <h2>Turnos a los que te uniste.</h2>
-    {% for reserva in turnos_esperando_confirmacion %}
-        <span><strong>Estado:</strong> {{ reserva.estado }}</span>
-        <span><strong>Nombre:</strong> {{ reserva.usuario.username }}</span>
-        <!--<a href="{}">Editar</a>-->
-        <!--<a href="{}">Eliminar</a>-->
-        </td>
-
-    {% endfor %}
-    <h2>Turnos en búsqueda</h2>
-    {% for turno, solicitudes in reservas_buscando_gente %}
-        <p><strong>Nombre:</strong> {{ turno.complejo.nombre_complejo }}</p>
-        <p><strong>Dirección:</strong> {{ turno.complejo.direccion }}</p>
-        <p><strong>Teléfono:</strong> {{ turno.complejo.telefono }}</p>
-        <p><strong>Fecha:</strong> {{ turno.horario|date:"l d F" }}</p>
-        <p><strong>Hora:</strong> {{ turno.horario|time:"g:i A" }}</p>
-        <p><strong>Cantidad de personas faltantes:</strong> {{ turno.cantidad_jugadores_faltantes }}</p>
-
-        <h3>Personas que quieren unirse a tu turno:</h3>
-        {% if solicitudes %}
-            {% for solicitud in solicitudes %}
-                <p><strong>Nombre:</strong> {{ solicitud.usuario.username }}</p>
-                <p><strong>Estado:</strong> {{ solicitud.estado }}</p>
-                <div class="botones">
-                    <form action="/aceptar_turno/{{ solicitud.id }}/" method="post">
-                        {% csrf_token %}
-                        <button type="submit" name="confirmacion" value="jugador_aceptado">Aceptar</button>
-                        <button type="submit" name="confirmacion" value="jugador_rechazado">Rechazar</button>
-                    </form>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No hay solicitudes para este turno.</p>
-        {% endif %}
-    {% endfor %}
-
-
-
-    <h2>Reservas Confirmadas.</h2>
-        {% for reserva in reservas %}
-            <span><strong>Nombre:</strong> {{ reserva.complejo.nombre_complejo }}</span>
-            <span><strong>Dirección:</strong> {{ reserva.complejo.direccion }}</span>
-            <span><strong>Teléfono:</strong> {{ reserva.complejo.telefono }}</span>
-            <span><strong>Fecha:</strong> {{ reserva.horario|date:"l d F" }}</span>
-            <span><strong>Hora:</strong> {{ reserva.horario|time:"g:i A" }}</span>
-            <div class="botones">
-                <form action="/aceptar_turno/{{ reserva.id }}/" method="post">
-                    {% csrf_token %}
-                    <label for="opciones">Selecciona la cantidad de personas:</label>
-                    <select name="cantidad_personas" id="opciones">
-                        <option value="1">1 persona</option>
-                        <option value="2">2 personas</option>
-                        <option value="3">3 personas</option>
-                    </select>
-                    <button type="submit" name="confirmacion" value="buscando_gente">Confirmar y buscar gente</button>
-                </form>
-            <!--<a href="{}">Editar</a>-->
-            <!--<a href="{}">Eliminar</a>-->
-            </td>
-        
+    <ul class="list-unstyled">
+        {% for message in messages %}
+        <li class="alert alert-info">{{ message }}</li>
         {% endfor %}
-    
-    
+    </ul>
+    {% endif %}
+
+    <div class="accordion" id="accordionExample">
+
+        <!-- Turnos a los que te uniste -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Turnos a los que te uniste
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    {% if turnos_esperando_confirmacion %}
+                    <div class="list-group mb-5">
+                        {% for reserva in turnos_esperando_confirmacion %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><strong>Estado:</strong> {{ reserva.estado }}</span>
+                            <span><strong>Nombre:</strong> {{ reserva.usuario.username }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted-custom">No tienes turnos pendientes de confirmación.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Turnos en búsqueda -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Turnos en búsqueda
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    {% for turno, solicitudes in reservas_buscando_gente %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ turno.complejo.nombre_complejo }}</h5>
+                            <p><strong>Dirección:</strong> {{ turno.complejo.direccion }}</p>
+                            <p><strong>Teléfono:</strong> {{ turno.complejo.telefono }}</p>
+                            <p><strong>Fecha:</strong> {{ turno.horario|date:"l d F" }}</p>
+                            <p><strong>Hora:</strong> {{ turno.horario|time:"g:i A" }}</p>
+                            <p><strong>Personas faltantes:</strong> {{ turno.cantidad_jugadores_faltantes }}</p>
+
+                            <h6>Personas que quieren unirse a tu turno:</h6>
+                            {% if solicitudes %}
+                            <ul class="list-group">
+                                {% for solicitud in solicitudes %}
+                                <li class="list-group-item">
+                                    <p><strong>Nombre:</strong> {{ solicitud.usuario.username }}</p>
+                                    <p><strong>Estado:</strong> {{ solicitud.estado }}</p>
+                                    <form action="/aceptar_turno/{{ solicitud.id }}/" method="post" class="d-flex gap-2">
+                                        {% csrf_token %}
+                                        <button type="submit" name="confirmacion" value="jugador_aceptado" class="btn btn-success btn-sm">Aceptar</button>
+                                        <button type="submit" name="confirmacion" value="jugador_rechazado" class="btn btn-danger btn-sm">Rechazar</button>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p class="text-muted-custom">No hay solicitudes para este turno.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservas Confirmadas -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Reservas Confirmadas
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    {% if reservas %}
+                    <div class="list-group mb-5">
+                        {% for reserva in reservas %}
+                        <div class="list-group-item">
+                            <h5>{{ reserva.complejo.nombre_complejo }}</h5>
+                            <p><strong>Dirección:</strong> {{ reserva.complejo.direccion }}</p>
+                            <p><strong>Teléfono:</strong> {{ reserva.complejo.telefono }}</p>
+                            <p><strong>Fecha:</strong> {{ reserva.horario|date:"l d F" }}</p>
+                            <p><strong>Hora:</strong> {{ reserva.horario|time:"g:i A" }}</p>
+                            <form action="/aceptar_turno/{{ reserva.id }}/" method="post" class="d-flex gap-3">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="opciones">Cantidad de personas:</label>
+                                    <select name="cantidad_personas" id="opciones" class="form-control form-control-sm">
+                                        <option value="1">1 persona</option>
+                                        <option value="2">2 personas</option>
+                                        <option value="3">3 personas</option>
+                                    </select>
+                                </div>
+                                <button type="submit" name="confirmacion" value="buscando_gente" class="btn btn-primary btn-sm mt-3">Confirmar y buscar gente</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted-custom">No tienes reservas confirmadas.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 {% endblock %}

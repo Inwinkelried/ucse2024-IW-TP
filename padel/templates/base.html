@@ -19,6 +19,8 @@
           {% if user.is_authenticated %}
             <a class="nav-link text-white" href="{% url 'mis_complejos' %}">Mis Complejos</a>
             <a class="nav-link text-white" href="{% url 'registrar_complejo' %}">Registrar un Complejo</a>
+            <a class="nav-link text-white" href="{% url 'ver_mis_reservas' %}">Ver mis reservas</a>
+            <a class="nav-link text-white" href="{% url 'mostrar_turnos_proximos' %}">Turnos proximos</a>
             <a class="nav-link text-white" href="{% url 'password_change' %}">Cambiar Contraseña</a>
             <form method="POST" action="{% url 'logout' %}">
               {% csrf_token %}

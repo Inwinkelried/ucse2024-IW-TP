@@ -5,34 +5,7 @@
 
 {% block content %}
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-      <div class="container-fluid">
-        <a class="navbar-brand text-white" href="{% url 'home' %}">Padel.com</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link text-white" href="{% url 'home' %}">Inicio</a>
-            <a class="nav-link text-white" href="{% url 'ver_complejos' %}">Complejos</a>
-            <a class="nav-link text-white" href="{% url 'ver_mis_reservas' %}">Ver mis reservas</a>
-            <a class="nav-link text-white" href="{% url 'mostrar_turnos_proximos' %}">Turnos proximos</a>
-            {% if user.is_authenticated %}
-              <a class="nav-link text-white" href="{% url 'mis_complejos' %}">Mis Complejos</a>
-              <a class="nav-link text-white" href="{% url 'registrar_complejo' %}">Registrar un Complejo</a>
-              <a class="nav-link text-white" href="{% url 'password_change' %}">Cambiar Contraseña</a>
-              <form method="POST" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link nav-link text-white">Cerrar Sesión</button>
-              </form>
-            {% else %}
-              <a class="nav-link text-white" href="{% url 'login' %}">Iniciar Sesión</a>
-              <a class="nav-link text-white" href="{% url 'signup' %}">Registrarse</a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </nav>
+  
 
   <div class="hero">
     <div>

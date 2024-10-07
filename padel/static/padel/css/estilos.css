@@ -275,3 +275,9 @@ button {
 button:hover {
   background-color: #072064;
 }
+
+
+.text-muted-custom {
+  color: #ffffff;
+  font-size: 200%;
+}
