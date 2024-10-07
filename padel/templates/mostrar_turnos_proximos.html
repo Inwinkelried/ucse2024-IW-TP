@@ -1,32 +1,79 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}Detalle del Complejo{% endblock %}
+{% block title %}Turnos Disponibles{% endblock %}
+
 {% block content %}
-<h1> Falta gente! Sumate! </h1>
-<div class="mostrar_turnos"></div>
-    {% for dia, turnos in turnos_falta_gente.items %}
-        <h2>{{ dia|date:"l d F" }}</h2> <!-- Mostrar la fecha -->
-        <ul>
-            {% for turno in turnos %}         
-                    <li>
-                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} Reservar</a>
-                    </li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">¡Falta gente! ¡Sumate a un turno!</h1>
+
+    <!-- Navegación por fechas -->
+    <div id="turnosAccordion">
+        {% for dia, turnos in turnos_falta_gente.items %}
+        <div class="card mb-3">
+            <div class="card-header" id="heading-{{ forloop.counter }}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link text-primary" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse-{{ forloop.counter }}">
+                        {{ dia|date:"l d F" }}
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapse-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#turnosAccordion">
+                <div class="card-body">
+                    <!-- Turnos disponibles para este día -->
+                    {% if turnos %}
+                    <ul class="list-group">
+                        {% for turno in turnos %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-clock"></i> {{ turno.horario|time:"g:i A" }}</span>
+                            <a href="{% url 'reservar_turno' id_complejo=turno.complejo.id id_turno=turno.id %}" class="btn btn-primary btn-sm">
+                                Reservar
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No hay turnos disponibles.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Turnos Libres -->
+    <div id="turnosLibresAccordion">
+        {% for dia, turnos in turnos_libres.items %}
+        <div class="card mb-3">
+            <div class="card-header" id="heading-libres-{{ forloop.counter }}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link text-primary" type="button" data-toggle="collapse" data-target="#collapse-libres-{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse-libres-{{ forloop.counter }}">
+                        {{ dia|date:"l d F" }}
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapse-libres-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-libres-{{ forloop.counter }}" data-parent="#turnosLibresAccordion">
+                <div class="card-body">
+                    <!-- Turnos libres para este día -->
+                    {% if turnos %}
+                    <ul class="list-group">
+                        {% for turno in turnos %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-clock"></i> {{ turno.horario|time:"g:i A" }}</span>
+                            <a href="{% url 'reservar_turno' id_complejo=turno.complejo.id id_turno=turno.id %}" class="btn-submit">
+                                Reservar
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No hay turnos disponibles.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-<h1> Turnos Libres </h1>
-<div class="mostrar_turnos">
-    {% for dia, turnos in turnos_libres.items %}
-        <h2>{{ dia|date:"l d F" }}</h2> <!-- Mostrar la fecha -->
-        <ul>
-            {% for turno in turnos %}
-                    <li>
-                        <strong>Horario:</strong> {{ turno.horario|time:"g:i A" }} <a href="{% url 'reservar_turno' id_complejo=turno.complejo.id id_turno=turno.id %}">Reservar</a>
-                    </li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
-</div>
-    
 {% endblock %}
