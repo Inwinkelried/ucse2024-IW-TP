@@ -64,5 +64,21 @@ def enviar_email_solcitar_unirse_turno(request, user):
     email = EmailMessage(mail_subject, message, 'facundoschillino01@gmail.com', [user.email])
     email.content_subtype = "html"
     email.send()
+
+def enviar_mail_aviso_reserva(request, user):
+    current_site = get_current_site(request)
+    mail_subject = 'Tienes novedades sobre tu turno!'
+    notification_url = reverse('ver_mis_reservas', kwargs={})  
+    notification_url = f"http://{current_site.domain}{notification_url}"
+    
+    message = render_to_string('email/enviar_mail_aviso_unirse.html',{
+        'user': user,
+        'notification_url': notification_url,
+        'mensaje': 'Tienes nueva información sobre un turno! Ingresa para confirmar.'
+    })
+    email = EmailMessage(mail_subject, message, 'facundoschillino01@gmail.com', [user.email])
+    email.content_subtype = "html"
+    email.send()
+
     
 
