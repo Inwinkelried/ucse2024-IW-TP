@@ -265,6 +265,7 @@ def Manejar_Turno_View(request, id_turno):
 def Ver_Mis_Reservas_View(request):
     user = request.user
     reservas = Turno.objects.filter(usuario = user, estado = 'reservado')
+    reservas_pendientes = Turno.objects.filter(usuario=user, estado = 'pendiente')
     reservas_buscando_gente = Turno.objects.filter(usuario = user, estado= 'buscando_gente')
     turnos_esperando_confirmacion = TurnoUsuario.objects.filter(usuario = user)
     solicitudes_unirse = []
@@ -274,6 +275,7 @@ def Ver_Mis_Reservas_View(request):
     reservas_buscando_gente = zip(reservas_buscando_gente, solicitudes_unirse)
     context = {
         'reservas': reservas,
+        'reservas_pendientes':reservas_pendientes,
         'reservas_buscando_gente': reservas_buscando_gente,
         'turnos_esperando_confirmacion': turnos_esperando_confirmacion, 
     }

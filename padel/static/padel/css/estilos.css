@@ -1,4 +1,4 @@
-.login-container {
+.general-card {
     max-width: 400px; /* Tamaño máximo del contenedor */
     margin:  auto; /* Centrar el contenedor horizontalmente */
     padding: 20px;
@@ -114,7 +114,7 @@ h2 {
 }
 
 .btn-submit:hover {
-  background-color: #0056b3;
+  background-color: #007bff;
 }
 
 .error {
@@ -134,8 +134,11 @@ body {
   margin: 0;
 }
 h1 {
-  color: #333;
+  color: #ffffff;
   text-align: center;
+  font-size: 4rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
   .complejo-status {
   font-weight: bold;
@@ -179,4 +182,102 @@ h1 {
 
 .hero .cta-button:hover {
   background-color: #ffcc00;
+}
+
+ .mt-3{
+  max-width: 200px; 
+  margin: auto;
+}
+
+.bi-clock
+{
+  color: #007bff;
+}
+
+
+
+
+.registration-success-container {
+  background-color: #ffffff;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 80px;
+}
+
+.registration-title {
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.registration-message {
+  color: #555;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.registration-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.registration-button:hover {
+  background-color: #007bff;
+}
+
+
+
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #072064;
+}
+
+
+.text-muted-custom {
+  color: #ffffff;
+  font-size: 200%;
 }

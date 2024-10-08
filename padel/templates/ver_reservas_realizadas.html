@@ -4,8 +4,8 @@
 {% block title %}Reservas pendientes por confirmar{% endblock %}
 
 {% block content %}
-<h2>Turnos pedientes de confirmación</h2>
-<div class="turnos_pendientes"></div>
+<h1>Turnos pedientes de confirmación</h1>
+<div class="general-card">
     {%for turno in turnos %}
         <div class="turno">
             <h3>Información de reserva:</h3>
@@ -28,5 +28,5 @@
         </div>
     {% endfor %}
     
-
+</div>
 {% endblock %}
