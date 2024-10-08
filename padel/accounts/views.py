@@ -223,16 +223,19 @@ def Ver_Reservas_Realizadas_View(request, id_complejo):
 
 
 def Manejar_Turno_View(request, id_turno):
-    turno = get_object_or_404(Turno, id= id_turno)
-    complejo = turno.complejo
+    
     confirmacion = request.POST.get('confirmacion')
     if confirmacion == 'aceptar':
+        turno = get_object_or_404(Turno, id= id_turno)
+        complejo = turno.complejo
         turno.estado = 'reservado'
         turno.save()
         enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Turno confirmado exitosamente!')
         return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
     elif confirmacion == 'buscando_gente':
+        turno = get_object_or_404(Turno, id= id_turno)
+        complejo = turno.complejo
         turno.estado = 'buscando_gente'
         turno.cantidad_jugadores_faltantes = int(request.POST.get('cantidad_personas'))
         turno.save()
@@ -247,7 +250,7 @@ def Manejar_Turno_View(request, id_turno):
         turno_usuario.save()
         turno.cantidad_jugadores_faltantes = cantidad_jugadores_faltantes
         if cantidad_jugadores_faltantes == 0:
-            turno.estado = 'reservado'
+            turno.estado = 'reservado' #Vamos a agregar un estado reservado completo
         turno.save()
         enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Haz aceptado a un jugador!')
@@ -260,6 +263,8 @@ def Manejar_Turno_View(request, id_turno):
         messages.success(request, 'Haz rechazado a un jugador!')
         return redirect('/ver_mis_reservas/')
     else: 
+        turno = get_object_or_404(Turno, id= id_turno)
+        complejo = turno.complejo
         turno.estado = 'disponible' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
         turno.usuario= None
         turno.save()

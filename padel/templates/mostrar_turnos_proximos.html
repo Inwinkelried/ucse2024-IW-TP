@@ -26,7 +26,7 @@
                         {% for turno in turnos %}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-clock"></i> {{ turno.horario|time:"g:i A" }}</span>
-                            <a href="{% url 'reservar_turno' id_complejo=turno.complejo.id id_turno=turno.id %}" class="btn btn-primary btn-sm">
+                            <a href="{% url 'unirse_a_turno'  id_turno=turno.id %}" class="btn btn-primary btn-sm">
                                 Unirse
                             </a>
                         </li>
