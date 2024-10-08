@@ -128,7 +128,7 @@ def ComplejosListView(request):
         complejos = complejos.filter(tiene_duchas=False)
 
     if alquiler_paletas:
-        complejos = complejos.filter(presta_paleta=alquiler_paletas)
+        complejos = complejos.filter(prestan_paletas=alquiler_paletas)
 
     return render(request, 'ver_complejos.html', {'complejos': complejos})
 

@@ -56,7 +56,7 @@ class ComplejoDePadel(models.Model):
     tipo_instalacion =  models.CharField( max_length=10, choices=TIPOS_INSTALACION, null=True, blank=True)
     tiene_duchas = models.BooleanField(name='tiene_duchas', default = False, null=True, blank=True)
     tiene_bar = models.BooleanField(name='tiene_bar', default = False, null=True, blank=True),
-    presta_paleta= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='presta_paleta', default='no' )
+    prestan_paletas= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_paletas', default='no' )
     prestan_pelotas = models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_pelotas', default='no')
     cantidad_pistas = models.IntegerField(name = 'cantidad_pistas', default=1, null=True)
     def __str__(self):
