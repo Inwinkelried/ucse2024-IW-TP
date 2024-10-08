@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="text-center mb-4">¡Falta gente! ¡Sumate a un turno!</h1>
+    <h1 class="text-center mb-4">¡Falta gente! </h1>
 
     <!-- Navegación por fechas -->
     <div id="turnosAccordion">
@@ -42,6 +42,7 @@
     </div>
 
     <!-- Turnos Libres -->
+    <h1>¡Sumate a un turno!</h1>
     <div id="turnosLibresAccordion">
         {% for dia, turnos in turnos_libres.items %}
         <div class="card mb-3">
