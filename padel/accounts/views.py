@@ -259,7 +259,7 @@ def Manejar_Turno_View(request, id_turno):
         turno_usuario = get_object_or_404(TurnoUsuario, id= id_turno)
         turno_usuario.estado = 'rechazado'
         turno_usuario.save()
-        enviar_mail_aviso_reserva(request, turno.usuario)
+        enviar_mail_aviso_reserva(request, turno_usuario.usuario)
         messages.success(request, 'Haz rechazado a un jugador!')
         return redirect('/ver_mis_reservas/')
     else: 
@@ -268,7 +268,7 @@ def Manejar_Turno_View(request, id_turno):
         turno.estado = 'disponible' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
         turno.usuario= None
         turno.save()
-        enviar_mail_aviso_reserva(request, turno.usuario)
+        enviar_mail_aviso_reserva(request, turno_usuario.usuario)
         messages.success(request, 'Turno rechazado.')
         return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
         
