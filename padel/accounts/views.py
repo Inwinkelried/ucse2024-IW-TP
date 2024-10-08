@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from .utils import send_activation_email, enviar_email_confirmacion_turno, enviar_email_solcitar_unirse_turno
+from .utils import send_activation_email, enviar_email_confirmacion_turno, enviar_email_solcitar_unirse_turno, enviar_mail_aviso_reserva
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -221,6 +221,7 @@ def Ver_Reservas_Realizadas_View(request, id_complejo):
     }
     return render(request, 'ver_reservas_realizadas.html', context)
 
+
 def Manejar_Turno_View(request, id_turno):
     turno = get_object_or_404(Turno, id= id_turno)
     complejo = turno.complejo
@@ -228,12 +229,14 @@ def Manejar_Turno_View(request, id_turno):
     if confirmacion == 'aceptar':
         turno.estado = 'reservado'
         turno.save()
+        enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Turno confirmado exitosamente!')
         return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
     elif confirmacion == 'buscando_gente':
         turno.estado = 'buscando_gente'
         turno.cantidad_jugadores_faltantes = int(request.POST.get('cantidad_personas'))
         turno.save()
+        enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Tu turno se ha publicado!')
         return redirect('/ver_mis_reservas/')
     elif confirmacion =='jugador_aceptado':
@@ -246,20 +249,24 @@ def Manejar_Turno_View(request, id_turno):
         if cantidad_jugadores_faltantes == 0:
             turno.estado = 'reservado'
         turno.save()
+        enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Haz aceptado a un jugador!')
         return redirect('/ver_mis_reservas/')
     elif confirmacion == 'jugador_rechazado':
         turno_usuario = get_object_or_404(TurnoUsuario, id= id_turno)
         turno_usuario.estado = 'rechazado'
         turno_usuario.save()
+        enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Haz rechazado a un jugador!')
         return redirect('/ver_mis_reservas/')
     else: 
         turno.estado = 'disponible' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
         turno.usuario= None
         turno.save()
+        enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Turno rechazado.')
         return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
+        
 
 @login_required(login_url='login')
 def Ver_Mis_Reservas_View(request):

@@ -28,8 +28,9 @@
                                                 {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
                                             </span>
                                         </p>
-                                        <p><a href="{% url 'cargar_turno' item.id %}">Cargar turnos</a></p>
-                                        
+                                        {% if item.habilitado %}
+                                            <p><a href="{% url 'cargar_turno' item.id %}">Cargar turnos</a></p>
+                                        {% endif %}
                                         <a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a>
                                     </div>
                                     {% if item.foto_complejo %}

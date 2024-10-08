@@ -30,10 +30,10 @@ class ComplejoEditForm(forms.ModelForm):
     tiene_bar = forms.BooleanField(required=False)
     presta_paleta = forms.ChoiceField(choices=ComplejoDePadel.PALETAS_PELOTAS,  required=False)
     prestan_pelotas = forms.ChoiceField(choices=ComplejoDePadel.PALETAS_PELOTAS, required=False)
-
+    cantidad_pistas = forms.IntegerField(required=False)
     class Meta:
         model = ComplejoDePadel
-        fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'presta_paleta', 'prestan_pelotas', 'foto_complejo')
+        fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'presta_paleta', 'prestan_pelotas', 'foto_complejo', 'cantidad_pistas')
 
 class JugadorRegisterForm(UserCreationForm):
     telefono = forms.CharField(max_length=15)
