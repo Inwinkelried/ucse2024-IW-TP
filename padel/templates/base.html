@@ -16,8 +16,6 @@
         <div class="navbar-nav">
           <a class="nav-link text-white" href="{% url 'home' %}">Inicio</a>
           <a class="nav-link text-white" href="{% url 'ver_complejos' %}">Complejos</a>
-          <a class="nav-link text-white" href="{% url 'ver_mis_reservas' %}">Ver mis reservas</a>
-          <a class="nav-link text-white" href="{% url 'mostrar_turnos_proximos' %}">Turnos proximos</a>
           {% if user.is_authenticated %}
             <a class="nav-link text-white" href="{% url 'mis_complejos' %}">Mis Complejos</a>
             <a class="nav-link text-white" href="{% url 'registrar_complejo' %}">Registrar un Complejo</a>

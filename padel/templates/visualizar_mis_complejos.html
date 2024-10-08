@@ -18,7 +18,6 @@
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ item.nombre_complejo }}</h5>
-                                        
                                         <p><strong>Dirección:</strong> {{ item.direccion }}</p>
                                         <p><strong>Teléfono:</strong> {{ item.telefono }}</p>
                                         <p><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</p>
@@ -30,8 +29,9 @@
                                         </p>
                                         {% if item.habilitado %}
                                             <p><a href="{% url 'cargar_turno' item.id %}">Cargar turnos</a></p>
+                                            <p><a href="{% url 'ver_reservas_realizadas' item.id %}"> Ver reservas de los usuarios!</a></p>
                                         {% endif %}
-                                        <a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a>
+                                        <p><a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a></p>   
                                     </div>
                                     {% if item.foto_complejo %}
                                         <img src="{{ item.foto_complejo.url }}" class="card-img-bottom" alt="Foto del Complejo">

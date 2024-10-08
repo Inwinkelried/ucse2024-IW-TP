@@ -190,7 +190,7 @@ def Mostrar_Turnos_View(request, id_complejo):
     return render(request, 'ver_turnos.html', context)
 
 @login_required(login_url = 'login')
-def Reservar_Turno_View(request, id_complejo, id_turno):
+def Reservar_Turno_View(request, id_complejo, id_turno): #Hay que modificar esta para que un dueño no pueda reservar su propio turno
     complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
     turno = get_object_or_404(Turno, id=id_turno)
     context = {
@@ -297,7 +297,7 @@ def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todo
     hoy = timezone.now()
     user = request.user
     turnos_libres = Turno.objects.filter(horario__gte=hoy, estado='disponible').order_by('horario') #Aca encuentra los turnos que esten libres en los complejos
-    turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').order_by('horario') #Aca encuentra los turnos en los que esten buscando gente
+    turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').exclude(usuario=user).order_by('horario') #Aca encuentra los turnos en los que esten buscando gente
     
     turnos_libres = generar_turnos_por_dia(turnos_libres) 
     turnos_falta_gente = generar_turnos_por_dia(turnos_falta_gente)
