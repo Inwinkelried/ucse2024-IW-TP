@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email, enviar_email_confirmacion_turno, enviar_email_solcitar_unirse_turno, enviar_mail_aviso_reserva
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from haystack.query import SearchQuerySet
 
 
 def activate(request, uidb64, token):
@@ -316,6 +317,11 @@ def Unirse_A_Un_Turno(request, id_turno): #AA esto hay que mejorarlo haciendo qu
     enviar_email_solcitar_unirse_turno(request, propietario)
     messages.success(request, 'Todo ha salido bien! Debemos esperar para recibir la confirmación del propietario del turno')
     return redirect('ver_mis_reservas')
+
+def search_complejo_view(request):
+    query = request.GET.get('q')
+    complejos = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', '')) 
+    return render(request, 'search.html', {'results': complejos})
     
     
     

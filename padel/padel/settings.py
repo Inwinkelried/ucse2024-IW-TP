@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'storages',
     'haystack',
-    'whoosh'
+    'whoosh',
 ]
 
 MIDDLEWARE = [
@@ -219,6 +219,9 @@ else:
     # Configuración para usar almacenamiento de archivos locales en desarrollo
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+    
+WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh/')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
