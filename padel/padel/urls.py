@@ -48,5 +48,6 @@ urlpatterns = [
     path('mostrar_turnos_proximos/',views.Mostrar_Turnos_Proximos_View, name='mostrar_turnos_proximos'),
     path('unirse_a_turno<int:id_turno>/', views.Unirse_A_Un_Turno, name='unirse_a_turno'),
     path('search/', include('haystack.urls')),
+    path('buscar/', views.buscar_complejos_view, name='buscar_complejos_view'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

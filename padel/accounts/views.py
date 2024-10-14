@@ -318,10 +318,20 @@ def Unirse_A_Un_Turno(request, id_turno): #AA esto hay que mejorarlo haciendo qu
     messages.success(request, 'Todo ha salido bien! Debemos esperar para recibir la confirmación del propietario del turno')
     return redirect('ver_mis_reservas')
 
-def search_complejo_view(request):
-    query = request.GET.get('q')
-    complejos = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', '')) 
-    return render(request, 'search.html', {'results': complejos})
-    
+def buscar_complejos_view(request):
+    #Agrego estos prints para debuggear por consola
+    query = request.GET.get('q', '')  # Se obtiene la consulta desde GET
+    if query:
+        print(f"Buscando complejos con el término: {query}")
+        complejos = SearchQuerySet().filter(text=query)
+        print(f"Resultados de la búsqueda: {complejos.count()} encontrados")
+    else:
+        complejos = SearchQuerySet().all()
+        print(f"Mostrando {complejos.count()} complejos en total")
+
+    return render(request, 'ver_complejos.html', {'complejos': complejos})
+
+
+
     
     

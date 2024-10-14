@@ -220,8 +220,7 @@ else:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-    
-WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh/')
+WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh_index')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -229,3 +228,5 @@ HAYSTACK_CONNECTIONS = {
         'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
     },
 }
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

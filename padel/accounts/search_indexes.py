@@ -9,10 +9,10 @@ class ComplejoDePadelIndex(indexes.SearchIndex, indexes.Indexable):
     ciudad = indexes.CharField(model_attr='ciudad')
 
     content_auto = indexes.EdgeNgramField(model_attr='nombre_complejo')
-    
+
 
     def get_model(self):
         return ComplejoDePadel
 
     def index_queryset(self, using=None):
-        return self.get_model().objects.all()
+        return self.get_model().objects.filter(habilitado=True)
