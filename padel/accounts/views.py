@@ -63,10 +63,13 @@ def ComplejoRegisterView(request):
                 user.estado = 'pendiente_aprobacion'
                 user.rol = Roles.objects.get(nombre=Roles.PROPIETARIO)  
                 user.save()  
-                return redirect('vista_complejos')  
+                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador.")
+                return redirect('home')  
             else:
-                return redirect('mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+                messages.success(request, "Tu complejo se ha registrado exitosamente!")
+                return redirect('home') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
+            messages.success(request, "Hubo un error en el registro del complejo")
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
         if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 

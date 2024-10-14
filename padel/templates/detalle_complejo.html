@@ -16,10 +16,35 @@
             <li class="list-group-item"> <strong>Numero de Pistas:</strong> {{ complejo.numero_de_pistas }}</li> 
             <li class="list-group-item"> <strong>Descripcion:</strong> {{ complejo.descripcion }}</li>  
             <li class="list-group-item">  <strong>Tipo de Instalacion:</strong> {{ complejo.tipo_instalacion }}</li>
-            <li class="list-group-item"> <strong>Presta Paleta:</strong> {{ complejo.prestan_paletas }} </li>
-            <li class="list-group-item"> <strong>Presta Pelota:</strong> {{ complejo.prestan_pelotas }}</li>
-            <li class="list-group-item">  <strong>Tiene Ducha:</strong> {{ complejo.tiene_duchas }}</li>            
-        </ul>
+            <li class="list-group-item">
+                <strong>Presta Paleta:</strong>
+                {% if complejo.prestan_paletas == 'prestan' %}
+                    Sí
+                {% elif complejo.prestan_paletas == 'alquilan_y_prestan' %}
+                    Prestan y alquilan
+                {% else %}
+                    No
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                <strong>Presta Pelota:</strong>
+                {% if complejo.prestan_pelotas == 'prestan' %}
+                    Sí
+                {% elif complejo.prestan_pelotas == 'alquilan_y_prestan' %}
+                    Prestan y alquilan
+                {% else %}
+                    No
+                {% endif %}
+            </li>
+            <li class="list-group-item">
+                <strong>Tiene Ducha:</strong>
+                {% if complejo.tiene_duchas %}
+                    Sí
+                {% else %}
+                    No
+                {% endif %}
+            </li>
+                    </ul>
         <div class="card-body text-center">
             <span><a href="{% url 'mostrar_turnos' complejo.id %}"> A jugar!</a></span>
         </div>
