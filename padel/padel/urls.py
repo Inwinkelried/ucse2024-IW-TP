@@ -46,6 +46,7 @@ urlpatterns = [
     path('aceptar_turno/<int:id_turno>/',views.Manejar_Turno_View ,name='aceptar_turno'),
     path('ver_mis_reservas/', views.Ver_Mis_Reservas_View, name= 'ver_mis_reservas'),
     path('mostrar_turnos_proximos/',views.Mostrar_Turnos_Proximos_View, name='mostrar_turnos_proximos'),
-    path('unirse_a_turno<int:id_turno>/', views.Unirse_A_Un_Turno, name='unirse_a_turno')
+    path('unirse_a_turno<int:id_turno>/', views.Unirse_A_Un_Turno, name='unirse_a_turno'),
+    path('ver_turnos_mi_complejo/<int:id_complejo>/', views.Ver_Turnos_Mi_Complejo_View ,name='ver_turnos_mi_complejo'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
