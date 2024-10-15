@@ -15,6 +15,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from .utils import send_activation_email, enviar_email_confirmacion_turno, enviar_email_solcitar_unirse_turno, enviar_mail_aviso_reserva
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from haystack.query import SearchQuerySet
+from django.http import HttpResponse
 
 
 def activate(request, uidb64, token):
@@ -316,6 +318,29 @@ def Unirse_A_Un_Turno(request, id_turno): #AA esto hay que mejorarlo haciendo qu
     enviar_email_solcitar_unirse_turno(request, propietario)
     messages.success(request, 'Todo ha salido bien! Debemos esperar para recibir la confirmación del propietario del turno')
     return redirect('ver_mis_reservas')
-    
-    
-    
+
+def buscar_complejos_view(request):
+    query = request.GET.get('q', '')  
+    if query:
+        complejos = SearchQuerySet().filter(text=query)
+    else:
+        complejos = SearchQuerySet().all()
+    return render(request, 'buscar_complejos.html', {'complejos': complejos})
+
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow: /admin/",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+def rebuild_index(request):
+    from django.core.management import call_command
+    from django.http import JsonResponse
+    try:
+        call_command("rebuild_index", noinput=False)
+        result = "Index rebuilt"
+    except Exception as err:
+        result = f"Error: {err}"
+
+    return JsonResponse({"result": result})

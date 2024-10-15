@@ -19,9 +19,11 @@ from django.urls import path, include
 from home import views as homeview
 from accounts import views
 from django.views.generic import TemplateView
+from accounts.views import robots_txt
 #Imports para manejo de estaticos.
 from django.conf.urls.static import static
 from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,6 +48,10 @@ urlpatterns = [
     path('aceptar_turno/<int:id_turno>/',views.Manejar_Turno_View ,name='aceptar_turno'),
     path('ver_mis_reservas/', views.Ver_Mis_Reservas_View, name= 'ver_mis_reservas'),
     path('mostrar_turnos_proximos/',views.Mostrar_Turnos_Proximos_View, name='mostrar_turnos_proximos'),
-    path('unirse_a_turno<int:id_turno>/', views.Unirse_A_Un_Turno, name='unirse_a_turno')
+    path('unirse_a_turno<int:id_turno>/', views.Unirse_A_Un_Turno, name='unirse_a_turno'),
+    path('search/', include('haystack.urls')),
+    path('buscar/', views.buscar_complejos_view, name='buscar_complejos_view'),
+    path('robots.txt', robots_txt, name='robots_txt'),
+    path('rebuild_index/', views.rebuild_index),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

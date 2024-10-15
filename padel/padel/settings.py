@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'accounts',
-    'storages'
-    
+    'storages',
+    'haystack',
+    'whoosh',
 ]
 
 MIDDLEWARE = [
@@ -218,3 +219,14 @@ else:
     # Configuración para usar almacenamiento de archivos locales en desarrollo
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh_index')
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
