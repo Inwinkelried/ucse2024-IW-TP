@@ -41,8 +41,6 @@
         </div>
         {% endfor %}
     </div>
-
-    <!-- Turnos Libres -->
     <h1>¡Sumate a un turno!</h1>
     <div id="turnosLibresAccordion">
         {% for dia, turnos in turnos_libres.items %}
@@ -58,7 +56,6 @@
 
             <div id="collapse-libres-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-libres-{{ forloop.counter }}" data-parent="#turnosLibresAccordion">
                 <div class="card-body">
-                    <!-- Turnos libres para este día -->
                     {% if turnos %}
                     <ul class="list-group">
                         {% for turno in turnos %}
