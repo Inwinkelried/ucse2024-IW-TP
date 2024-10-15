@@ -325,7 +325,7 @@ def buscar_complejos_view(request):
         complejos = SearchQuerySet().filter(text=query)
     else:
         complejos = SearchQuerySet().all()
-    return render(request, 'ver_complejos.html', {'complejos': complejos})
+    return render(request, 'buscar_complejos.html', {'complejos': complejos})
 
 def robots_txt(request):
     lines = [

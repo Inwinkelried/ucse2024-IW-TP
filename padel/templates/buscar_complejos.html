@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Complejos{% endblock %}
+
+{% block content %}
+
+<!-- Barra de busqueda -->
+<form method="get" action="{% url 'buscar_complejos_view' %}" class="form-inline mb-3">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Buscar complejos" name="q" value="{{ request.GET.q }}">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </div>
+    </div>
+</form>
+
+  <!-- Formulario para filtrar complejos -->
+    <form method="get">
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 mb-3 d-flex align-items-end">
+            <a href="{% url 'ver_complejos' %}" class="btn btn-primary" id="filtrar-btn">Ver filtros</a>
+        </div>
+        <div class="col-md-3 mb-3 d-flex align-items-end">
+            <a href="{% url 'home' %}" class="btn btn-primary" id="volver-btn">Volver</a>
+        </div>
+    
+    </div>
+</div>
+    </form>
+<div class="container text-center mt-4">
+        <div class="row justify-content-start">
+            {% for complejo in complejos %}
+                {% if complejo.object.habilitado %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            {% if complejo.object.foto_complejo %}
+                                <img src="{{ complejo.object.foto_complejo.url }}" class="card-img-top" alt="{{ complejo.object.nombre_complejo }}" >
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ complejo.object.nombre_complejo }}</h5>
+                                <p class="card-text">
+                                    <strong>Dirección:</strong> {{ complejo.object.direccion }}<br>
+                                    <strong>Teléfono:</strong> {{ complejo.object.telefono }}<br>
+                                </p>
+                                <a href="{% url 'detalle_complejo' complejo.object.id %}" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
