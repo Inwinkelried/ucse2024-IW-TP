@@ -16,6 +16,7 @@ from .utils import send_activation_email, enviar_email_confirmacion_turno, envia
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from haystack.query import SearchQuerySet
+from django.http import HttpResponse
 
 
 def activate(request, uidb64, token):
@@ -319,19 +320,16 @@ def Unirse_A_Un_Turno(request, id_turno): #AA esto hay que mejorarlo haciendo qu
     return redirect('ver_mis_reservas')
 
 def buscar_complejos_view(request):
-    #Agrego estos prints para debuggear por consola
-    query = request.GET.get('q', '')  # Se obtiene la consulta desde GET
+    query = request.GET.get('q', '')  
     if query:
-        print(f"Buscando complejos con el término: {query}")
         complejos = SearchQuerySet().filter(text=query)
-        print(f"Resultados de la búsqueda: {complejos.count()} encontrados")
     else:
         complejos = SearchQuerySet().all()
-        print(f"Mostrando {complejos.count()} complejos en total")
-
     return render(request, 'ver_complejos.html', {'complejos': complejos})
 
-
-
-    
-    
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow: /admin/",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
