@@ -52,5 +52,6 @@ urlpatterns = [
     path('search/', include('haystack.urls')),
     path('buscar/', views.buscar_complejos_view, name='buscar_complejos_view'),
     path('robots.txt', robots_txt, name='robots_txt'),
+    path('rebuild_index/', views.rebuild_index),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
