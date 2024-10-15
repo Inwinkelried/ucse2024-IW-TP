@@ -29,6 +29,9 @@
                                         </p>
                                         {% if item.habilitado %}
                                             <p><a href="{% url 'cargar_turno' item.id %}">Cargar turnos</a></p>
+                                            <div class="card-body text-center">
+                                                <span><a href="{% url 'ver_turnos_mi_complejo' item.id %}"> Ver los turnos</a></span>
+                                            </div>
                                             <p><a href="{% url 'ver_reservas_realizadas' item.id %}"> Ver reservas de los usuarios!</a></p>
                                         {% endif %}
                                         <p><a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a></p>   

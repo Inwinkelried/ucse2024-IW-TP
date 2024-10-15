@@ -82,7 +82,6 @@ class Turno(models.Model):
         ('pendiente', 'Pendiente'),
         ('disponible', 'Disponible'),
         ('finalizado', 'Finalizado'),
-        ('por_jugarse', 'Por jugarse'),
         ('buscando_gente', 'Buscando jugadores')
     ]
     complejo = models.ForeignKey(ComplejoDePadel,on_delete=models.SET_NULL, name = 'complejo', null = True)

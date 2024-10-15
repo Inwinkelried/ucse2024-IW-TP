@@ -65,10 +65,13 @@ def ComplejoRegisterView(request):
                 user.estado = 'pendiente_aprobacion'
                 user.rol = Roles.objects.get(nombre=Roles.PROPIETARIO)  
                 user.save()  
-                return redirect('vista_complejos')  
+                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador.")
+                return redirect('home')  
             else:
-                return redirect('mis_complejos') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+                messages.success(request, "Tu complejo se ha registrado exitosamente!")
+                return redirect('home') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
         else:
+            messages.success(request, "Hubo un error en el registro del complejo")
             return render(request, 'registration/registro_complejos.html', {'form': form})
     else: 
         if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
@@ -190,6 +193,17 @@ def Mostrar_Turnos_View(request, id_complejo):
         'turnos_por_dia': dict(turnos_por_dia), 
     }
     return render(request, 'ver_turnos.html', context)
+@login_required(login_url='login')
+def Ver_Turnos_Mi_Complejo_View(request, id_complejo):
+    hoy = timezone.now()
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    turnos = Turno.objects.filter(horario__gte=hoy,complejo=complejo).order_by('horario')
+    turnos_por_dia = generar_turnos_por_dia(turnos)
+    context = {
+        'complejo': complejo,
+        'turnos_por_dia': dict(turnos_por_dia), 
+    }
+    return render(request, 'ver_turnos_mi_complejo.html', context)
 
 @login_required(login_url = 'login')
 def Reservar_Turno_View(request, id_complejo, id_turno): #Hay que modificar esta para que un dueño no pueda reservar su propio turno
