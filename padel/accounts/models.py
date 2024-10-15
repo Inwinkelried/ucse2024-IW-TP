@@ -53,7 +53,7 @@ class ComplejoDePadel(models.Model):
     telefono = models.CharField(max_length=20, null=True, blank=True, name='telefono')
     foto_complejo = models.ImageField(upload_to='fotos/', null=True, blank=True, name='foto_complejo') 
     habilitado = models.BooleanField(name='habilitado', default=False)
-    tipo_instalacion =  models.CharField( max_length=10, choices=TIPOS_INSTALACION, null=True, blank=True)
+    tipo_instalacion =  models.CharField(max_length=10, choices=TIPOS_INSTALACION, null=True, blank=True, default='indoor')
     tiene_duchas = models.BooleanField(name='tiene_duchas', default = False, null=True, blank=True)
     tiene_bar = models.BooleanField(name='tiene_bar', default = False, null=True, blank=True),
     prestan_paletas= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_paletas', default='no' )
