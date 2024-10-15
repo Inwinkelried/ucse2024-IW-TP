@@ -3,11 +3,13 @@
 {% block title %}Detalle del Complejo - {{ complejo.nombre_complejo }}{% endblock %}
 
 {% block content %}
+
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card" style="width: 30rem;">
-        {% if complejo.foto_complejo %}
+        <!-- {% if complejo.foto_complejo %}
             <img src="{{ complejo.foto_complejo.url }}" class="card-img-top" alt="Imagen del Complejo">
-        {% endif %}
+        {% endif %} -->
+        <img src="{% static 'padel/media/complejo.png' %}" class="card-img-top" alt="...">
         <div class="card-body text-center">
             <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
         </div>
@@ -25,4 +27,7 @@
         </div>
     </div>
 </div>
+
+
+
 {% endblock %}

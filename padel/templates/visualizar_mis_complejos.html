@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Mis Complejos de Padel{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
 
@@ -34,7 +34,7 @@
                                         <p><a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a></p>   
                                     </div>
                                     {% if item.foto_complejo %}
-                                        <img src="{{ item.foto_complejo.url }}" class="card-img-bottom" alt="Foto del Complejo">
+                                        <img src="{{ item.foto_complejo.url }}">
                                     {% endif %}
                                 </div>
                             </div>
