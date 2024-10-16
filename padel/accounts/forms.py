@@ -37,7 +37,7 @@ class ComplejoEditForm(forms.ModelForm):
 
 class JugadorRegisterForm(UserCreationForm):
     telefono = forms.CharField(max_length=15)
-    categoria = forms.CharField(max_length=50)
+    categoria = forms.ChoiceField(choices=Usuario.CATEGORIAS, max_length=50)
     class Meta:
         model = Usuario
         fields = ( 'username','email','password1','password2', 'telefono', 'categoria')
