@@ -1,12 +1,24 @@
-
-
 {% extends "base.html" %}
 
-{% block title %}Detalle del Complejo{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-    
-<p>Pronto mas info :P</p>
+<div class="edit-container">
+    <form method="POST" action="{% url 'confirmar_reserva' id_turno=turno.id id_complejo=complejo.id %}">
+        {% csrf_token %}
+            <body>
+                <h2>Confirmar Reserva</h2>
+                <div class="detalle_turno">
+                    <p><span><strong>Lugar: </strong> {{ complejo.nombre_complejo }} </span> </p>
+                    <p><span><strong>Fecha: </strong>{{turno.horario|time:"g:i A"}}</span></p>
+                    <p><span><strong>Dirección: </strong>{{complejo.direccion}}</span> </p>
+                    <p><span><strong>Telefono: </strong>{{complejo.telefono}}</span> </p>
+                </div>
+                <input type="hidden" name="id_turno" value="{{turno.id}}">
+                <input type="hidden" name="id_complejo" value="{{complejo.id}}">
+                <button type="submit" class="btn-submit">Confirmar</button>
+</div>
 
-    
+        </body>
+
 {% endblock %}

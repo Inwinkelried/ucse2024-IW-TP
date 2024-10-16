@@ -3,6 +3,16 @@
 {% block title %}Complejos{% endblock %}
 
 {% block content %}
+<!-- Barra de busqueda -->
+<form method="get" action="{% url 'buscar_complejos_view' %}" class="form-inline mb-3">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Buscar complejos" name="q" value="{{ request.GET.q }}">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </div>
+    </div>
+</form>
+
   <!-- Formulario para filtrar complejos -->
     <form method="get">
 <div class="container">

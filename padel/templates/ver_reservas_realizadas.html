@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+
+{% block title %}Reservas pendientes por confirmar{% endblock %}
+
+{% block content %}
+<h1>Turnos pedientes de confirmación</h1>
+<div class="general-card">
+    {%for turno in turnos %}
+        <div class="turno">
+            <h3>Información de reserva:</h3>
+            <p>Fecha y hora: {{ turno.horario|time:"g:i A" }}</p>
+            <p>Complejo: {{turno.complejo}}</p>
+            <p>Estado: {{turno.estado}}</p>
+        </div>
+        <div class="datos_usuario">
+            <h3> Datos del usuario </h3>
+            <p>Nombre: {{turno.usuario.username}}</p>
+            <p>Email: {{turno.usuario.email}}</p>
+            <p>Telefono: {{turno.usuario.telefono}}</p>
+        </div>
+        <div class="botones">
+            <form action="/aceptar_turno/{{ turno.id }}/" method="post">
+                {% csrf_token %}
+                <button type="submit" name="confirmacion" value="aceptar">Aceptar</button>
+                <button type="submit" name="confirmacion" value="rechazar">Rechazar</button>
+            </form>
+        </div>
+    {% endfor %}
+    
+</div>
+{% endblock %}

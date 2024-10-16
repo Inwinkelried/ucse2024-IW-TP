@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Usuario, Roles, ComplejoDePadel
+from .models import Usuario, Roles, ComplejoDePadel, HorariosComplejos, Turno
 
 
 
@@ -34,10 +34,20 @@ class UsuarioAdmin(BaseUserAdmin):
 admin.site.register(Usuario,UsuarioAdmin)
 # Register your models here.
 
+@admin.register(HorariosComplejos)
+class AdminHorarios(admin.ModelAdmin):
+    lista_display = all
+
+
 @admin.register(Roles)
 class AdminNoticia(admin.ModelAdmin):
     list_display = ('id','nombre')
 
+
 @admin.register(ComplejoDePadel)
 class AdminComplejos(admin.ModelAdmin):
     lista_display=all
+
+@admin.register(Turno)
+class AdminTurno(admin.ModelAdmin):
+    lista_display = all

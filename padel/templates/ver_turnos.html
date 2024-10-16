@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Detalle del Complejo{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1>Reserva tu Turno</h1>
+    </div>
+
+    <!-- Navegación por fechas -->
+    <div id="turnosAccordion">
+        {% for dia, turnos in turnos_por_dia.items %}
+        <div class="card mb-3">
+            <div class="card-header" id="heading-{{ forloop.counter }}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link text-primary" type="button" data-toggle="collapse" data-target="#collapse-{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ forloop.counter }}">
+                        {{ dia|date:"l d F" }}
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapse-{{ forloop.counter }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#turnosAccordion">
+                <div class="card-body">
+                    <!-- Turnos disponibles para este día -->
+                    {% if turnos %}
+                    <ul class="list-group">
+                        {% for turno in turnos %}
+                            {% if turno.estado == 'disponible' %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-clock-fill"></i> {{ turno.horario|time:"g:i A" }}</span>
+                                <a href="{% url 'reservar_turno' id_complejo=complejo.id id_turno=turno.id %}" class="btn btn-primary btn-sm">
+                                    Reservar
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No hay turnos disponibles.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
