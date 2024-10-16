@@ -14,9 +14,12 @@ class Usuario(AbstractUser):
     ESTADOS= [
         ('activo', 'Activo'),
         ('no_validado', 'No validado'),
-        ('pendiente_aprobacion', 'Pendiente aprobacion')
+        ('pendiente_aprobacion', 'Pendiente aprobacion'),
+        ('suspendido','Suspendido'),
+        ('eliminado','Eliminado')
     ]
     CATEGORIAS = [
+        ('no_tiene', 'No tiene'),
         ('profesional', 'Profesional'),
         ('1', 'Primera'),
         ('2', 'Segunda'),
