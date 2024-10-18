@@ -14,9 +14,12 @@ class Usuario(AbstractUser):
     ESTADOS= [
         ('activo', 'Activo'),
         ('no_validado', 'No validado'),
-        ('pendiente_aprobacion', 'Pendiente aprobacion')
+        ('pendiente_aprobacion', 'Pendiente aprobacion'),
+        ("suspendido", "Suspendido"),
+        ("eliminado", "Eliminado"),
     ]
     CATEGORIAS = [
+        ('no', 'No especificado'),
         ('profesional', 'Profesional'),
         ('1', 'Primera'),
         ('2', 'Segunda'),
@@ -26,6 +29,7 @@ class Usuario(AbstractUser):
         ('6', 'Sexta'),
         ('7', 'Septima'),
         ('8', 'Octava'),
+        ('principiante', 'Principiante')
     ]
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE,name='rol', null=True)
     categoria = models.CharField(choices=CATEGORIAS, max_length=30,name='categoria', default = '8', null = True)
