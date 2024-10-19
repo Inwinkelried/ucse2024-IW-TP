@@ -3,7 +3,6 @@
 {% block title %}Complejos{% endblock %}
 
 {% block content %}
-<!-- Barra de busqueda -->
 <form method="get" action="{% url 'buscar_complejos_view' %}" class="form-inline mb-3">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="Buscar complejos" name="q" value="{{ request.GET.q }}">
@@ -12,8 +11,6 @@
       </div>
     </div>
 </form>
-
-  <!-- Formulario para filtrar complejos -->
     <form method="get">
 <div class="container">
             <div class="row">
@@ -65,11 +62,31 @@
                                 <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
                                 <p class="card-text">
                                     <strong>Dirección:</strong> {{ complejo.direccion }}<br>
-                                    <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
-                                    <strong>Tipo de instalación:</strong> {{ complejo.tipo_instalacion }}<br>
-                                    <strong>Prestan paletas?:</strong> {{ complejo.presta_paleta }}<br>
-                                    <strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas }}<br>
-                                    <strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas }}<br>
+                                    <strong>Teléfono:</strong> {{ complejo.telefono }}<br>       
+                                    <strong>Tipo de instalación:</strong> 
+                                    {% for key, value in complejo.TIPOS_INSTALACION %}
+                                        {% if key == complejo.tipo_instalacion %}
+                                            {{ value }}
+                                        {% endif %}
+                                    {% endfor %}<br>
+                                    <strong>Prestan paletas?:</strong> 
+                                    {% for key, value in complejo.PALETAS_PELOTAS %}
+                                        {% if key == complejo.prestan_paletas %}
+                                            {{ value }}
+                                        {% endif %}
+                                    {% endfor %}<br>                              
+                                    <strong>Prestan pelotas?:</strong> 
+                                    {% for key, value in complejo.PALETAS_PELOTAS %}
+                                        {% if key == complejo.prestan_pelotas %}
+                                            {{ value }}
+                                        {% endif %}
+                                    {% endfor %}<br>                               
+                                    <strong>Tiene duchas?:</strong> 
+                                    {% if complejo.tiene_duchas %}
+                                        Sí
+                                    {% else %}
+                                        No
+                                    {% endif %}<br>                               
                                 </p>
                                 <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
                             </div>
