@@ -65,11 +65,9 @@
                                 <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
                                 <p class="card-text">
                                     <strong>Dirección:</strong> {{ complejo.direccion }}<br>
+                                    <strong>Ciudad:</strong> {{ complejo.ciudad }}<br>  
                                     <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
-                                    <strong>Tipo de instalación:</strong> {{ complejo.tipo_instalacion}}<br>
-                                    <strong>Prestan paletas?:</strong> {{ complejo.presta_paleta|yesno:"Sí,No"  }}<br>
-                                    <strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas|yesno:"Sí,No"  }}<br>
-                                    <strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas|yesno:"Sí,No" }}<br>
+                                 
                                 </p>
                                 <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
                             </div>
