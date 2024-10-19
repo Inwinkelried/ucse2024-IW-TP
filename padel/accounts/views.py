@@ -86,8 +86,7 @@ def JugadorRegisterView(request):
             user.is_active = False  
             user.save()
             send_activation_email(user, request)
-            return redirect('registration_complete')
-            
+            return redirect('registration_complete')   
         else:
             context['register_form'] = form
     else:
