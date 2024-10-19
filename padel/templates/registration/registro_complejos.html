@@ -1,4 +1,3 @@
-Este formulario es el que se recibe al seleccionar "registrarse como complejo"
 
 {% extends "base.html" %}
 
@@ -39,6 +38,7 @@ Este formulario es el que se recibe al seleccionar "registrarse como complejo"
         <label for="duracion turnos">duracion turnos (no anda):</label>
         
       <button type="submit" class="btn btn-primary">Sign Up</button>
+      <a href="{% url 'ver_complejos' %}" class="btn btn-primary" id="volver-btn">Volver</a>
     </form>
   </div>
 

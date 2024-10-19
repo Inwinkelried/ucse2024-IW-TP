@@ -39,8 +39,8 @@
                     <label for="tiene_duchas">Tiene Duchas:</label>
                     <select name="tiene_duchas" id="tiene_duchas" class="form-control">
                         <option value="">-- Seleccione --</option>
-                        <option value="true" {% if request.GET.tiene_duchas == 'true' %}selected{% endif %}>Sí</option>
-                        <option value="false" {% if request.GET.tiene_duchas == 'false' %}selected{% endif %}>No</option>
+                        <option value="True" {% if request.GET.tiene_duchas == 'True' %}selected{% endif %}>Sí</option>
+                        <option value="False" {% if request.GET.tiene_duchas == 'False' %}selected{% endif %}>No</option>
                     </select>
                 </div>
                 <div class="col-md-3 mb-3 d-flex align-items-end">
@@ -66,10 +66,10 @@
                                 <p class="card-text">
                                     <strong>Dirección:</strong> {{ complejo.direccion }}<br>
                                     <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
-                                    <strong>Tipo de instalación:</strong> {{ complejo.tipo_instalacion }}<br>
-                                    <strong>Prestan paletas?:</strong> {{ complejo.presta_paleta }}<br>
-                                    <strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas }}<br>
-                                    <strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas }}<br>
+                                    <strong>Tipo de instalación:</strong> {{ complejo.tipo_instalacion}}<br>
+                                    <strong>Prestan paletas?:</strong> {{ complejo.presta_paleta|yesno:"Sí,No"  }}<br>
+                                    <strong>Prestan pelotas?:</strong> {{ complejo.prestan_pelotas|yesno:"Sí,No"  }}<br>
+                                    <strong>Tiene duchas?:</strong> {{ complejo.tiene_duchas|yesno:"Sí,No" }}<br>
                                 </p>
                                 <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
                             </div>
