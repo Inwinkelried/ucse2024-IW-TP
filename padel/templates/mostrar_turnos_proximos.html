@@ -5,8 +5,6 @@
 {% block content %}
 <div class="container my-5">
     <h1 class="text-center mb-4">¡Falta gente! </h1>
-
-    <!-- Navegación por fechas -->
     <div id="turnosAccordion">
         {% for dia, turnos in turnos_falta_gente.items %}
         <div class="card mb-3">
@@ -17,10 +15,8 @@
                     </button>
                 </h2>
             </div>
-
             <div id="collapse-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-{{ forloop.counter }}" data-parent="#turnosAccordion">
                 <div class="card-body">
-                    <!-- Turnos disponibles para este día -->
                     {% if turnos %}
                     <ul class="list-group">
                         {% for turno in turnos %}
@@ -53,7 +49,6 @@
                     </button>
                 </h2>
             </div>
-
             <div id="collapse-libres-{{ forloop.counter }}" class="collapse" aria-labelledby="heading-libres-{{ forloop.counter }}" data-parent="#turnosLibresAccordion">
                 <div class="card-body">
                     {% if turnos %}

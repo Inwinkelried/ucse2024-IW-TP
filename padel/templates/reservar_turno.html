@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
 {% block title %}Register{% endblock %}
-
 {% block content %}
 <div class="edit-container">
     <form method="POST" action="{% url 'confirmar_reserva' id_turno=turno.id id_complejo=complejo.id %}">
@@ -18,7 +16,6 @@
                 <input type="hidden" name="id_complejo" value="{{complejo.id}}">
                 <button type="submit" class="btn-submit">Confirmar</button>
 </div>
-
         </body>
 
 {% endblock %}

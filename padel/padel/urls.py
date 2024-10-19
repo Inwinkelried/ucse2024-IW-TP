@@ -49,7 +49,7 @@ urlpatterns = [
     path('ver_mis_reservas/', views.Ver_Mis_Reservas_View, name= 'ver_mis_reservas'),
     path('mostrar_turnos_proximos/',views.Mostrar_Turnos_Proximos_View, name='mostrar_turnos_proximos'),
     path('unirse_a_turno<int:id_turno>/', views.Unirse_A_Un_Turno, name='unirse_a_turno'),
-    path('opracion_exitosa/', TemplateView.as_view(template_name="operacion_exitosa.html"), name='operacion_exitosa'),
+    path('operacion_exitosa/', TemplateView.as_view(template_name="operacion_exitosa.html"), name='operacion_exitosa'),
     path('ver_turnos_mi_complejo/<int:id_complejo>/', views.Ver_Turnos_Mi_Complejo_View ,name='ver_turnos_mi_complejo'),
     path('search/', include('haystack.urls')),
     path('buscar/', views.buscar_complejos_view, name='buscar_complejos_view'),
