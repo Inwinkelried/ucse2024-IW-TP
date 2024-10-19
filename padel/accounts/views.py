@@ -75,6 +75,8 @@ def ComplejoRegisterView(request):
         return redirect('mis_complejos')
     return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
 
+
+
 def JugadorRegisterView(request):
     context = {}
     if request.method == 'POST':
