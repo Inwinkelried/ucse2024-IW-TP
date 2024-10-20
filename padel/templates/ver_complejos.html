@@ -3,13 +3,7 @@
 {% block title %}Complejos{% endblock %}
 
 {% block content %}
-<!-- Barra de busqueda -->
-
-
-  <!-- Formulario para filtrar complejos -->
-    <form method="get">
-<div class="container">
-    <form method="get" action="{% url 'buscar_complejos_view' %}" class="form-inline mb-3">
+<form method="get" action="{% url 'buscar_complejos_view' %}" class="form-inline mb-3">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="Buscar complejos" name="q" value="{{ request.GET.q }}">
       <div class="input-group-append">
@@ -17,6 +11,8 @@
       </div>
     </div>
 </form>
+    <form method="get">
+<div class="container">
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="prestan_paletas">Prestan paletas:</label>
@@ -68,7 +64,6 @@
                                     <strong>Dirección:</strong> {{ complejo.direccion }}<br>
                                     <strong>Ciudad:</strong> {{ complejo.ciudad }}<br>  
                                     <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
-                                 
                                 </p>
                                 <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
                             </div>
