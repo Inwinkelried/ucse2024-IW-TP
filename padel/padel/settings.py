@@ -40,6 +40,8 @@ SECRET_KEY = 'django-insecure-i_w2i@b28%gfpw-a*lb2sv7t$2b03zhu3qb18ba%rjb$xi+jvl
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DEBUG = True
+
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -221,7 +223,33 @@ AWS_S3_SIGNATURE_NAME = 's3v4'
 AWS_S3_DEFAULT_ACL= None
 AWS_S3_VERITY = True
 
+STORAGES = {
+    "default":{
+        "BACKEND":"storages.backends.s3boto3.S3StaticStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage"
+    },
+}
+# URL to use when referring to static files located in STATICFILES_DIRS.
 
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+STATICFILES_DIRS = [BASE_DIR / 'static',]
+# URL to use when referring to uploaded media files
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'padel/static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'padel/static')
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Configuration for Render.com (if applicable)
 if 'RENDER' in os.environ:
     print("USING RENDER.COM SETTINGS!")
     DEBUG = False
@@ -249,7 +277,7 @@ if 'RENDER' in os.environ:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     # Configuración para entorno de desarrollo local
-    
+    print("USING LOCAL DEVELOPMENT SETTINGS!")
    
 
     # Rutas locales para archivos estáticos y media
@@ -264,7 +292,6 @@ else:
     # Configuración para usar almacenamiento de archivos locales en desarrollo
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
 
 WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh_index')
 
