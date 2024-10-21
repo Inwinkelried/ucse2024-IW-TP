@@ -73,6 +73,7 @@ class ComplejoDePadel(models.Model):
     tiene_bar = models.BooleanField(name='tiene_bar', default = False, null=True, blank=True),
     prestan_paletas= models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_paletas', default='no' )
     prestan_pelotas = models.CharField(choices=PALETAS_PELOTAS,max_length=20, name='prestan_pelotas', default='no')
+    cantidad_pistas = models.IntegerField(name = 'cantidad_pistas', default=1, null=True)
     def __str__(self):
         return self.nombre_complejo
 
