@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="edit-container">
+  <div class="general-card">
     <h2>Editar</h2>
-    <form method="post" enctype="multipart/form-data" class="edit-form">
+    <form method="post" enctype="multipart/form-data" class="login-form">
       {% csrf_token %}
       {{ form.as_p }}
       <button type="submit" class="btn-submit">Guardar Cambios</button>

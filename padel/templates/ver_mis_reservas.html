@@ -1,14 +1,35 @@
 {% extends "base.html" %}
-
+{% load static %}
+{% block title %}Mis Reservas{% endblock %}
 {% block content %}
 <div class="container my-5">
-    {% if messages %}
-    <ul class="list-unstyled">
-        {% for message in messages %}
-        <li class="alert alert-info">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    <!-- Input oculto para pasar mensajes -->
+    <input type="hidden" id="messages" value="{% if messages %}{{ messages|join:', ' }}{% endif %}">
+    
+    <!-- Modal para mensajes -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Notificaciones</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if messages %}
+                    <ul class="list-unstyled">
+                        {% for message in messages %}
+                        <li class="alert alert-info">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No hay mensajes para mostrar.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-primary" id="volver-btn">Volver</a>
+
 
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
@@ -140,8 +161,14 @@
                     <p class="text-muted-custom">No tienes reservas pendientes.</p>
                     {% endif %}
                 </div>
+                
             </div>
-        </div>        
+            
+        </div>   
+             
     </div>
 </div>
+
+
+
 {% endblock %}
