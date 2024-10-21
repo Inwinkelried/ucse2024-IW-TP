@@ -36,8 +36,8 @@
                     <label for="tiene_duchas">Tiene Duchas:</label>
                     <select name="tiene_duchas" id="tiene_duchas" class="form-control">
                         <option value="">-- Seleccione --</option>
-                        <option value="true" {% if request.GET.tiene_duchas == 'true' %}selected{% endif %}>Sí</option>
-                        <option value="false" {% if request.GET.tiene_duchas == 'false' %}selected{% endif %}>No</option>
+                        <option value="True" {% if request.GET.tiene_duchas == 'True' %}selected{% endif %}>Sí</option>
+                        <option value="False" {% if request.GET.tiene_duchas == 'False' %}selected{% endif %}>No</option>
                     </select>
                 </div>
                 <div class="col-md-3 mb-3 d-flex align-items-end">
@@ -62,31 +62,8 @@
                                 <h5 class="card-title">{{ complejo.nombre_complejo }}</h5>
                                 <p class="card-text">
                                     <strong>Dirección:</strong> {{ complejo.direccion }}<br>
-                                    <strong>Teléfono:</strong> {{ complejo.telefono }}<br>       
-                                    <strong>Tipo de instalación:</strong> 
-                                    {% for key, value in complejo.TIPOS_INSTALACION %}
-                                        {% if key == complejo.tipo_instalacion %}
-                                            {{ value }}
-                                        {% endif %}
-                                    {% endfor %}<br>
-                                    <strong>Prestan paletas?:</strong> 
-                                    {% for key, value in complejo.PALETAS_PELOTAS %}
-                                        {% if key == complejo.prestan_paletas %}
-                                            {{ value }}
-                                        {% endif %}
-                                    {% endfor %}<br>                              
-                                    <strong>Prestan pelotas?:</strong> 
-                                    {% for key, value in complejo.PALETAS_PELOTAS %}
-                                        {% if key == complejo.prestan_pelotas %}
-                                            {{ value }}
-                                        {% endif %}
-                                    {% endfor %}<br>                               
-                                    <strong>Tiene duchas?:</strong> 
-                                    {% if complejo.tiene_duchas %}
-                                        Sí
-                                    {% else %}
-                                        No
-                                    {% endif %}<br>                               
+                                    <strong>Ciudad:</strong> {{ complejo.ciudad }}<br>  
+                                    <strong>Teléfono:</strong> {{ complejo.telefono }}<br>
                                 </p>
                                 <a href="{% url 'detalle_complejo' complejo.id %}" class="btn btn-primary">Ver Detalles</a>
                             </div>
