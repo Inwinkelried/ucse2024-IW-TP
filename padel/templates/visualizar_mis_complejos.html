@@ -20,8 +20,6 @@
                                         <h5 class="card-title">{{ item.nombre_complejo }}</h5>
                                         <p><strong>Dirección:</strong> {{ item.direccion }}</p>
                                         <p><strong>Teléfono:</strong> {{ item.telefono }}</p>
-                                        <p><strong>Número de pistas:</strong> {{ item.numero_de_pistas }}</p>
-                                        <p><strong>Descripción:</strong> {{ item.descripcion }}</p>
                                         <p><strong>Estado:</strong> 
                                             <span class="complejo-status {% if not item.habilitado %}disabled{% endif %}">
                                                 {% if item.habilitado %}Habilitado{% else %}No Habilitado{% endif %}
@@ -37,7 +35,7 @@
                                         <p><a href="{% url 'editar_complejo' item.id %}" class="btn btn-primary">Editar</a></p>   
                                     </div>
                                     {% if item.foto_complejo %}
-                                        <img src="{{ item.foto_complejo.url }}">
+                                        <img src="{{ item.foto_complejo.url }}" style="max-height: 200px;">
                                     {% endif %}
                                 </div>
                             </div>
