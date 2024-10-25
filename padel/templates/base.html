@@ -40,6 +40,24 @@
 <body>
   <main>
     {% block content %}
+        <!-- Input oculto para pasar mensajes -->
+        <input type="hidden" id="messages" value="{% if messages %}{{ messages|join:', ' }}{% endif %}">
+
+        <!-- Modal para mensajes -->
+        <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">Notificaciones</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-message-content">
+                        <!-- Los mensajes serán insertados aquí por JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     {% endblock %}
   </main>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

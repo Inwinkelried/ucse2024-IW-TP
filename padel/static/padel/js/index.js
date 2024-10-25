@@ -7,3 +7,21 @@ document.addEventListener("DOMContentLoaded", function() {
         messageModal.show();
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Obtener los mensajes del input oculto
+    const messages = document.getElementById("messages").value;
+    
+    // Si hay mensajes, muestra el modal
+    if (messages) {
+        // Crear el contenido del modal
+        const messageList = messages.split(', ').map(msg => `<li class="alert alert-info">${msg}</li>`).join('');
+        document.getElementById("modal-message-content").innerHTML = `<ul class="list-unstyled">${messageList}</ul>`;
+        
+        // Mostrar el modal
+        const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+        messageModal.show();
+    }
+});
+
