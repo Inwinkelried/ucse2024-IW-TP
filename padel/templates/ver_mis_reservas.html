@@ -3,10 +3,7 @@
 {% block title %}Mis Reservas{% endblock %}
 {% block content %}
 <div class="container my-5">
-    <!-- Input oculto para pasar mensajes -->
     <input type="hidden" id="messages" value="{% if messages %}{{ messages|join:', ' }}{% endif %}">
-    
-    <!-- Modal para mensajes -->
     <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -150,10 +147,10 @@
                         {% for reserva in reservas_pendientes %}
                         <div class="list-group-item">
                             <h5>{{ reserva.complejo.nombre_complejo }}</h5>
-                            <p><strong>Dirección:</strong> {{ reserva.complejo.direccion }}</p>
-                            <p><strong>Teléfono:</strong> {{ reserva.complejo.telefono }}</p>
-                            <p><strong>Fecha:</strong> {{ reserva.horario|date:"l d F" }}</p>
-                            <p><strong>Hora:</strong> {{ reserva.horario|time:"g:i A" }}</p>
+                            <p><strong>Dirección:</strong> {{ reserva.turno.complejo.direccion }}</p>
+                            <p><strong>Teléfono:</strong> {{ reserva.turno.complejo.telefono }}</p>
+                            <p><strong>Fecha:</strong> {{ reserva.turno.horario|date:"l d F" }}</p>
+                            <p><strong>Hora:</strong> {{ reserva.turno.horario|time:"g:i A" }}</p>
                         </div>
                         {% endfor %}
                     </div>

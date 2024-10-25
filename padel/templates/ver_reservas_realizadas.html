@@ -5,30 +5,28 @@
 {% block content %}
 <h1>Turnos pendientes de confirmación</h1>
 <div class="container text-center mt-4">
-    <div class="row justify-content-start"> 
-        {% for turno in turnos %}
-        <div class="turno card mx-2 my-3" >
+    <div class="row justify-content-start">
+        {% for turno_reservado in turnos_reservados %}
+        <div class="turno card mx-2 my-3">
             <div class="card-body">
                 <h3 class="card-title">Información de reserva:</h3>
-                <p class="card-text">Fecha y hora: {{ turno.horario|time:"g:i A" }}</p>
-                <p class="card-text">Complejo: {{ turno.complejo }}</p>
-                <p class="card-text">Estado: {{ turno.estado }}</p>
-                
-                <h3 class="card-title">Datos del usuario</h3>
-                <p class="card-text">Nombre: {{ turno.usuario.username }}</p>
-                <p class="card-text">Email: {{ turno.usuario.email }}</p>
-                <p class="card-text">Teléfono: {{ turno.usuario.telefono }}</p>
+                <p class="card-text">Fecha y hora: {{ turno_reservado.turno.horario|date:"Y-m-d H:i" }}</p>
+                <p class="card-text">Complejo: {{ turno_reservado.turno.complejo }}</p>
+                <p class="card-text">Estado: {{ turno_reservado.turno.estado }}</p>
 
-                <form action="/aceptar_turno/{{ turno.id }}/" method="post">
+                <h3 class="card-title">Datos del usuario</h3>
+                <p class="card-text">Nombre: {{ turno_reservado.usuario.username }}</p>
+                <p class="card-text">Email: {{ turno_reservado.usuario.email }}</p>
+                <p class="card-text">Teléfono: {{ turno_reservado.usuario.telefono }}</p>
+
+                <form action="/aceptar_turno/{{ turno_reservado.id }}/" method="post">
                     {% csrf_token %}
                     <button type="submit" name="confirmacion" value="aceptar" class="btn btn-success">Aceptar</button>
                     <button type="submit" name="confirmacion" value="rechazar" class="btn btn-danger">Rechazar</button>
                 </form>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
-    
 </div>
 {% endblock %}
-

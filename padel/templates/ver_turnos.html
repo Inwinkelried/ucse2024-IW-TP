@@ -23,14 +23,12 @@
                     {% if turnos %}
                     <ul class="list-group">
                         {% for turno in turnos %}
-                            {% if turno.estado == 'disponible' %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span><i class="bi bi-clock-fill"></i> {{ turno.horario|time:"g:i A" }}</span>
                                 <a href="{% url 'reservar_turno' id_complejo=complejo.id id_turno=turno.id %}" class="btn btn-primary btn-sm">
                                     Reservar
                                 </a>
                             </li>
-                            {% endif %}
                         {% endfor %}
                     </ul>
                     {% else %}

@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from haystack.query import SearchQuerySet
 from django.http import HttpResponse
+from django.db.models import Q
 
 
 def activate(request, uidb64, token):
@@ -171,6 +172,7 @@ def generar_turnos(horario):
             fechaCargar += duracion
 
 
+
 def generar_turnos_por_dia(turnos):
     turnos_por_dia = defaultdict(list)
     for turno in turnos:
@@ -178,15 +180,20 @@ def generar_turnos_por_dia(turnos):
         turnos_por_dia[fecha].append(turno)
     return turnos_por_dia
 
+
 def Mostrar_Turnos_View(request, id_complejo):
+    hoy = timezone.now()
     complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
-    turnos = Turno.objects.filter(complejo=complejo).order_by('horario')
+    turnos = Turno.objects.filter(Q(estado='disponible') | Q(estado='pendiente'), horario__gte=hoy).order_by('horario')
     turnos_por_dia = generar_turnos_por_dia(turnos)
     context = {
         'complejo': complejo,
         'turnos_por_dia': dict(turnos_por_dia), 
     }
     return render(request, 'ver_turnos.html', context)
+
+
+
 @login_required(login_url='login')
 def Ver_Turnos_Mi_Complejo_View(request, id_complejo):
     hoy = timezone.now()
@@ -214,35 +221,47 @@ def Confirmar_Reserva_View(request,id_complejo, id_turno):
     complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
     usuario = request.user
     turno.estado = 'pendiente'
-    turno.usuario = usuario
-    propietario = get_object_or_404(Usuario, id=complejo.propietario.id)
+    turno_usuario = TurnoUsuario(turno= turno, usuario = usuario, estado = 'pendiente_confirmacion_complejo')
+    propietario_complejo = get_object_or_404(Usuario, id=complejo.propietario.id)
     turno.save()
-    enviar_email_confirmacion_turno(propietario, request, id_complejo)
+    turno_usuario.save()
+    enviar_email_confirmacion_turno(propietario_complejo, request, id_complejo)
     messages.success(request, 'Turno reservado exitosamente!')
     return redirect('home') 
 
+
 @login_required(login_url='login')
 def Ver_Reservas_Realizadas_View(request, id_complejo):
-    complejo = get_object_or_404(ComplejoDePadel,  id=id_complejo)
-    turnos = Turno.objects.filter(complejo=complejo, estado = 'pendiente')
+    complejo = get_object_or_404(ComplejoDePadel, id=id_complejo)
+    turnos = Turno.objects.filter(complejo=complejo, estado='pendiente')
+    turnos_ids = turnos.values_list('id', flat=True)
+    turnos_reservados = TurnoUsuario.objects.filter(turno__in=turnos_ids, estado='pendiente_confirmacion_complejo')
     context = {
-        'turnos':turnos,
-        'complejo':complejo
+        'turnos': turnos,
+        'complejo': complejo,
+        'turnos_reservados': turnos_reservados
     }
     return render(request, 'ver_reservas_realizadas.html', context)
 
-
-def Manejar_Turno_View(request, id_turno):
-    
+def Manejar_Turno_View(request, id_turno): 
     confirmacion = request.POST.get('confirmacion')
+    
+
     if confirmacion == 'aceptar':
-        turno = get_object_or_404(Turno, id= id_turno)
-        complejo = turno.complejo
+        turno_usuario = get_object_or_404(TurnoUsuario, id=id_turno)  
+        turno = get_object_or_404(Turno, id=turno_usuario.turno.id)
+        turno.usuario = turno_usuario.usuario
         turno.estado = 'reservado'
         turno.save()
+        otros_turnos_usuario = TurnoUsuario.objects.filter(turno=turno).exclude(id=turno_usuario.id)
+        for otro_turno_usuario in otros_turnos_usuario:
+            otro_turno_usuario.estado = 'rechazado'
+            otro_turno_usuario.save()
         enviar_mail_aviso_reserva(request, turno.usuario)
         messages.success(request, 'Turno confirmado exitosamente!')
+        complejo = turno.complejo
         return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
+    
     elif confirmacion == 'buscando_gente':
         turno = get_object_or_404(Turno, id= id_turno)
         complejo = turno.complejo
@@ -253,7 +272,7 @@ def Manejar_Turno_View(request, id_turno):
         messages.success(request, 'Tu turno se ha publicado!')
         return redirect('/ver_mis_reservas/')
     elif confirmacion =='jugador_aceptado':
-        turno_usuario = get_object_or_404(TurnoUsuario, id= id_turno)
+        turno_usuario = get_object_or_404(TurnoUsuario, id=id_turno)
         turno = get_object_or_404(Turno, id=turno_usuario.turno.id)
         cantidad_jugadores_faltantes = turno.cantidad_jugadores_faltantes -1
         turno_usuario.estado = 'aceptado'
@@ -266,19 +285,20 @@ def Manejar_Turno_View(request, id_turno):
         messages.success(request, 'Haz aceptado a un jugador!')
         return redirect('/ver_mis_reservas/')
     elif confirmacion == 'jugador_rechazado':
-        turno_usuario = get_object_or_404(TurnoUsuario, id= id_turno)
+        turno_usuario = get_object_or_404(TurnoUsuario, id=id_turno)
         turno_usuario.estado = 'rechazado'
         turno_usuario.save()
         enviar_mail_aviso_reserva(request, turno_usuario.usuario)
         messages.success(request, 'Haz rechazado a un jugador!')
         return redirect('/ver_mis_reservas/')
-    else: 
-        turno = get_object_or_404(Turno, id= id_turno)
+    elif confirmacion == 'rechazar': 
+        turno_usuario = get_object_or_404(TurnoUsuario, id=id_turno)
+        turno = get_object_or_404(Turno, id= turno_usuario.turno.id)
         complejo = turno.complejo
-        turno.estado = 'disponible' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
-        turno.usuario= None
-        turno.save()
-        enviar_mail_aviso_reserva(request, turno_usuario.usuario)
+        turno_usuario.estado = 'rechazado' #Por ahora solo deja el turno en pendiente, pero lo ideal sería que lo deje en un estado en el que el complejo pueda decidir soobre el, como "disponible_oculto"
+        turno_usuario.save()
+        usuario = turno_usuario.usuario
+        enviar_mail_aviso_reserva(request, usuario)
         messages.success(request, 'Turno rechazado.')
         return redirect(f'/ver_reservas_realizadas/{complejo.id}/')
         
@@ -287,9 +307,9 @@ def Manejar_Turno_View(request, id_turno):
 def Ver_Mis_Reservas_View(request):
     user = request.user
     reservas = Turno.objects.filter(usuario = user, estado = 'reservado')
-    reservas_pendientes = Turno.objects.filter(usuario=user, estado = 'pendiente')
+    reservas_pendientes = TurnoUsuario.objects.filter(usuario=user, estado = 'pendiente_confirmacion_complejo')
     reservas_buscando_gente = Turno.objects.filter(usuario = user, estado= 'buscando_gente')
-    turnos_esperando_confirmacion = TurnoUsuario.objects.filter(usuario = user)
+    turnos_esperando_confirmacion = TurnoUsuario.objects.filter(usuario = user, estado='pendiente')
     solicitudes_unirse = []
     for turno_ in reservas_buscando_gente:
         reserva_buscando = TurnoUsuario.objects.filter(turno = turno_, estado='pendiente')
@@ -306,7 +326,7 @@ def Ver_Mis_Reservas_View(request):
 def Mostrar_Turnos_Proximos_View(request): #De momento hace que se muestren todos, habria que acotarle un poco el rango 
     hoy = timezone.now()
     user = request.user
-    turnos_libres = Turno.objects.filter(horario__gte=hoy, estado='disponible').order_by('horario') #Aca encuentra los turnos que esten libres en los complejos
+    turnos_libres = Turno.objects.filter(Q(estado='disponible') | Q(estado='pendiente'), horario__gte=hoy).order_by('horario') #Aca encuentra los turnos que esten libres en los complejos
     turnos_falta_gente = Turno.objects.filter(horario__gte=hoy, estado='buscando_gente').exclude(usuario=user).order_by('horario') #Aca encuentra los turnos en los que esten buscando gente
     
     turnos_libres = generar_turnos_por_dia(turnos_libres) 
