@@ -72,16 +72,13 @@ def ComplejoRegisterView(request):
             return redirect('home')
         else:
             messages.error(request, "Hubo un error en el registro del complejo.")
-            return redirect('home')
+            return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
     
     if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion':
         messages.error(request, "Tu complejo ya se encuentra en proceso de aprobación, pronto podrás verlo en Mis Complejos")
         return redirect('home')
     
     return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
-
-
-
 
 
 def JugadorRegisterView(request):
