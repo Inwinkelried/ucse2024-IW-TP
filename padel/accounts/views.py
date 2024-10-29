@@ -53,6 +53,8 @@ def Editar_complejo_view(request, id_complejo):
     return render(request,'editar_un_complejo.html', {'form':form})
 
 
+from django.shortcuts import redirect
+
 def ComplejoRegisterView(request):
     user = request.user
     if request.method == 'POST':
@@ -67,14 +69,16 @@ def ComplejoRegisterView(request):
                 messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador.")
             else:
                 messages.success(request, "Tu complejo se ha registrado exitosamente!")
-            return redirect('operacion_exitosa')
-        messages.error(request, "Hubo un error en el registro del complejo.")
-        return render(request, 'registration/registro_complejos.html', {'form': form})
+            return redirect('home')
+        else:
+            messages.error(request, "Hubo un error en el registro del complejo.")
+            return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
+    
     if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion':
-        messages.error(request, "Tu complejo ya se encuentra en proceso de aprobación. Pronto podrás verlo aquí.")
-        return redirect('mis_complejos')
+        messages.error(request, "Tu complejo ya se encuentra en proceso de aprobación, pronto podrás verlo en Mis Complejos")
+        return redirect('home')
+    
     return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
-
 
 
 def JugadorRegisterView(request):
