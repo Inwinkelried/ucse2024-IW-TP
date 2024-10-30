@@ -285,3 +285,15 @@ button:hover {
   color: #ffffff;
   font-size: 200%;
 }
+
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  
+}
+
+.col-md-3 {
+  margin-top: 80px;
+}
+

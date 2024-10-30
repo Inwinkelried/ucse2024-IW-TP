@@ -4,6 +4,24 @@
 {% block title %}Bienvenido a Padel.com{% endblock %}
 
 {% block content %}
+<input type="hidden" id="messages" value="{% if messages %}{{ messages|join:', ' }}{% endif %}">
+
+<!-- Modal para mensajes -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Notificaciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-message-content">
+                <!-- Los mensajes serán insertados aquí por JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
   <div class="hero">
     <div>
       <h1 style="margin-bottom: 20px;">RESERVA, JUGA, DIVERTITE</h1>

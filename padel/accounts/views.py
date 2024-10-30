@@ -53,32 +53,32 @@ def Editar_complejo_view(request, id_complejo):
     return render(request,'editar_un_complejo.html', {'form':form})
 
 
+from django.shortcuts import redirect
+
 def ComplejoRegisterView(request):
     user = request.user
     if request.method == 'POST':
         form = ComplejoRegisterForm(request.POST)
         if form.is_valid():
             complejo = form.save(commit=False)
-            complejo.propietario = request.user
+            complejo.propietario = user
             complejo.save()
             if user.rol != Roles.objects.get(nombre=Roles.PROPIETARIO):
-                user.estado = 'pendiente_aprobacion'
-                user.rol = Roles.objects.get(nombre=Roles.PROPIETARIO)  
-                user.save()  
+                user.estado, user.rol = 'pendiente_aprobacion', Roles.objects.get(nombre=Roles.PROPIETARIO)
+                user.save()
                 messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador.")
-                return redirect('home')  
             else:
                 messages.success(request, "Tu complejo se ha registrado exitosamente!")
-                return redirect('home') #Hay que hacer una vista que diga, Tu complejo se registro exitosamente!
+            return redirect('home')
         else:
-            messages.success(request, "Hubo un error en el registro del complejo")
-            return render(request, 'registration/registro_complejos.html', {'form': form})
-    else: 
-        if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion': 
-              return redirect('mis_complejos') 
-        else:
-            form = ComplejoRegisterForm()
-            return render(request, 'registration/registro_complejos.html', {'form': form})  
+            messages.error(request, "Hubo un error en el registro del complejo.")
+            return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
+    
+    if user.rol == Roles.objects.get(nombre=Roles.PROPIETARIO) and user.estado == 'pendiente_aprobacion':
+        messages.error(request, "Tu complejo ya se encuentra en proceso de aprobación, pronto podrás verlo en Mis Complejos")
+        return redirect('home')
+    
+    return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})
 
 
 def JugadorRegisterView(request):
@@ -90,9 +90,7 @@ def JugadorRegisterView(request):
             user.is_active = False  
             user.save()
             send_activation_email(user, request)
-            # Redirigir a una página de confirmación o éxito
-            return redirect('registration_complete')  # Asegúrate de que esta URL exista
-            
+            return redirect('registration_complete')   
         else:
             context['register_form'] = form
     else:
