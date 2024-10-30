@@ -94,12 +94,6 @@ WSGI_APPLICATION = 'padel.wsgi.application'
 
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -231,7 +225,6 @@ STORAGES = {
         "BACKEND": "storages.backends.s3boto3.S3StaticStorage"
     },
 }
-# URL to use when referring to static files located in STATICFILES_DIRS.
 
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
@@ -255,14 +248,6 @@ if 'RENDER' in os.environ:
     DEBUG = False
     ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
     DATABASES = {'default': dj_database_url.config(conn_max_age=600)}
-
-    # Añadir WhiteNoise solo si necesitas servir archivos estáticos desde el contenedor
-    # Esto no es necesario si estás usando S3 para los archivos estáticos
-    # MIDDLEWARE.insert(MIDDLEWARE.index('django.middleware.security.SecurityMiddleware') + 1,
-    #                   'whitenoise.middleware.WhiteNoiseMiddleware')
-
-    # Static files (CSS, JavaScript, Images)
-    
     
     STATICFILES_DIRS = [BASE_DIR / 'static',]
 
@@ -277,9 +262,24 @@ if 'RENDER' in os.environ:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     # Configuración para entorno de desarrollo local
-    print("USING LOCAL DEVELOPMENT SETTINGS!")
+    DOCKER = os.getenv('DOCKER')
+    if DOCKER:
+        print("USING DOCKER SETTINGS!")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': '/data/db.sqlite3',
+            }
+        }
+    else:
+        print("USING LOCAL DEVELOPMENT SETTINGS!")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
    
-
     # Rutas locales para archivos estáticos y media
     STATIC_URL = '/static/'
     MEDIA_URL = '/media/'
