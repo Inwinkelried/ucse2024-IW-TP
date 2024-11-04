@@ -63,9 +63,9 @@ def ComplejoRegisterView(request):
             if user.rol != Roles.objects.get(nombre=Roles.PROPIETARIO):
                 user.estado, user.rol = 'pendiente_aprobacion', Roles.objects.get(nombre=Roles.PROPIETARIO)
                 user.save()
-                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador para poder verlo!.")
+                messages.success(request, "Tu complejo se ha registrado exitosamente! Cuando un administrador revise y apruebe tu solicitud podrás ver el complejo.!")
             else:
-                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador para poder verlo!")
+                messages.success(request, "Tu complejo se ha registrado exitosamente! Cuando un administrador revise y apruebe tu solicitud podrás ver el complejo.!")
             return redirect('home')
         else:
             messages.error(request, "Hubo un error en el registro del complejo.")
