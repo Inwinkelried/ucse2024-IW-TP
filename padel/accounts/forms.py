@@ -36,16 +36,46 @@ class ComplejoEditForm(forms.ModelForm):
         fields = ('nombre_complejo', 'telefono', 'provincia', 'ciudad', 'direccion', 'tipo_instalacion', 'tiene_duchas', 'tiene_bar', 'prestan_paletas', 'prestan_pelotas', 'foto_complejo', 'cantidad_pistas')
 
 class JugadorRegisterForm(UserCreationForm):
+    username = forms.CharField(max_length=20, required=True)
+    email = forms.EmailField(required=True)
     telefono = forms.CharField(max_length=15)
-    categoria = forms.CharField(max_length=50)
+    categoria = forms.ChoiceField(choices= Usuario.CATEGORIAS)
     class Meta:
         model = Usuario
         fields = ( 'username','email','password1','password2', 'telefono', 'categoria')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].error_messages = {
+            'required': 'La contraseña es obligatoria.',
+        }
+        self.fields['password2'].error_messages = {
+            'required': 'Por favor, confirma la contraseña.',
+        }
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if Usuario.objects.filter(username=username).exists(): 
+            raise forms.ValidationError("Este nombre de usuario ya está en uso.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Usuario.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este correo electrónico ya está en uso.")
+        return email
+
+    def clean_telefono(self):
+        telefono = self.cleaned_data.get('telefono')
+        
+        if Usuario.objects.filter(telefono=telefono).exists():
+            raise forms.ValidationError("Este teléfono ya está en uso.")
+        return telefono
+    
     def save(self, commit=True):
         user = super().save(commit=False)
         rol_jugador = Roles.objects.get(nombre=Roles.JUGADOR)
-        user.rol = rol_jugador  # Un Usuario comienza creado como Jugador.
+        user.rol = rol_jugador
         if commit:
             user.save()
             JugadorProfile.objects.create(

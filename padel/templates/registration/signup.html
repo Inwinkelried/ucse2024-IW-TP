@@ -13,26 +13,56 @@
       <div class="form-group">
         <label for="username">Nombre de usuario:</label>
         {{ form.username }}
+        {% if form.username.errors %}
+            <div class="alert alert-danger">
+                {{ form.username.errors|join:" " }}
+            </div>
+        {% endif %}
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
         {{ form.email }}
+        {% if form.email.errors %}
+            <div class="alert alert-danger">
+                {{ form.email.errors|join:" " }}
+            </div>
+        {% endif %}
       </div>
       <div class="form-group">
         <label for="password">Contraseña:</label>
         {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="alert alert-danger">
+                {{ form.password1.errors|join:" " }}
+            </div>
+        {% endif %}
       </div>
       <div class="form-group">
         <label for="confirm_password">Confirmar contraseña:</label>
         {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="alert alert-danger">
+                {{ form.password2.errors|join:" " }}
+            </div>
+        {% endif %}
       </div>
       <div class="form-group">
         <label for="telefono">Teléfono:</label>
         {{ form.telefono }}
+        {% if form.telefono.errors %}
+            <div class="alert alert-danger">
+                {{ form.telefono.errors|join:" " }}
+            </div>
+        {% endif %}
       </div>
       <div class="form-group">
         <label for="categoria">Categoria:</label>
         {{ form.categoria }}
+        {% if form.categoria.errors %}
+            <div class="alert alert-danger">
+                {{ form.username.categoria|join:" " }}
+            </div>
+        {% endif %}
       </div>
       <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>

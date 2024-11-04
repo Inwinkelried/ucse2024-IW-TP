@@ -52,9 +52,6 @@ def Editar_complejo_view(request, id_complejo):
         form = ComplejoEditForm(instance = complejo_a_editar)
     return render(request,'editar_un_complejo.html', {'form':form})
 
-
-from django.shortcuts import redirect
-
 def ComplejoRegisterView(request):
     user = request.user
     if request.method == 'POST':
@@ -66,9 +63,9 @@ def ComplejoRegisterView(request):
             if user.rol != Roles.objects.get(nombre=Roles.PROPIETARIO):
                 user.estado, user.rol = 'pendiente_aprobacion', Roles.objects.get(nombre=Roles.PROPIETARIO)
                 user.save()
-                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador.")
+                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador para poder verlo!.")
             else:
-                messages.success(request, "Tu complejo se ha registrado exitosamente!")
+                messages.success(request, "Tu complejo se ha registrado exitosamente! Deberás esperar a que sea aprobado por un administrador para poder verlo!")
             return redirect('home')
         else:
             messages.error(request, "Hubo un error en el registro del complejo.")
