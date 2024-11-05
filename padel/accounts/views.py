@@ -66,7 +66,7 @@ def ComplejoRegisterView(request):
                 messages.success(request, "Tu complejo se ha registrado exitosamente! Cuando un administrador revise y apruebe tu solicitud podrás ver el complejo.!")
             else:
                 messages.success(request, "Tu complejo se ha registrado exitosamente! Cuando un administrador revise y apruebe tu solicitud podrás ver el complejo.!")
-            return redirect('home')
+            return redirect('mis_complejos')
         else:
             messages.error(request, "Hubo un error en el registro del complejo.")
             return render(request, 'registration/registro_complejos.html', {'form': ComplejoRegisterForm()})

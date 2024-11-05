@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 class Roles(models.Model):
     JUGADOR = 'JUGADOR'
@@ -31,10 +32,21 @@ class Usuario(AbstractUser):
         ('8', 'Octava'),
         ('principiante', 'Principiante')
     ]
+    CATEGORIAS = [
+        ('profesional', 'Profesional'),
+        ('1', 'Primera'),
+        ('2', 'Segunda'),
+        ('3', 'Tercera'),
+        ('4', 'Cuarta'),
+        ('5', 'Quinta'),
+        ('6', 'Sexta'),
+        ('7', 'Septima'),
+        ('8', 'Octava'),
+    ]
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE,name='rol', null=True)
     categoria = models.CharField(choices=CATEGORIAS, max_length=30,name='categoria', default = '8', null = True)
     estado = models.CharField(choices=ESTADOS,max_length=20, name='estado', null = True, default='pendiente_aprobacion')
-    telefono = models.IntegerField(unique=True, name='telefono', null=True)
+    telefono = models.CharField(max_length=15, unique=True, name='telefono',validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$',message="El número de teléfono debe ingresarse en el formato: '+999999999'. Hasta 15 dígitos permitidos."),])
 
 
 class ComplejoDePadel(models.Model):
@@ -100,12 +112,16 @@ class Turno(models.Model):
 class TurnoUsuario(models.Model): 
     Estados_Solicitud_Unirse = [
         ('pendiente',  'Pendiente'), #El usuario solicito unirse a un turno y esta esperando la confirmación.
+        ('pendiente_confirmacion_complejo', 'Pendiente confirmacion complejo'), 
         ('aceptado', 'Aceptado'), #El usuario fue aceptado en el turno
-        ('rechazado', 'Rechazado')
+        ('rechazado', 'Rechazado'),
+        ('confirmado_por_el_complejo', 'Confirmado por el complejo'),
+        
     ]
     turno = models.ForeignKey(Turno,on_delete=models.SET_NULL, name='turno',null=True)
     usuario = models.ForeignKey(Usuario,on_delete=models.SET_NULL, name = 'usuario', null=True)
-    estado = models.CharField(max_length = 20, choices=Estados_Solicitud_Unirse, null = True, blank= True, name = 'estado')
+    estado = models.CharField(max_length = 40, choices=Estados_Solicitud_Unirse, null = True, blank= True, name = 'estado')
+    fecha = models.DateTimeField(auto_now_add=False, name='fecha')
 
 class ComplejosFotos(models.Model): 
     pass
